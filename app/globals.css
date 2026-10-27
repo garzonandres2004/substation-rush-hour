@@ -136,3 +136,11 @@ details summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var
 .meta .updated { font-size: 14px; }
 .season { margin-top: 28px; }
 .season h3 { font-size: 24px; }
+.formula { font-size: 14px; color: var(--slate); margin: 8px 0 0; max-width: 90ch; }
+.robust { margin-top: 26px; }
+.robust h3 { font-size: 24px; }
+.rcols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.rcols h4 { margin: 8px 0 6px; font-size: 17px; }
+.rcols p { font-size: 15px; color: var(--slate); margin: 8px 0 0; }
+table.mini { font-size: 14px; min-width: 0; width: 100%; }
+@media (max-width: 900px) { .rcols { grid-template-columns: 1fr; } }

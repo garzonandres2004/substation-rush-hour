@@ -19,7 +19,7 @@ export interface Scenario {
 }
 export interface Report {
   generatedAt: string;
-  date: string; region: string; assumptions: string[]; params: { asset: { powerMW: number; energyMWh: number }; congestedThreshold: number };
+  date: string; region: string; assumptions: string[]; params: { asset: { powerMW: number; energyMWh: number }; congestedThreshold: number; stressPremium: number; stressWeights: { demand: number; netLoad: number; ramp: number; price: number } };
   scenarios: { normal: Scenario; derate: Scenario };
   capacity: Capacity;
   summer: Summer | null;
@@ -34,11 +34,17 @@ export interface Report {
       allConstraintChecksPass: boolean;
       carbonDays: number; meanCo2TPerDay: Record<string, number>;
       demandForecastMapePct: { ours: number; eiaDayAhead: number };
+      robust?: {
+        eiaForecast: Record<'v1' | 'replan' | 'guard', Robust>;
+        premium: (Robust & { premium: number })[];
+        weights: (Robust & { name: string; w: { demand: number; netLoad: number; ramp: number; price: number } })[];
+      };
     };
     days: { date: string; overB: number; overA: Record<string, number> }[];
   };
 }
 export interface CapacityLimit { withoutStorageMW: number; stations: { label: string; powerMW: number; energyMWh: number; awareMW: number; awareResidualMWh: number; shaverMW: number }[] }
+export interface Robust { days: number; daysOver: number; totalOverMWh: number; jamReliefMWh: number; valuePerDay: number }
 export interface Summer {
   days: number; firstDay: string; lastDay: string; summerPeakMW: number; forecastMapePct: number;
   ratedForSummerPeak: { capMW: number; stations: { label: string; powerMW: number; energyMWh: number; awareMW: number; shaverMW: number }[] };

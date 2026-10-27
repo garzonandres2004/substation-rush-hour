@@ -24,9 +24,24 @@ const KEYS = ['stressAware', 'priceOnly', 'clean', 'naive', 'awareV1', 'awareRep
 interface DayRow {
   date: string; margin: number; overB: number; overA: Record<string, number>; net: Record<string, number>;
   relieved: Record<string, number>; peakRed: Record<string, number>; co2?: Record<string, number>;
-  congestedHours: number; checksOk: boolean;
+  congestedHours: number; checksOk: boolean; guardHours: number; maxMissMW: number; jamHours: number[];
 }
 const rows: DayRow[] = [];
+// Robustness checks for the judges' questions: does the result depend on our own forecast, on the
+// $20 stress premium, or on the traffic index weights? Jam hours are always the page's own definition.
+const PREMIUMS = [0, 5, 10, 20, 40];
+const WEIGHTS: { name: string; w: { demand: number; netLoad: number; ramp: number; price: number } }[] = [
+  { name: 'ours', w: p.stressWeights },
+  { name: 'equal', w: { demand: 0.25, netLoad: 0.25, ramp: 0.25, price: 0.25 } },
+  { name: 'demand heavy', w: { demand: 0.5, netLoad: 0.2, ramp: 0.1, price: 0.2 } },
+  { name: 'no price', w: { demand: 0.4, netLoad: 0.4, ramp: 0.2, price: 0 } },
+];
+type Sc = ReturnType<typeof score>;
+const robust = {
+  eia: { v1: [] as Sc[], replan: [] as Sc[], guard: [] as Sc[] },
+  premium: Object.fromEntries(PREMIUMS.map(x => [x, [] as Sc[]])) as Record<number, Sc[]>,
+  weights: Object.fromEntries(WEIGHTS.map(x => [x.name, [] as Sc[]])) as Record<string, Sc[]>,
+};
 let mapeOursSum = 0, mapeEiaSum = 0, mapeN = 0, mapeEiaN = 0;
 for (const d of backtestDates) {
   const day = days.get(d);
@@ -49,8 +64,9 @@ for (const d of backtestDates) {
   // stressAware  replan every hour plus a real time guard that reacts to the meter (main)
   // priceLimit   same layers as main but no traffic index (price plus the limit only)
   // peakShaver   five line rule: discharge whatever is over the limit, recharge at night
+  const mainRun = runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, true, prevMiss);
   const run: Record<string, Schedule> = {
-    stressAware: runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, true, prevMiss),
+    stressAware: mainRun,
     priceOnly: plan.priceOnly,
     clean: runReplan(p.asset, { ...base, margin: 0, signal: co2Hat, penalty: p.cleanOverloadPenalty }, act, true, prevMiss),
     naive: plan.naive,
@@ -64,6 +80,25 @@ for (const d of backtestDates) {
 
   const real = { ...day, loadMW: act };
   const sc = Object.fromEntries(Object.entries(run).map(([k, s]) => [k, score(real, s, p)]));
+  const scoreRun = (s: Schedule) => score(real, s, p);
+  const eiaF = day.actual!.eiaFcst;
+  if (eiaF.every(x => x !== undefined && x > 0)) {
+    // Same plan, but built on EIA's own day ahead demand forecast instead of ours (no observed weather).
+    const k = day.loadMW[0] / day.demandHat[0];
+    const b2 = { forecastLoad: (eiaF as number[]).map(x => x * k), cap: day.capMW, penalty: p.overloadPenalty, margin: 0, signal: awareSignal(day) };
+    robust.eia.v1.push(scoreRun(planAhead(p.asset, b2)));
+    robust.eia.replan.push(scoreRun(runReplan(p.asset, b2, act, false, 0)));
+    robust.eia.guard.push(scoreRun(runReplan(p.asset, b2, act, true, 0)));
+  }
+  for (const prem of PREMIUMS) {
+    const sig = day.lmp.map((x, i) => x + prem * day.stress[i]);
+    robust.premium[prem].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
+  }
+  for (const { name, w } of WEIGHTS) {
+    const alt = day.lmp.map((_, i) => w.demand * day.comps.demand[i] + w.netLoad * day.comps.netLoad[i] + w.ramp * day.comps.ramp[i] + w.price * day.comps.price[i]);
+    const sig = day.lmp.map((x, i) => x + p.stressPremium * alt[i]);
+    robust.weights[name].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
+  }
   let dm = 0, dn = 0, em = 0, en = 0;
   day.actual!.demand.forEach((a, i) => {
     dm += Math.abs(day.demandHat[i] - a!) / a!; dn++;
@@ -84,6 +119,9 @@ for (const d of backtestDates) {
     peakRed: Object.fromEntries(KEYS.map(k => [k, sc[k].peakReductionMW])),
     congestedHours: sc.none.congestedHours,
     checksOk: Object.values(sc).every(c => Object.values(c.checks).every(Boolean)),
+    guardHours: mainRun.guardHours,
+    maxMissMW: Math.max(...act.map((x, i) => x - day.loadMW[i])),
+    jamHours: day.hourLocal.filter((_, i) => day.stress[i] >= p.congestedThreshold),
   });
 }
 
@@ -111,6 +149,14 @@ const summary = {
   carbonDays: rows.filter(r => r.co2).length,
   meanCo2TPerDay: per((r, k) => r.co2![k], rows.filter(r => r.co2)),
   demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
+  robust: (() => {
+    const agg = (xs: Sc[]) => ({ days: xs.length, daysOver: xs.filter(x => x.overloadAfterMWh > OVER_TOL).length, totalOverMWh: xs.reduce((a, x) => a + x.overloadAfterMWh, 0), jamReliefMWh: mean(xs.map(x => x.congestedEnergyRelievedMWh)), valuePerDay: mean(xs.map(x => x.netValue)) });
+    return {
+      eiaForecast: { v1: agg(robust.eia.v1), replan: agg(robust.eia.replan), guard: agg(robust.eia.guard) },
+      premium: PREMIUMS.map(x => ({ premium: x, ...agg(robust.premium[x]) })),
+      weights: WEIGHTS.map(x => ({ name: x.name, w: x.w, ...agg(robust.weights[x.name]) })),
+    };
+  })(),
 };
 
 const tDay = days.get(tomorrow)!;

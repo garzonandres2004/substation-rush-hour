@@ -34,6 +34,18 @@
 10. "Doesn't Tesla already do this?"
    Tesla's dispatch software optimizes battery revenue for Tesla hardware. We plan a substation against its limit and size the storage for new load. Do not quote Tesla fleet numbers unless verified.
 
+11. "Did you tune the traffic index weights to make your plan win?"
+   No. They were set in the first engine build, before any backtest. Tested: equal weights 12.1 MWh a day of jam relief, demand heavy 12.3, no price at all 12.9, ours 12.1; zero overload days in every case. The formula is on the page under the traffic strip.
+12. "Where does the $20 stress premium come from? At $5 does your plan still win?"
+   It is an assumption, and the limit does not depend on it: the guard holds 0 days at $0, $5, $10, $20 and $40. The premium only buys jam relief: 4.8 MWh a day at $0, 9.1 at $5 (no cost), 12.1 at $20 ($12 a day). Two separate claims: the guard holds the limit, the index moves relief into the jam.
+13. "With a real forecast, does 8 to 0 hold?"
+   Yes. Planned on EIA's own day ahead forecast instead of ours: plan once 11 of 30 days over, replanning alone 11, replanning plus the guard 0, at $313 a day. Summer used EIA's forecast too.
+14. "Which limit is which? I see 79.5, 71.6, 90.9, 88.2, 119."
+   Each day's limit is the 95th percentile of its last 30 days of load: tomorrow 79.5 MW, 71.6 with the 10 percent derate, Oct 5 (the minute chart) 88.2. The capacity test also uses one fixed rating, 90.9 MW. Summer is rated for the July peak, 119.0 MW. The page explains it under What is real and what is modeled.
+
+## The sentence to say twice
+"Planning alone, our own charging pushed the substation over its limit 8 days out of 30. A real time guard fixed all of them, even on EIA's real forecast. Price only, which ignores the limit, overloaded it 10 days. And with the same Station this substation can take 5.75 MW of new load instead of 1, 7.25 in summer."
+
 ## Questions to ask Torus at the venue
 1. What would you need from us to run this on one real feeder?
 2. Real Spin and Pulse specs or a case study we may use?

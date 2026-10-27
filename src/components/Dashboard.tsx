@@ -151,6 +151,7 @@ export default function Dashboard() {
           <span><i style={{ background: stressColor(0.55) }} /> Slowing</span>
           <span><i style={{ background: stressColor(0.7) }} /> Jam, {of100(jam)} of 100 or more</span>
         </div>
+        <p className="formula">Traffic index, 0 to 100 = {Math.round(report.params.stressWeights.demand * 100)}% demand + {Math.round(report.params.stressWeights.netLoad * 100)}% net load (demand minus solar and wind) + {Math.round(report.params.stressWeights.ramp * 100)}% evening ramp + {Math.round(report.params.stressWeights.price * 100)}% day ahead price, each scored as a percentile of the last 30 days. Jam at {of100(jam)} or more. The weights were set before any test was run; changing them barely moves the results (see How sure are we).</p>
         <p className="readout">{hourLabel(shown.hourLocal)}: {stressWord(shown.stress, jam).toLowerCase()}, traffic {of100(shown.stress)} of 100. Battery {slot.charge > 0.05 ? `charging ${f1(slot.charge)} MWh` : slot.discharge > 0.05 ? `discharging ${f1(slot.discharge)} MWh` : 'holding'}.</p>
       </section>
 
@@ -171,7 +172,7 @@ export default function Dashboard() {
               <dt>Grid traffic</dt>
               <dd title={`Built from demand ${pctl(shown.comps.demand)}, net load ${pctl(shown.comps.netLoad)}, ramp ${pctl(shown.comps.ramp)} and price ${pctl(shown.comps.price)} percentile of the last 30 days`}>{stressWord(shown.stress, jam)}, {of100(shown.stress)} of 100</dd>
               <dt>Price</dt><dd>${shown.lmp.toFixed(0)} per MWh, day ahead</dd>
-              <dt>Load</dt><dd>{f1(shown.loadBefore)} MW without the battery, {f1(slot.loadAfter)} MW with it, limit {f1(sc.capMW)} MW</dd>
+              <dt>Load</dt><dd>{f1(shown.loadBefore)} MW without the battery, {f1(slot.loadAfter)} MW with it, tomorrow's limit {f1(sc.capMW)} MW</dd>
               <dt>Battery</dt>
               <dd>{slot.charge > 0.05 ? `Charging ${f1(slot.charge)} MWh` : slot.discharge > 0.05 ? `Discharging ${f1(slot.discharge)} MWh` : 'Holding'}, {f1(slot.soc)} MWh stored</dd>
             </dl>
@@ -248,6 +249,31 @@ export default function Dashboard() {
           <li>What the traffic index buys: with the same guard, price alone relieves {f1(bt.meanCongestedEnergyRelievedMWh.priceLimit)} MWh a day in jam hours. Ours relieves {f1(bt.meanCongestedEnergyRelievedMWh.stressAware)} MWh, for {money(bt.meanNetValuePerDay.priceLimit - bt.meanNetValuePerDay.stressAware)} a day less.</li>
           <li>Price, traffic and carbon pull apart. Stays clean avoids the most CO2, about {Math.abs(bt.meanCo2TPerDay.clean).toFixed(1)} t a day, but adds load in jam hours, because the cleanest hours to charge, late afternoon solar, run into the evening rush.</li>
         </ul>
+        {bt.robust && (
+          <div className="robust">
+            <h3 id="sure-h">How sure are we</h3>
+            <div className="rcols">
+              <div>
+                <h4>On a real forecast</h4>
+                <p>Planned on EIA's own day ahead demand forecast instead of ours (no observed weather): plan once overloads on {bt.robust.eiaForecast.v1.daysOver} of {bt.robust.eiaForecast.v1.days} days, replanning alone on {bt.robust.eiaForecast.replan.daysOver}, <b>replanning plus the guard on {bt.robust.eiaForecast.guard.daysOver}</b>, at {money(bt.robust.eiaForecast.guard.valuePerDay)} a day.</p>
+              </div>
+              <div>
+                <h4>Stress premium</h4>
+                <table className="mini"><thead><tr><th>Premium</th><th>Days over</th><th>Jam relief a day</th><th>Value a day</th></tr></thead>
+                  <tbody>{bt.robust.premium.map(x => <tr key={x.premium} className={x.premium === report.params.stressPremium ? 'best' : ''}><td>${x.premium}</td><td>{x.daysOver}</td><td>{f1(x.jamReliefMWh)} MWh</td><td>{money(x.valuePerDay)}</td></tr>)}</tbody>
+                </table>
+                <p>{bt.robust.premium.every(x => x.daysOver === 0) ? 'The guard holds the limit at every premium. ' : ''}The premium only decides how much jam relief to buy: {f1(bt.robust.premium[0].jamReliefMWh)} MWh a day at $0, {f1(bt.robust.premium[1].jamReliefMWh)} MWh at $5.</p>
+              </div>
+              <div>
+                <h4>Traffic index weights</h4>
+                <table className="mini"><thead><tr><th>Weights</th><th>Days over</th><th>Jam relief a day</th></tr></thead>
+                  <tbody>{bt.robust.weights.map(x => <tr key={x.name} className={x.name === 'ours' ? 'best' : ''}><td>{x.name} ({[x.w.demand, x.w.netLoad, x.w.ramp, x.w.price].map(v => Math.round(v * 100)).join(', ')})</td><td>{x.daysOver}</td><td>{f1(x.jamReliefMWh)} MWh</td></tr>)}</tbody>
+                </table>
+                <p>Other weightings give {f1(Math.min(...bt.robust.weights.map(x => x.jamReliefMWh)))} to {f1(Math.max(...bt.robust.weights.map(x => x.jamReliefMWh)))} MWh a day of jam relief, with {Math.max(...bt.robust.weights.map(x => x.daysOver))} days over at most. Jam hours are always counted with our definition.</p>
+              </div>
+            </div>
+          </div>
+        )}
         <details>
           <summary>More notes on this test</summary>
           <ul className="notes">
@@ -307,7 +333,7 @@ export default function Dashboard() {
         <h2 id="in-h">Inside the hour: a {station.mainSpinMW} MW flywheel takes the fast swings so the battery does not have to.</h2>
         <p className="sub">The {station.dataCenterMW} MW data center from above, simulated minute by minute the way AI training load is described: compute bursts, sync dips and checkpoint drops, swinging up to {f1(station.maxDataCenterRampMWPerMin)} MW in a minute (Torus's CEO calls it an EKG). Each hour still averages {station.dataCenterMW} MW, so the hourly plan cannot see the swings. All {station.days} days replayed minute by minute. Substation load is real hourly data, held flat inside each hour.</p>
         <h3>Two hours on {shortDate(station.example.date)}</h3>
-        <p className="sub">Load in MW, minute by minute. Red stripes: minutes the hourly plan alone crosses the {f1(station.example.capMW)} MW planning limit.</p>
+        <p className="sub">Load in MW, minute by minute. Red stripes: minutes the hourly plan alone crosses that day's {f1(station.example.capMW)} MW limit.</p>
         <div className="scroll"><MinuteChart start={station.example.startHour} cap={station.example.capMW} hourly={station.example.hourly} station={station.example.station} /></div>
         <div className="tablewrap">
           <table>
@@ -329,7 +355,7 @@ export default function Dashboard() {
           </table>
         </div>
         <ul className="notes">
-          <li>Small but constant: the worst single minute is {station.totals.hourly.maxExcessMW.toFixed(1)} MW over a limit of about {Math.round(station.limitTypicalMW)} MW ({(100 * station.totals.hourly.maxExcessMW / station.limitTypicalMW).toFixed(0)} percent). Equipment rides out short excursions like this. What matters is who absorbs a {f1(station.maxDataCenterRampMWPerMin)} MW a minute swing, every few minutes, all day.</li>
+          <li>Small but constant: the worst single minute is {station.totals.hourly.maxExcessMW.toFixed(1)} MW over the day's limit, which averages about {Math.round(station.limitTypicalMW)} MW across these days ({(100 * station.totals.hourly.maxExcessMW / station.limitTypicalMW).toFixed(0)} percent). Equipment rides out short excursions like this. What matters is who absorbs a {f1(station.maxDataCenterRampMWPerMin)} MW a minute swing, every few minutes, all day.</li>
           <li>The battery can do it alone, but it changes power {int(station.perDay.battery.batteryChanges)} times a day instead of {int(station.perDay.hourly.batteryChanges)}, and moves {f1(station.totals.battery.batteryExtraMWh / station.days)} MWh more a day (about {money((station.totals.battery.batteryExtraMWh / station.days) * station.wearCostPerMWh)} of wear at our assumed cost). On wear dollars alone the flywheel case is small. The case is the split of jobs: a {station.spinMinutes} minute flywheel for fast power, the battery for hours, which is how a Torus Station is built.</li>
           <li>Sizing the flywheel on its own: {station.sweep.filter(r => [2, 3, 4].includes(r.spinMW)).map(r => `${r.spinMW} MW leaves ${int(r.overloadMinutesFlywheelAlone)} minutes`).join(', ')}. Six minutes cannot outlast a long compute burst, so the battery covers {int(station.batteryBackupMinutes)} minutes in {station.days} days. At {station.perDay.station.flywheelCycles.toFixed(1)} equivalent full cycles a day (partial cycles counted as fractions), that is our convention, not a life estimate. We do not model battery wear chemistry or flywheel standby losses, and this model cannot resolve sub second response.</li>
         </ul>
@@ -364,7 +390,8 @@ export default function Dashboard() {
             <ul>
               <li>The substation: PacifiCorp East demand scaled to a 100 MW peak, with a limit at the 95th percentile of recent load.</li>
               <li>Tomorrow's demand, solar and wind forecast, and the grid traffic index (demand, net load, evening ramp, price).</li>
-              <li>The plan, solved exactly with dynamic programming, replanned hourly, with a real time guard. Code decides. AI only writes the explanations.</li>
+              <li>The plan, solved exactly with dynamic programming: 24 hourly steps, stored energy in 0.25 MWh steps between 10 and 95 percent, power within 10 MW, ending the day half full, the limit as a hard rule. Replanned hourly, with a real time guard. Code decides. AI only writes the explanations.</li>
+              <li>Why the limit differs between sections: each day's limit is the 95th percentile of its last 30 days of load (tomorrow {f1(report.scenarios.normal.capMW)} MW, {f1(report.scenarios.derate.capMW)} MW with the 10 percent derate). The capacity section also tests one fixed rating ({f1(cap.fixedLimitMW)} MW), and summer uses the July peak{summer ? ` (${f1(summer.summerPeakMW)} MW)` : ''}.</li>
               <li>Grid CO2 per MWh from the fuel mix and EIA emission rates.</li>
               <li>The minute level Station model, with a simulated data center load.</li>
             </ul>

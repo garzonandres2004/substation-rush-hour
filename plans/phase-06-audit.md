@@ -100,3 +100,9 @@ Still open: summer run (needs July and August EIA demand pulled on the Mac), dec
 
 15. Summer capacity test (scripts/pull-summer.mjs on the Mac, then npm run summer): July and August, 61 days, rated for the summer peak (119.0 MW on the same scale), planned on EIA's own day ahead forecast (8.7 percent MAPE). New load: 10 MW 2 h 4.75 MW, 10 MW 4 h 7.25 MW, 10 MW 8 h 9.75 MW; five line rule 3.75, 5.25, 7.5. With the autumn rating (90.9 MW): over on 58 of 61 days without storage, 51 with the Station. On the page, in the summary card, deck slide 6 and Q and A.
 16. Daily refresh: .github/workflows/daily-refresh.yml (21:30 UTC, manual run too), lenient explanations, freshness check, commits data, deploys with Vercel CLI. Needs secrets EIA_API_KEY, VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID. First push was rejected: the Mac's GitHub login lacks the workflow scope.
+
+## Mon 11:50 PM: external judge review fixes
+
+17. Robustness in the backtest (summary.robust, shown as How sure are we): on EIA's real forecast plan once 11 of 30 days over, replan 11, replan plus guard 0 ($313 a day). Premium $0/5/10/20/40: 0 days over at every level, jam relief 4.8/9.1/11.0/12.1/13.7 MWh a day. Weights ours/equal/demand heavy/no price: 12.1/12.1/12.3/12.9 MWh, 0 days.
+18. Traffic index formula shown under the strip; planner state space described; limits explained in one line; limit labels clarified. Engine run now about 30 s.
+19. Not done on purpose: GridPilot facility scheduling (would dilute the entry; answer in Q and A).
