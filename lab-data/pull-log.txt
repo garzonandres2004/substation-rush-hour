@@ -1,0 +1,31 @@
+2026-10-27T16:18:30.770Z window 2025-10-01 to 2026-10-29
+2026-10-27T16:18:33.763Z EIA demand: 9400 rows, 2025-10-01T00 to 2026-10-27T15
+2026-10-27T16:18:33.771Z saved eia_demand.json.gz (0.06 MB)
+2026-10-27T16:18:36.403Z EIA demand_forecast: 9343 rows, 2025-10-01T00 to 2026-10-28T06
+2026-10-27T16:18:36.411Z saved eia_demand_forecast.json.gz (0.06 MB)
+2026-10-27T16:18:39.717Z EIA net_generation: 9390 rows, 2025-10-01T00 to 2026-10-27T05
+2026-10-27T16:18:39.725Z saved eia_net_generation.json.gz (0.06 MB)
+2026-10-27T16:18:42.750Z EIA interchange: 9390 rows, 2025-10-01T00 to 2026-10-27T05
+2026-10-27T16:18:42.758Z saved eia_interchange.json.gz (0.06 MB)
+2026-10-27T16:19:00.593Z EIA fuel: 56340 rows
+2026-10-27T16:19:00.637Z saved eia_fuel.json.gz (0.32 MB)
+2026-10-27T16:19:06.335Z CAISO 2025-10-01: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:19:17.693Z CAISO 2025-10-31: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:19:28.033Z CAISO 2025-11-30: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:19:38.401Z CAISO 2025-12-30: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:19:48.921Z CAISO 2026-01-29: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:19:59.955Z CAISO 2026-02-28: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:20:10.871Z CAISO 2026-03-30: no data (<?xml version="1.0" encoding="UTF-8"?> <m:OASISReport xmlns:m="http://www.caiso.com/soa/OASISReport_v1.xsd"> <m:MessageHeader> 	<m:TimeDate>)
+2026-10-27T16:20:20.290Z CAISO 2026-04-29: 3360 rows
+2026-10-27T16:20:29.615Z CAISO 2026-05-29: 3600 rows
+2026-10-27T16:20:38.778Z CAISO 2026-06-28: 3600 rows
+2026-10-27T16:20:47.753Z CAISO 2026-07-28: 3600 rows
+2026-10-27T16:20:57.108Z CAISO 2026-08-27: 3600 rows
+2026-10-27T16:21:05.362Z CAISO 2026-09-26: 3600 rows
+2026-10-27T16:21:11.564Z CAISO 2026-10-26: 240 rows
+2026-10-27T16:21:17.580Z saved lmp_TH_PACE_GEN-APND.json.gz (0.16 MB)
+2026-10-27T16:21:18.405Z weather observed: 9264 hours, 2025-10-01T00:00 to 2026-10-21T23:00
+2026-10-27T16:21:18.410Z saved weather_observed.json.gz (0.05 MB)
+2026-10-27T16:21:19.672Z weather issued (start_date): 9456 hours, 2025-10-01T00:00 to 2026-10-29T23:00, first value 2025-10-01T00:00
+2026-10-27T16:21:19.677Z saved weather_issued.json.gz (0.05 MB)
+2026-10-27T16:21:19.677Z done
