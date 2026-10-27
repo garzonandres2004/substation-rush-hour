@@ -2,104 +2,24 @@
  "generatedBy": "Written by Claude from the engine facts, then checked by code. The model explains. It does not decide.",
  "reportDate": "2026-10-27",
  "entries": {
-  "normal|aware|charge|0-0": {
-   "hash": "3jlydo",
-   "text": "Midnight is quiet and cheap, about $28 per MWh, with a traffic index of 0.40. The battery takes in 10 MWh now so it has energy ready for the morning. Grid draw peaks at 69.1 MW, 10.4 MW under the 79.5 MW limit."
-  },
-  "normal|aware|discharge|6-8": {
-   "hash": "151aaz5",
-   "text": "Morning demand climbs from 58.2 to 60.9 MW and the traffic index reaches 0.57, slowing but not yet a jam. At about $40 per MWh the battery gives back 24 MWh, so the highest load in these hours falls from 60.9 to 54.2 MW."
-  },
-  "normal|aware|charge|10-16": {
-   "hash": "1v74npu",
-   "text": "Midday is the cheapest stretch of the day, about $17 per MWh, and the grid is free flowing with an average index of 0.46. The battery refills 36 MWh, taking less each hour as the afternoon load rises, from 9.9 MWh at 10 AM down to 0.5 MWh at 4 PM. Grid draw is held to the 79.5 MW limit, so charging never pushes the substation past it."
-  },
-  "normal|aware|discharge|18-18": {
-   "hash": "xv05hj",
-   "text": "6 PM is the worst hour of the day: traffic index 0.73, a jam, with prices near $52 per MWh. The battery discharges 10 MWh here and the load drops from 70.5 to 60.7 MW."
-  },
-  "normal|aware|discharge|21-21": {
-   "hash": "fvcqvp",
-   "text": "9 PM is just under the jam line, index 0.64 against 0.65, and prices stay near $51 per MWh. The battery gives its last 7 MWh here, cutting load from 62.9 to 55.9 MW, and finishes the day back at 20 MWh, half full as the plan requires."
-  },
-  "normal|priceOnly|charge|0-0": {
-   "hash": "3jlydo",
-   "text": "Cheap and quiet at midnight, about $28 per MWh. Both plans start the same way: the battery takes in 10 MWh and grid draw peaks at 69.1 MW, 10.4 MW under the 79.5 MW limit."
-  },
-  "normal|priceOnly|discharge|1-2": {
-   "hash": "1229atj",
-   "text": "This plan discharges 14 MWh in the middle of the night because prices are about $41 per MWh. The traffic index is only 0.48, free flowing, so it earns money without helping the grid. The highest load in these hours falls from 57.8 to 53.9 MW where nothing was jammed."
-  },
-  "normal|priceOnly|discharge|7-7": {
-   "hash": "lhvxb5",
-   "text": "At 7 AM it spends 10 MWh at about $41 per MWh, which takes the battery down to its minimum of 4 MWh. The load falls from 60.5 to 50.6 MW at an index of 0.57, slowing."
-  },
   "normal|priceOnly|charge|12-15": {
    "hash": "rinvuo",
    "text": "This is where following price alone goes wrong. Power is cheapest from 12 PM to 4 PM, about $17 per MWh, so the plan charges 36 MWh as fast as it can, up to 9.9 MWh in an hour. Grid draw reaches 85.3 MW, 5.8 MW over the 79.5 MW limit, because the substation is already carrying 75.5 MW at 2 PM before the battery adds anything."
-  },
-  "normal|priceOnly|discharge|18-19": {
-   "hash": "7kwrrd",
-   "text": "The evening is a jam, index 0.67 on average, at about $52 per MWh. The battery discharges 17 MWh over 6 PM to 8 PM and the highest load falls from 70.5 to 60.7 MW. This part works well. The problem is how the battery got its energy, in the afternoon charge above."
   },
   "normal|clean|discharge|5-6": {
    "hash": "1gr38o2",
    "text": "5 AM is the dirtiest hour of the day in this forecast, about 700 kg of CO2 per MWh, because the grid leans on coal and gas before sunrise. The battery discharges 15 MWh here to push that power off the grid. Price is only about $37 per MWh, so this move is about carbon, not money."
   },
-  "normal|clean|charge|11-18": {
-   "hash": "cx99ym",
-   "text": "The cleanest power of the day comes with the afternoon sun, as low as 473 kg of CO2 per MWh at 4 PM. The battery refills 36 MWh from 11 AM to 7 PM and keeps grid draw at the 79.5 MW limit. The catch: it keeps charging into the 5 PM jam, adding 5.3 MWh at a traffic index of 0.67. Clean hours and quiet hours are not the same hours."
-  },
-  "normal|clean|discharge|22-23": {
-   "hash": "j5g7c1",
-   "text": "Late in the evening the grid is back on coal and gas, about 651 to 659 kg of CO2 per MWh. The battery discharges 17 MWh from 10 PM to midnight, cutting load from 62.7 to 55.7 MW, and ends the day back at 20 MWh, half full. It skips the 6 PM jam to wait for these dirtier hours."
-  },
-  "derate|aware|charge|0-0": {
-   "hash": "1wa6cri",
-   "text": "Midnight is quiet and cheap, about $28 per MWh. The battery takes in 10 MWh. With capacity cut 10 percent the limit is 71.6 MW, and grid draw peaks at 69.1 MW, 2.5 MW under it."
-  },
   "derate|aware|charge|9-10": {
-   "hash": "17z55yl",
+   "hash": "pocqlx",
    "text": "With the limit cut to 71.6 MW the battery gets a narrow window to refill. It takes in 9 MWh over 9 AM to 11 AM, at about $21 per MWh, and grid draw is held to the limit so charging does not make the derate worse."
-  },
-  "derate|aware|discharge|11-17": {
-   "hash": "mwdiii",
-   "text": "This is the job the derate creates. Without the battery, load reaches 75.5 MW, above the 71.6 MW limit. The battery discharges from 11 AM to 6 PM in small amounts, 0.9 to 4 MWh an hour, just enough to hold load at the limit. That clears 18.9 MWh of overload even though the traffic index averages only 0.48. This is a capacity problem, not only a price problem."
-  },
-  "derate|aware|charge|23-23": {
-   "hash": "etr4m3",
-   "text": "At 11 PM the battery takes in 3.5 MWh so the day ends where it started, half full at 20 MWh. Prices are about $49 per MWh, but load is only 60.2 MW and grid draw peaks at 63.7 MW, well under the limit."
-  },
-  "derate|priceOnly|charge|0-0": {
-   "hash": "1wa6cri",
-   "text": "Cheap and quiet at midnight, about $28 per MWh. The battery takes in 10 MWh, and grid draw peaks at 69.1 MW, 2.5 MW under the reduced 71.6 MW limit."
-  },
-  "derate|priceOnly|discharge|1-2": {
-   "hash": "1229atj",
-   "text": "This plan discharges 14 MWh in the middle of the night because prices are about $41 per MWh. The traffic index is only 0.48, free flowing, so it earns money without helping the grid. The highest load in these hours falls from 57.8 to 53.9 MW where nothing was jammed."
-  },
-  "derate|priceOnly|discharge|7-7": {
-   "hash": "lhvxb5",
-   "text": "At 7 AM it spends 10 MWh at about $41 per MWh, which takes the battery down to its minimum of 4 MWh. The load falls from 60.5 to 50.6 MW at an index of 0.57, slowing."
   },
   "derate|priceOnly|charge|12-15": {
    "hash": "26p6kv",
    "text": "This is the failure the derate exposes. Load without the battery is already 73.7 MW or more from 12 PM to 4 PM, above the 71.6 MW limit. Price alone still says charge, about $17 per MWh, so the plan adds 36 MWh of charging and grid draw reaches 85.3 MW, 13.8 MW over the limit."
   },
-  "derate|priceOnly|discharge|18-19": {
-   "hash": "7kwrrd",
-   "text": "The evening is a jam, index 0.67 on average, at about $52 per MWh. The battery discharges 17 MWh over 6 PM to 8 PM and the highest load falls from 70.5 to 60.7 MW. This part works well. The problem is how the battery got its energy, in the afternoon charge above."
-  },
-  "derate|clean|charge|9-10": {
-   "hash": "1hcurqr",
-   "text": "With the limit cut to 71.6 MW, the battery refills 6 MWh from 9 AM to 11 AM at about $21 per MWh, and grid draw stays 0.2 MW under the limit."
-  },
-  "derate|clean|discharge|11-17": {
-   "hash": "mwdiii",
-   "text": "Here the limit decides, not carbon. Load without the battery reaches 75.5 MW against a 71.6 MW limit, so the battery discharges 20 MWh from 11 AM to 6 PM to hold load at the limit, clearing 18.9 MWh of overload. That means sending out stored energy in the cleanest hours of the day, which costs carbon."
-  },
   "derate|clean|charge|18-20": {
-   "hash": "lcoux2",
+   "hash": "110kmak",
    "text": "To end the day half full, the battery refills 17 MWh from 6 PM to 9 PM while prices are near $52 per MWh. Grid draw peaks at 71.4 MW, 0.2 MW under the limit. Charging in the evening rush is the cost of keeping the substation safe at midday."
   }
  }
