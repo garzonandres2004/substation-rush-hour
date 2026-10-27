@@ -92,6 +92,8 @@ footer { margin-top: 48px; color: var(--slate); font-size: 14px; }
   .jams span { font-size: 12px; }
   .hours span { font-size: 11px; }
   .detail dl { grid-template-columns: 82px 1fr; }
+  .seg { display: flex; width: 100%; }
+  .seg button { flex: 1; padding: 8px 6px; font-size: 14px; line-height: 1.2; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 .honest h3 + .sources, .sources { font-size: 14px; }

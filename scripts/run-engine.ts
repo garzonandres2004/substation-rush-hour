@@ -19,14 +19,21 @@ const tomorrow = fullDates.at(-1)!;
 const firstBacktest = fullDates[8];
 const backtestDates = fullDates.filter(d => d >= firstBacktest && d < tomorrow);
 
-function strategies(day: NonNullable<ReturnType<typeof buildDay>>) {
+function strategies(day: NonNullable<ReturnType<typeof buildDay>>, co2Hat: number[]) {
   const limit = { load: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty };
   const stressAware = dispatch(day.lmp.map((x, i) => x + p.stressPremium * day.stress[i]), p.asset, limit);
   const priceOnly = dispatch(day.lmp, p.asset);
+  // Stays clean: same exact dispatcher, but the signal is forecast grid CO2 (kg per MWh) instead of price.
+  // The substation limit is kept as a hard rule with a large penalty in the same units.
+  const clean = dispatch(co2Hat, p.asset, { ...limit, penalty: p.cleanOverloadPenalty });
   const naive = naiveSchedule(p.asset, day.hourLocal);
   const none = zeroSchedule(p.asset, 24);
-  return { stressAware, priceOnly, naive, none };
+  return { stressAware, priceOnly, clean, naive, none };
 }
+const co2HatFor = (day: NonNullable<ReturnType<typeof buildDay>>) => {
+  const hist = all.filter(h => h.t < day.t[0]);
+  return day.hourLocal.map(hr => intensityHat(hist, hr));
+};
 
 interface DayRow { co2?: Record<string, number>; date: string; overB: number; overA: Record<string, number>; net: Record<string, number>; relieved: Record<string, number>; peakRed: Record<string, number>; congestedHours: number; checksOk: boolean; demandMapeOurs?: number; demandMapeEia?: number; schedulesDiffer: number }
 const rows: DayRow[] = [];
@@ -34,10 +41,11 @@ let mapeOursSum = 0, mapeEiaSum = 0, mapeN = 0, mapeEiaN = 0;
 for (const d of backtestDates) {
   const day = buildDay(all, d, p);
   if (!day) continue;
-  const s = strategies(day);
+  const s = strategies(day, co2HatFor(day));
   const sc = {
     stressAware: score(day, s.stressAware, p),
     priceOnly: score(day, s.priceOnly, p),
+    clean: score(day, s.clean, p),
     naive: score(day, s.naive, p),
     none: score(day, s.none, p),
   };
@@ -80,19 +88,20 @@ const summary = {
   days: rows.length,
   firstDay: rows[0]?.date,
   lastDay: rows.at(-1)?.date,
-  meanNetValuePerDay: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.net[k]))])),
-  meanCongestedEnergyRelievedMWh: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.relieved[k]))])),
-  meanPeakReductionMW: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.peakRed[k]))])),
+  meanNetValuePerDay: Object.fromEntries(['stressAware', 'priceOnly', 'clean', 'naive'].map(k => [k, mean(rows.map(r => r.net[k]))])),
+  meanCongestedEnergyRelievedMWh: Object.fromEntries(['stressAware', 'priceOnly', 'clean', 'naive'].map(k => [k, mean(rows.map(r => r.relieved[k]))])),
+  meanPeakReductionMW: Object.fromEntries(['stressAware', 'priceOnly', 'clean', 'naive'].map(k => [k, mean(rows.map(r => r.peakRed[k]))])),
   meanOverloadBeforeMWh: mean(rows.map(r => r.overB)),
-  meanOverloadAfterMWh: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.overA[k]))])),
+  meanOverloadAfterMWh: Object.fromEntries(['stressAware', 'priceOnly', 'clean', 'naive'].map(k => [k, mean(rows.map(r => r.overA[k]))])),
   daysWithOverload: rows.filter(r => r.overB > 0).length,
   daysPriceOnlyCausesOverload: rows.filter(r => r.overA.priceOnly > 1e-6).length,
   daysStressAwareCausesOverload: rows.filter(r => r.overA.stressAware > 1e-6).length,
+  daysCleanCausesOverload: rows.filter(r => r.overA.clean > 1e-6).length,
   meanCongestedHoursPerDay: mean(rows.map(r => r.congestedHours)),
   meanHoursStressAwareDiffersFromPriceOnly: mean(rows.map(r => r.schedulesDiffer)),
   allConstraintChecksPass: rows.every(r => r.checksOk),
   carbonDays: rows.filter(r => r.co2).length,
-  meanCo2TPerDay: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.filter(r => r.co2).map(r => r.co2![k]))])),
+  meanCo2TPerDay: Object.fromEntries(['stressAware', 'priceOnly', 'clean', 'naive'].map(k => [k, mean(rows.filter(r => r.co2).map(r => r.co2![k]))])),
   demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
 };
 
@@ -100,18 +109,19 @@ const tDay = buildDay(all, tomorrow, p)!;
 
 function pack(day: NonNullable<ReturnType<typeof buildDay>>, capFactor = 1) {
   const d = capFactor === 1 ? day : { ...day, capMW: day.capMW * capFactor };
-  const st = strategies(d);
+  const co2Hat = co2HatFor(d);
+  const st = strategies(d, co2Hat);
   const sc = {
     stressAware: score(d, st.stressAware, p),
     priceOnly: score(d, st.priceOnly, p),
+    clean: score(d, st.clean, p),
     naive: score(d, st.naive, p),
     none: score(d, st.none, p),
   };
-  const hist = all.filter(h => h.t < d.t[0]);
-  const co2Hat = d.hourLocal.map(hr => intensityHat(hist, hr));
   for (const k of Object.keys(sc) as (keyof typeof sc)[]) (sc[k] as any).co2T = co2DeltaT(co2Hat, st[k].charge, st[k].discharge);
   const la = loadAfter(d, st.stressAware);
   const lp = loadAfter(d, st.priceOnly);
+  const lc = loadAfter(d, st.clean);
   return {
     capMW: d.capMW,
     scorecards: sc,
@@ -124,6 +134,7 @@ function pack(day: NonNullable<ReturnType<typeof buildDay>>, capFactor = 1) {
       loadBefore: d.loadMW[i],
       aware: { charge: st.stressAware.charge[i], discharge: st.stressAware.discharge[i], soc: st.stressAware.soc[i], loadAfter: la[i] },
       priceOnly: { charge: st.priceOnly.charge[i], discharge: st.priceOnly.discharge[i], soc: st.priceOnly.soc[i], loadAfter: lp[i] },
+      clean: { charge: st.clean.charge[i], discharge: st.clean.discharge[i], soc: st.clean.soc[i], loadAfter: lc[i] },
     })),
   };
 }

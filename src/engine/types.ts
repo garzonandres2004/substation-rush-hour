@@ -32,6 +32,7 @@ export interface Params {
   congestedThreshold: number;
   capacityPercentile: number;
   overloadPenalty: number;
+  cleanOverloadPenalty: number;
   substationPeakMW: number;
   historyDays: number;
 }

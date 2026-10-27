@@ -5,7 +5,7 @@ import { directions } from '../src/lib/directions.js';
 const jam = report.params.congestedThreshold;
 const out: any[] = [];
 for (const sk of ['normal', 'derate'] as const) {
-  for (const st of ['aware', 'priceOnly'] as const) {
+  for (const st of ['aware', 'priceOnly', 'clean'] as const) {
     const sc = report.scenarios[sk];
     for (const s of directions(sc, st, jam)) {
       const rows = sc.hours.filter(h => h.hourLocal >= s.start && h.hourLocal <= s.end);

@@ -53,4 +53,9 @@ Overall about 81% built (simple average of the eight).
 
 7. Carbon added (finding 2): hourly grid CO2 from EIA fuel mix and EIA 2023 rates, average not marginal, labeled estimated. Shown as a fourth result figure, a backtest column and a note. Backtest over 30 days: stays out of traffic avoids 1.1 t CO2 per day, price only 3.3 t, fixed 1.7 t. Transformer out adds 4.7 t because holding the limit discharges at midday (cleanest) and recharges at night. Existing numbers unchanged. 8 tests pass.
 
-Must have 6 now about 80%. Open: peak framing (findings 1 and 3), persona reviews, mobile, redeploy.
+Must have 6 now about 80%.
+
+8. Peak wording (findings 1 and 3): the results figure now says when the daily peak rises (75.5 to 79.5 MW on the normal day, inside the limit), and a backtest note says no plan cuts the daily peak on these autumn days; relief happens in jam hours.
+9. Third strategy "Stays clean" (slide bullet: agents that schedule around clean power): same exact dispatcher, signal is forecast grid CO2 instead of price, limit kept as a hard rule. Backtest: $60 per day, 5.7 t CO2 avoided per day, 0 overload days, but adds load in jam hours (relief minus 3.8 MWh per day). Key insight for the deck: price, traffic and carbon pull in different directions; staying out of traffic is the middle path. 25 explanations, all validated.
+
+Open: persona reviews, mobile, redeploy.

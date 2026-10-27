@@ -13,7 +13,7 @@ const entries: Record<string, { hash: string; text: string }> = {};
 const problems: string[] = [];
 
 for (const sk of ['normal', 'derate'] as const) {
-  for (const st of ['aware', 'priceOnly'] as const) {
+  for (const st of ['aware', 'priceOnly', 'clean'] as const) {
     const sc = report.scenarios[sk];
     for (const s of directions(sc, st, jam)) {
       const key = stepKey(sk, st, s.kind, s.start, s.end);
@@ -27,7 +27,7 @@ for (const sk of ['normal', 'derate'] as const) {
       for (const m of `${s.title} ${s.body}`.matchAll(/\d+(\.\d+)?/g)) allowed.add(+m[0]);
       for (const h of rows) {
         const x = h[st];
-        [h.lmp, h.mcc, h.stress, h.loadBefore, x.loadAfter, x.soc, x.charge, x.discharge,
+        [h.lmp, h.mcc, h.stress, h.co2, h.loadBefore, x.loadAfter, x.soc, x.charge, x.discharge,
           h.loadBefore - x.loadAfter, sc.capMW - x.loadAfter, x.loadAfter - sc.capMW, h.loadBefore - sc.capMW].forEach(add);
       }
       const maxStress = Math.max(...sc.hours.map(h => h.stress));

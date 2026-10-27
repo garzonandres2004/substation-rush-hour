@@ -30,7 +30,7 @@ export default function Dashboard() {
   const [hover, setHover] = useState<number | null>(null);
   const sc = report.scenarios[scenario];
   const jam = report.params.congestedThreshold;
-  const card = strategy === 'aware' ? sc.scorecards.stressAware : sc.scorecards.priceOnly;
+  const card = strategy === 'aware' ? sc.scorecards.stressAware : strategy === 'priceOnly' ? sc.scorecards.priceOnly : sc.scorecards.clean;
   const jams = jamRanges(sc);
   const steps = useMemo(() => directions(sc, strategy, jam), [sc, strategy, jam]);
   const peakHour = sc.hours.reduce((a, b) => (b.stress > a.stress ? b : a)).hourLocal;
@@ -52,6 +52,7 @@ export default function Dashboard() {
     { key: 'none', name: 'No storage', net: 0, over: 0, days: 0, co2: 0 },
     { key: 'naive', name: 'Fixed schedule', net: bt.meanNetValuePerDay.naive, over: bt.meanOverloadAfterMWh.naive, days: report.backtest.days.filter(d => d.overA.naive > 1e-3).length, co2: bt.meanCo2TPerDay.naive },
     { key: 'priceOnly', name: 'Follows price only', net: bt.meanNetValuePerDay.priceOnly, over: bt.meanOverloadAfterMWh.priceOnly, days: bt.daysPriceOnlyCausesOverload, co2: bt.meanCo2TPerDay.priceOnly },
+    { key: 'clean', name: 'Stays clean', net: bt.meanNetValuePerDay.clean, over: bt.meanOverloadAfterMWh.clean, days: bt.daysCleanCausesOverload, co2: bt.meanCo2TPerDay.clean },
     { key: 'aware', name: 'Stays out of traffic', net: bt.meanNetValuePerDay.stressAware, over: bt.meanOverloadAfterMWh.stressAware, days: bt.daysStressAwareCausesOverload, co2: bt.meanCo2TPerDay.stressAware },
   ];
 
@@ -73,6 +74,7 @@ export default function Dashboard() {
         <div className="seg" role="group" aria-label="Strategy">
           <button className={strategy === 'aware' ? 'on' : ''} onClick={() => setStrategy('aware')}>Stays out of traffic</button>
           <button className={strategy === 'priceOnly' ? 'on' : ''} onClick={() => setStrategy('priceOnly')}>Follows price only</button>
+          <button className={strategy === 'clean' ? 'on' : ''} onClick={() => setStrategy('clean')}>Stays clean</button>
         </div>
       </section>
 
@@ -162,7 +164,7 @@ export default function Dashboard() {
           ) : (
             <div>
               <b>{f1(card.congestedEnergyRelievedMWh)} MWh</b>
-              <span>Energy the battery takes off the grid during jam hours, net of what it charges then. Measured in the model for this day.</span>
+              <span>Energy the battery takes off the grid during jam hours, net of what it charges then. {card.congestedEnergyRelievedMWh < 0 ? 'Negative means it adds load in the jam. ' : ''}Measured in the model for this day.{card.peakAfterMW > card.peakBeforeMW + 0.05 ? ` The highest load of the day rises from ${f1(card.peakBeforeMW)} to ${f1(card.peakAfterMW)} MW because the battery charges at midday, still within the ${f1(sc.capMW)} MW limit.` : ''}</span>
             </div>
           )}
           <div>
@@ -201,6 +203,8 @@ export default function Dashboard() {
         </div>
         <ul className="notes">
           <li>Following price alone earns about {Math.round((1 - bt.meanNetValuePerDay.stressAware / bt.meanNetValuePerDay.priceOnly) * 100)} percent more per day but loads the substation past its limit on {bt.daysPriceOnlyCausesOverload} of {bt.days} days, because it charges when load is already high.</li>
+          <li>The three goals pull against each other. Staying clean avoids the most CO2, about {Math.abs(bt.meanCo2TPerDay.clean).toFixed(1)} t per day, but earns {money(bt.meanNetValuePerDay.clean)} per day and adds load in jam hours, because the cleanest hours to charge, late afternoon solar, run into the evening rush. Staying out of traffic is the middle path.</li>
+          <li>No plan cuts the daily peak on these autumn days. Charging at midday raises it by {Math.abs(bt.meanPeakReductionMW.stressAware).toFixed(1)} MW on average for staying out of traffic, always inside the limit. The relief happens in the jam hours, not at the daily peak.</li>
           <li>Carbon is a tradeoff too. Following price alone avoids about {Math.abs(bt.meanCo2TPerDay.priceOnly).toFixed(1)} t of CO2 per day against {Math.abs(bt.meanCo2TPerDay.stressAware).toFixed(1)} t for staying out of traffic, because the cheap midday hours are also the cleanest. Estimated from EIA hourly fuel mix over {bt.carbonDays} days.</li>
           <li>Our demand forecast is off by {bt.demandForecastMapePct.ours.toFixed(1)} percent on average, against {bt.demandForecastMapePct.eiaDayAhead.toFixed(1)} percent for EIA's own day ahead forecast over the same hours. Weather inputs come from archived data.</li>
           <li>This autumn window never exceeds the capacity limit without the battery, so the overload story rests on the transformer outage scenario above.</li>

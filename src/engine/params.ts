@@ -15,6 +15,7 @@ export const PARAMS: Params = {
   congestedThreshold: 0.65,
   capacityPercentile: 0.95,
   overloadPenalty: 150,
+  cleanOverloadPenalty: 100000,
   substationPeakMW: 100,
   historyDays: 30,
 };
@@ -27,6 +28,7 @@ export const ASSUMPTIONS = [
   'The substation is modeled as 100 MW at its peak, with a load shape equal to the PacifiCorp East system demand shape. Real feeder data is not public.',
   'The substation has a modeled capacity limit equal to the 95th percentile of its load over the previous 30 days. Real feeder ratings are not public. Load above the limit is overload.',
   'Overload is penalized at 150 dollars per MWh in the dispatcher so it prefers to clear overloads before chasing price.',
+  'Stays clean plans against forecast grid CO2 per MWh (the last 7 days by hour) instead of price, with the substation limit as a hard rule. It is scored at real prices like the others.',
   'Stress premium of 20 dollars per MWh at index 1.0 is an assumption that tells the dispatcher how much avoiding a jammed hour is worth beyond price.',
   'Carbon uses the hourly average emissions of the PacifiCorp East fuel mix: coal 2.31 and gas 0.96 lb CO2 per kWh (EIA, 2023), hydro, wind, solar and other count as zero, imports ignored. Marginal emissions would be the better measure but are not public. Tomorrow uses the average of the last 7 days by hour.',
   'Dollar values use CAISO day ahead (DAM) prices at the PacifiCorp East trading hub. Real time prices are not used. They are settlement style values, not a forecast of profit.',

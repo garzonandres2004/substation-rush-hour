@@ -1,7 +1,7 @@
 import type { HourRow, Scenario } from './report';
 import { rangeLabel, stressWord } from './report';
 
-export type Strategy = 'aware' | 'priceOnly';
+export type Strategy = 'aware' | 'priceOnly' | 'clean';
 export interface Step { kind: 'charge' | 'discharge'; start: number; end: number; mwh: number; title: string; body: string }
 
 const f1 = (x: number) => x.toFixed(1);

@@ -5,16 +5,16 @@ export interface HourRow {
   hourLocal: number; t: string; co2: number; lmp: number; mcc: number; stress: number; congested: boolean; loadBefore: number;
   demandHat: number; solarHat: number; windHat: number; netLoadHat: number;
   comps: { demand: number; netLoad: number; ramp: number; price: number };
-  aware: Slot; priceOnly: Slot;
+  aware: Slot; priceOnly: Slot; clean: Slot;
 }
 export interface Card {
   marketValue: number; cycleCost: number; netValue: number; congestedHours: number; congestedEnergyRelievedMWh: number;
   overloadBeforeMWh: number; overloadAfterMWh: number; overloadHoursBefore: number; overloadHoursAfter: number;
-  avgStressWhenCharging: number; avgStressWhenDischarging: number; equivalentCycles: number; co2T: number; checks: Record<string, boolean>;
+  avgStressWhenCharging: number; avgStressWhenDischarging: number; equivalentCycles: number; co2T: number; peakBeforeMW: number; peakAfterMW: number; checks: Record<string, boolean>;
 }
 export interface Scenario {
   capMW: number; hours: HourRow[];
-  scorecards: { stressAware: Card; priceOnly: Card; naive: Card; none: Card };
+  scorecards: { stressAware: Card; priceOnly: Card; clean: Card; naive: Card; none: Card };
   description?: string;
 }
 export interface Report {
@@ -25,7 +25,7 @@ export interface Report {
       days: number; firstDay: string; lastDay: string;
       meanNetValuePerDay: Record<string, number>;
       meanOverloadAfterMWh: Record<string, number>;
-      daysPriceOnlyCausesOverload: number; daysStressAwareCausesOverload: number; daysWithOverload: number;
+      daysPriceOnlyCausesOverload: number; daysStressAwareCausesOverload: number; daysCleanCausesOverload: number; meanPeakReductionMW: Record<string, number>; meanCongestedEnergyRelievedMWh: Record<string, number>; daysWithOverload: number;
       allConstraintChecksPass: boolean;
       carbonDays: number; meanCo2TPerDay: Record<string, number>;
       demandForecastMapePct: { ours: number; eiaDayAhead: number };
