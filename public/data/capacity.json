@@ -1,0 +1,42 @@
+{
+ "days": 30,
+ "toleranceMWh": 0.1,
+ "withoutStorageMW": 1,
+ "stations": [
+  {
+   "label": "5 MW, 4 h",
+   "powerMW": 5,
+   "energyMWh": 20,
+   "replanMW": 4,
+   "replanMarginMW": 3.25
+  },
+  {
+   "label": "10 MW, 2 h",
+   "powerMW": 10,
+   "energyMWh": 20,
+   "replanMW": 4.25,
+   "replanMarginMW": 3.25
+  },
+  {
+   "label": "10 MW, 4 h",
+   "powerMW": 10,
+   "energyMWh": 40,
+   "replanMW": 6.75,
+   "replanMarginMW": 5.75
+  },
+  {
+   "label": "10 MW, 8 h",
+   "powerMW": 10,
+   "energyMWh": 80,
+   "replanMW": 10,
+   "replanMarginMW": 7.5
+  },
+  {
+   "label": "20 MW, 4 h",
+   "powerMW": 20,
+   "energyMWh": 80,
+   "replanMW": 7.5,
+   "replanMarginMW": 7.5
+  }
+ ]
+}

@@ -93,3 +93,18 @@ test('carbon: charging in clean hours and discharging in dirty hours avoids CO2,
   const k = intensity({ t: 'x', coal: 50, gas: 50, genTotal: 100 })!;
   assert.ok(Math.abs(k - (2.31 + 0.96) / 2 * 453.592) < 1e-6);
 });
+
+test('replanning: respects every battery check, and matches the day ahead plan when the forecast is perfect', async () => {
+  const { runWithReplan } = await import('./execute.js');
+  const r = rng(5);
+  const lmp = hours.map(() => 10 + 60 * r());
+  const load = hours.map(h => 60 + 15 * Math.sin((h - 9) / 3));
+  const run = { signal: lmp, forecastLoad: load, cap: 72, penalty: PARAMS.overloadPenalty, margin: 0 };
+  const plan = dispatch(lmp, a, { load, cap: 72, penalty: PARAMS.overloadPenalty });
+  const same = runWithReplan(a, run, load);
+  assert.ok(same.charge.every((c, t) => Math.abs(c - plan.charge[t]) < 1e-6 && Math.abs(same.discharge[t] - plan.discharge[t]) < 1e-6));
+  const actual = load.map((l, t) => l + (t >= 12 && t <= 17 ? 4 : 0));
+  const s = runWithReplan(a, run, actual);
+  const sc = score(fakeDay(lmp, actual, 72), s, PARAMS);
+  assert.ok(Object.values(sc.checks).every(Boolean), JSON.stringify(sc.checks));
+});

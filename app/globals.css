@@ -64,7 +64,7 @@ h3 { font-size: 24px; font-weight: 600; }
 .steps li span.why { color: var(--ink, inherit); font-size: 16px; line-height: 1.45; }
 .steps li span.facts { font-size: 13px; opacity: 0.8; }
 
-.result, .evidence, .honest { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
+.result, .capacity, .evidence, .honest { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
 .figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; margin-top: 18px; }
 .figures b { display: block; font: 700 clamp(26px, 3.4vw, 36px) var(--head); line-height: 1.1; }
 .figures span { display: block; margin-top: 6px; color: var(--slate); font-size: 15px; }
@@ -98,3 +98,11 @@ footer { margin-top: 48px; color: var(--slate); font-size: 14px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 .honest h3 + .sources, .sources { font-size: 14px; }
 .sources a { color: var(--ink); overflow-wrap: anywhere; }
+.bars { display: flex; flex-direction: column; gap: 10px; margin: 18px 0 8px; max-width: 760px; }
+.bar { display: grid; grid-template-columns: 130px 1fr 72px; align-items: center; gap: 12px; font-size: 15px; }
+.bar .bt { height: 22px; background: #e7eaf0; border-radius: 4px; overflow: hidden; }
+.bar .bt i { display: block; height: 100%; background: var(--slate); }
+.bar.main .bt i { background: #1d4ed8; }
+.bar b { font: 700 18px var(--head); text-align: right; }
+.bar.main .bl, .bar.main b { color: #1d4ed8; font-weight: 700; }
+@media (max-width: 560px) { .bar { grid-template-columns: 96px 1fr 60px; font-size: 13px; } }

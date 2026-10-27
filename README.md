@@ -12,7 +12,9 @@ Built solo for the Hard Tech Week Hackathon, Torus challenge "Rush Hour for Elec
 2. Turns that into a traffic style stress index, so the grid reads like a road map: green is free flowing, red is a jam.
 3. Plans a modeled 10 MW / 40 MWh battery with exact dynamic programming. It charges in cheap, clear hours and discharges into the jam, while keeping modeled substation load under a capacity limit.
 4. Compares that plan against three baselines: no storage, a fixed schedule, and a price only dispatcher. A "transformer out" scenario shows where price only dispatch overloads the substation and the capacity aware plan does not.
-5. Backtests the forecast on past days (own demand forecast MAPE 5.0% vs EIA day ahead forecast 8.6%).
+5. Backtests 30 past days against what actually happened: each day is planned the night before, then run hour by hour on real demand. Our first version (plan once) overloaded on 8 of 30 days because the forecast missed by up to 9.3 MW. Replanning every hour with measured load fixed all of them at no cost. A forecast safety margin was tested and lost.
+6. Capacity unlocked: how much always on load (like a data center) the substation can add with zero overloads over those 30 days. No storage: 1 MW. A modeled 10 MW, 4 hour Station: 6.75 MW. 8 hours of storage beats 20 MW of power at this substation.
+7. Own demand forecast MAPE 5.0% vs EIA's day ahead forecast 8.7%.
 
 All decisions are made by code. There is no AI in the dispatch loop. AI only writes the plain English explanation of each battery step. Those texts are cached in `public/data/explanations.json` (no live calls), and `npm run explain` checks that every number in them matches the engine output. If the engine output changes, a stale explanation is dropped and the app falls back to the plain numbers.
 
@@ -33,6 +35,7 @@ npm install
 npm run dev        # http://localhost:3000
 npm test           # dispatch validity tests
 npm run engine     # rebuild public/data/report.json
+npm run capacity   # capacity unlocked analysis (run before npm run engine)
 npm run explain    # validate and cache the plain English explanations
 ```
 

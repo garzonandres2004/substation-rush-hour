@@ -59,3 +59,12 @@ Must have 6 now about 80%.
 9. Third strategy "Stays clean" (slide bullet: agents that schedule around clean power): same exact dispatcher, signal is forecast grid CO2 instead of price, limit kept as a hard rule. Backtest: $60 per day, 5.7 t CO2 avoided per day, 0 overload days, but adds load in jam hours (relief minus 3.8 MWh per day). Key insight for the deck: price, traffic and carbon pull in different directions; staying out of traffic is the middle path. 25 explanations, all validated.
 
 Open: persona reviews, mobile, redeploy.
+
+## Mon 9 to 10 PM: from "meets" to "wins"
+
+10. Found and fixed the biggest credibility hole: the backtest graded plans on our own forecast. Now every past day is planned the night before and run hour by hour on actual demand. Version 1 (plan once) overloaded on 8 of 30 days (41 MWh), forecast miss up to 9.3 MW. Hourly replanning with measured load (model predictive control) brings it to 0 of 30 at no cost ($324 per day either way). Ablation: a 90th percentile forecast margin alone left 3 overload days and cost $42 per day; margin plus replanning cost $29 per day for no gain. Margin dropped from the main plan.
+11. Capacity unlocked (new section, the headline): constant new load added to 30 real days until the first overload. No storage 1 MW, 10 MW 4 h Station 6.75 MW, 10 MW 8 h 10 MW, 20 MW 4 h 7.5 MW, 10 MW 2 h 4.25 MW, 5 MW 4 h 4 MW. Duration beats power here.
+12. Planner speedup (only reachable states), same results. 9 tests pass. Page checked by screenshot at 1280 and 390 px, no horizontal scroll.
+
+Pitch sentence: "A Torus style Station lets this Utah substation take a 6.75 MW data center instead of 1 MW, with zero overloads across 30 real days, proven on what actually happened, not on our forecast."
+Open stretch: Station model with flywheel at 1 minute resolution, or daily auto refresh.

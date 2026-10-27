@@ -8,6 +8,7 @@
     "start": "next start",
     "engine": "tsx scripts/run-engine.ts",
     "explain": "tsx scripts/explain-build.ts",
+    "capacity": "tsx scripts/capacity.ts",
     "test": "tsx --test src/engine/engine.test.ts"
   },
   "devDependencies": {

@@ -2,16 +2,19 @@ import type { Asset, Schedule } from './types.js';
 
 export interface Limit { load: number[]; cap: number; penalty: number }
 
-export function dispatch(v: number[], a: Asset, limit?: Limit, step = 0.25): Schedule {
+// startMWh / endMWh default to the asset's start of day charge. Replanning mid day passes the
+// current stored energy as startMWh and keeps the end of day target.
+export function dispatch(v: number[], a: Asset, limit?: Limit, step = 0.25, startMWh?: number, endMWh?: number): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
   const lo = Math.round((a.energyMWh * a.socMinFrac) / step);
   const hi = Math.round((a.energyMWh * a.socMaxFrac) / step);
-  const i0 = Math.round((a.energyMWh * a.startSocFrac) / step) - lo;
+  const i0 = Math.round((startMWh ?? a.energyMWh * a.startSocFrac) / step) - lo;
+  const iEnd = Math.round((endMWh ?? a.energyMWh * a.startSocFrac) / step) - lo;
   const n = hi - lo + 1;
   const T = v.length;
   const V: Float64Array[] = Array.from({ length: T + 1 }, () => new Float64Array(n).fill(-Infinity));
   const choice: Int32Array[] = Array.from({ length: T }, () => new Int32Array(n).fill(-1));
-  V[T][i0] = 0;
+  V[T][iEnd] = 0;
 
   const over = (t: number, c: number, d: number): number =>
     limit ? limit.penalty * Math.max(0, limit.load[t] + c - d - limit.cap) : 0;
@@ -30,7 +33,10 @@ export function dispatch(v: number[], a: Asset, limit?: Limit, step = 0.25): Sch
   for (let t = T - 1; t >= 0; t--) {
     for (let i = 0; i < n; i++) {
       let best = -Infinity, bj = -1;
-      for (let j = 0; j < n; j++) {
+      // Only states reachable within the power limit (same result, much faster).
+      const jLo = Math.max(0, i - Math.floor(a.powerMW / eta / step) - 1);
+      const jHi = Math.min(n - 1, i + Math.floor((a.powerMW * eta) / step) + 1);
+      for (let j = jLo; j <= jHi; j++) {
         const nxt = V[t + 1][j];
         if (nxt === -Infinity) continue;
         const r = reward(t, (j - i) * step);

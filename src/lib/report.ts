@@ -20,18 +20,25 @@ export interface Scenario {
 export interface Report {
   date: string; region: string; assumptions: string[]; params: { asset: { powerMW: number; energyMWh: number }; congestedThreshold: number };
   scenarios: { normal: Scenario; derate: Scenario };
+  capacity: Capacity;
   backtest: {
     summary: {
-      days: number; firstDay: string; lastDay: string;
+      days: number; firstDay: string; lastDay: string; maxForecastMissMW: number;
       meanNetValuePerDay: Record<string, number>;
       meanOverloadAfterMWh: Record<string, number>;
-      daysPriceOnlyCausesOverload: number; daysStressAwareCausesOverload: number; daysCleanCausesOverload: number; meanPeakReductionMW: Record<string, number>; meanCongestedEnergyRelievedMWh: Record<string, number>; daysWithOverload: number;
+      totalOverloadMWh: Record<string, number>;
+      daysCausingOverload: Record<string, number>;
+      meanPeakReductionMW: Record<string, number>; meanCongestedEnergyRelievedMWh: Record<string, number>;
       allConstraintChecksPass: boolean;
       carbonDays: number; meanCo2TPerDay: Record<string, number>;
       demandForecastMapePct: { ours: number; eiaDayAhead: number };
     };
     days: { date: string; overB: number; overA: Record<string, number> }[];
   };
+}
+export interface Capacity {
+  days: number; withoutStorageMW: number;
+  stations: { label: string; powerMW: number; energyMWh: number; replanMW: number; replanMarginMW: number }[];
 }
 export const report = raw as unknown as Report;
 

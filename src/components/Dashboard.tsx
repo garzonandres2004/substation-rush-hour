@@ -48,13 +48,19 @@ export default function Dashboard() {
     headline = `With a transformer out, load tops the limit for ${none.overloadHoursBefore} hours.`;
   }
 
+  const row = (key: string, name: string) => ({ key, name, net: key === 'none' ? 0 : bt.meanNetValuePerDay[key], days: key === 'none' ? 0 : bt.daysCausingOverload[key], total: key === 'none' ? 0 : bt.totalOverloadMWh[key], co2: key === 'none' ? 0 : bt.meanCo2TPerDay[key] });
   const backtestRows = [
-    { key: 'none', name: 'No storage', net: 0, over: 0, days: 0, co2: 0 },
-    { key: 'naive', name: 'Fixed schedule', net: bt.meanNetValuePerDay.naive, over: bt.meanOverloadAfterMWh.naive, days: report.backtest.days.filter(d => d.overA.naive > 1e-3).length, co2: bt.meanCo2TPerDay.naive },
-    { key: 'priceOnly', name: 'Follows price only', net: bt.meanNetValuePerDay.priceOnly, over: bt.meanOverloadAfterMWh.priceOnly, days: bt.daysPriceOnlyCausesOverload, co2: bt.meanCo2TPerDay.priceOnly },
-    { key: 'clean', name: 'Stays clean', net: bt.meanNetValuePerDay.clean, over: bt.meanOverloadAfterMWh.clean, days: bt.daysCleanCausesOverload, co2: bt.meanCo2TPerDay.clean },
-    { key: 'aware', name: 'Stays out of traffic', net: bt.meanNetValuePerDay.stressAware, over: bt.meanOverloadAfterMWh.stressAware, days: bt.daysStressAwareCausesOverload, co2: bt.meanCo2TPerDay.stressAware },
+    row('none', 'No storage'),
+    row('naive', 'Fixed schedule'),
+    row('priceOnly', 'Follows price only'),
+    row('clean', 'Stays clean'),
+    row('awareV1', 'Our first version: plans once, never adjusts'),
+    row('stressAware', 'Stays out of traffic: replans every hour'),
   ];
+  const cap = report.capacity;
+  const capMax = Math.max(cap.withoutStorageMW, ...cap.stations.map(x => x.replanMW));
+  const main = cap.stations.find(x => x.powerMW === report.params.asset.powerMW && x.energyMWh === report.params.asset.energyMWh)!;
+
 
   return (
     <main className="page">
@@ -182,19 +188,37 @@ export default function Dashboard() {
         </div>
       </section>
 
+      <section className="capacity" aria-labelledby="cap-h">
+        <h2 id="cap-h">With a {main.label} Station, this substation can take {main.replanMW} MW of new load. Without it, {cap.withoutStorageMW} MW.</h2>
+        <p className="sub">The question a utility asks before approving a new data center: how much always on load can this substation add before it needs new wires? We added a constant block of load to every hour of {cap.days} real days and raised it until the first overload. Scored on actual demand, with the battery replanning every hour. Station sizes are modeled, not Torus specs.</p>
+        <div className="bars">
+          {[{ label: 'No storage', mw: cap.withoutStorageMW }, ...cap.stations.map(x => ({ label: x.label, mw: x.replanMW }))].map(x => (
+            <div key={x.label} className={x.label === main.label ? 'bar main' : 'bar'}>
+              <span className="bl">{x.label}</span>
+              <span className="bt"><i style={{ width: `${(x.mw / capMax) * 100}%` }} /></span>
+              <b>{x.mw} MW</b>
+            </div>
+          ))}
+        </div>
+        <ul className="notes">
+          <li>Hours of storage matter more than power here. Going from 4 to 8 hours adds {(cap.stations.find(x => x.label === '10 MW, 8 h')!.replanMW - main.replanMW).toFixed(2)} MW of room. Doubling power to 20 MW adds {(cap.stations.find(x => x.label === '20 MW, 4 h')!.replanMW - main.replanMW).toFixed(2)} MW. This substation's jam is a long afternoon plateau, not a short spike.</li>
+          <li>The limit is set at the 95th percentile of recent load, so the substation starts nearly full by design. Real feeder ratings are not public.</li>
+        </ul>
+      </section>
+
       <section className="evidence" aria-labelledby="ev-h">
-        <h2 id="ev-h">Tested on {bt.days} past days</h2>
-        <p className="sub">{shortDate(bt.firstDay)} to {shortDate(bt.lastDay)}. Each day is planned using only information available the day before. Prices are real CAISO day ahead prices.</p>
+        <h2 id="ev-h">Tested on {bt.days} past days, against what actually happened</h2>
+        <p className="sub">{shortDate(bt.firstDay)} to {shortDate(bt.lastDay)}. Each day is planned the night before from the forecast, then run hour by hour against the demand that really showed up. Prices are real CAISO day ahead prices.</p>
         <div className="tablewrap">
           <table>
-            <thead><tr><th>Strategy</th><th>Net value per day</th><th>Days it overloaded the substation</th><th>Average overload per day</th><th>Grid CO2 per day, estimated</th></tr></thead>
+            <thead><tr><th>Strategy</th><th>Net value per day</th><th>Days it overloaded the substation</th><th>Total overload</th><th>Grid CO2 per day, estimated</th></tr></thead>
             <tbody>
               {backtestRows.map(r => (
-                <tr key={r.key} className={r.key === 'aware' ? 'best' : ''}>
+                <tr key={r.key} className={r.key === 'stressAware' ? 'best' : ''}>
                   <th scope="row">{r.name}</th>
                   <td>{money(r.net)}</td>
                   <td>{r.days} of {bt.days}</td>
-                  <td>{f1(r.over)} MWh</td>
+                  <td>{f1(r.total)} MWh</td>
                   <td>{co2(r.co2)}</td>
                 </tr>
               ))}
@@ -202,13 +226,14 @@ export default function Dashboard() {
           </table>
         </div>
         <ul className="notes">
-          <li>Following price alone earns about {Math.round((1 - bt.meanNetValuePerDay.stressAware / bt.meanNetValuePerDay.priceOnly) * 100)} percent more per day but loads the substation past its limit on {bt.daysPriceOnlyCausesOverload} of {bt.days} days, because it charges when load is already high.</li>
+          <li>Our first version planned once and never adjusted. On real demand it pushed the substation over its limit on {bt.daysCausingOverload.awareV1} of {bt.days} days, because the demand forecast missed by up to {f1(bt.maxForecastMissMW)} MW in a single hour.</li>
+          <li>Replanning every hour with the load measured that hour fixed every one of those days at no cost. We also tested a forecast safety margin instead: it still overloaded on {bt.daysCausingOverload.awareMarginOnly} days and earned {money(bt.meanNetValuePerDay.stressAware - bt.meanNetValuePerDay.awareMarginOnly)} less per day. Reacting beat padding.</li>
+          <li>Following price alone earns about {Math.round((bt.meanNetValuePerDay.priceOnly / bt.meanNetValuePerDay.stressAware - 1) * 100)} percent more per day but overloads the substation on {bt.daysCausingOverload.priceOnly} of {bt.days} days, because it charges when load is already high.</li>
           <li>The three goals pull against each other. Staying clean avoids the most CO2, about {Math.abs(bt.meanCo2TPerDay.clean).toFixed(1)} t per day, but earns {money(bt.meanNetValuePerDay.clean)} per day and adds load in jam hours, because the cleanest hours to charge, late afternoon solar, run into the evening rush. Staying out of traffic is the middle path.</li>
           <li>No plan cuts the daily peak on these autumn days. Charging at midday raises it by {Math.abs(bt.meanPeakReductionMW.stressAware).toFixed(1)} MW on average for staying out of traffic, always inside the limit. The relief happens in the jam hours, not at the daily peak.</li>
-          <li>Carbon is a tradeoff too. Following price alone avoids about {Math.abs(bt.meanCo2TPerDay.priceOnly).toFixed(1)} t of CO2 per day against {Math.abs(bt.meanCo2TPerDay.stressAware).toFixed(1)} t for staying out of traffic, because the cheap midday hours are also the cleanest. Estimated from EIA hourly fuel mix over {bt.carbonDays} days.</li>
-          <li>Our demand forecast is off by {bt.demandForecastMapePct.ours.toFixed(1)} percent on average, against {bt.demandForecastMapePct.eiaDayAhead.toFixed(1)} percent for EIA's own day ahead forecast over the same hours. Weather inputs come from archived data.</li>
-          <li>This autumn window never exceeds the capacity limit without the battery, so the overload story rests on the transformer outage scenario above.</li>
-          <li>Every plan passed all checks: charge and discharge limits, stored energy bounds, energy balance, and ending the day where it started.</li>
+          <li>Our demand forecast is off by {bt.demandForecastMapePct.ours.toFixed(1)} percent on average, against {bt.demandForecastMapePct.eiaDayAhead.toFixed(1)} percent for EIA's own day ahead forecast over the same hours. Weather inputs come from archived data. CO2 is estimated from EIA hourly fuel mix over {bt.carbonDays} days.</li>
+          <li>This autumn window never exceeds the limit without the battery, so the overload story rests on the transformer outage scenario and the added load test above.</li>
+          <li>Every plan passed all battery checks: charge and discharge limits, stored energy bounds, energy balance, and ending the day where it started.</li>
         </ul>
       </section>
 
@@ -230,7 +255,8 @@ export default function Dashboard() {
               <li>Tomorrow's demand, solar and wind forecast.</li>
               <li>The traffic index, a blend of demand, net load, evening ramp and price.</li>
               <li>Grid CO2 per MWh by hour, from the fuel mix and EIA emission rates.</li>
-              <li>The dispatch plan, solved exactly with dynamic programming. No AI makes the decisions.</li>
+              <li>The dispatch plan, solved exactly with dynamic programming, then replanned every hour with the load measured that hour. No AI makes the decisions.</li>
+              <li>Swings inside an hour are not modeled. That is the flywheel's job in a real Torus Station.</li>
             </ul>
           </div>
           <div>
