@@ -20,13 +20,14 @@ export const PARAMS: Params = {
 };
 
 export const ASSUMPTIONS = [
-  'Storage asset is a modeled 10 MW / 40 MWh battery energy layer (4 hour duration, in the 4 to 8 hour range Torus lists for its Nova Pulse). It is not Torus hardware data.',
-  'Round trip efficiency 88 percent, usable state of charge 10 to 95 percent, start and end of day at 50 percent. Assumed typical lithium values, to be replaced by Torus specs.',
-  'The flywheel layer (sub second response) is not modeled in the hourly dispatch. Its role in the real product is sub hour ramp support and reducing battery cycling. Not simulated this week.',
+  'Storage asset is a modeled 10 MW / 40 MWh battery (4 hour duration, inside the 4 to 8 hour range Torus gives for its Nova Pulse battery). It is not Torus hardware data.',
+  'Round trip efficiency 88 percent, usable state of charge 10 to 95 percent, start and end of day at 50 percent. Assumed. NREL ATB 2024 uses 85 percent and EIA measured 82 percent for the US fleet in 2019, so 88 percent is on the optimistic side. To be replaced by Torus specs.',
+  'The flywheel layer is not modeled in the hourly dispatch. Torus describes its Nova Spin flywheel as responding in under 250 milliseconds with twice the lifespan of traditional batteries. Sub hour behavior is out of scope this week.',
   'Cycling cost of 3 dollars per MWh throughput is an assumption standing in for battery wear.',
   'The substation is modeled as 100 MW at its peak, with a load shape equal to the PacifiCorp East system demand shape. Real feeder data is not public.',
   'The substation has a modeled capacity limit equal to the 95th percentile of its load over the previous 30 days. Real feeder ratings are not public. Load above the limit is overload.',
   'Overload is penalized at 150 dollars per MWh in the dispatcher so it prefers to clear overloads before chasing price.',
   'Stress premium of 20 dollars per MWh at index 1.0 is an assumption that tells the dispatcher how much avoiding a jammed hour is worth beyond price.',
+  'Carbon uses the hourly average emissions of the PacifiCorp East fuel mix: coal 2.31 and gas 0.96 lb CO2 per kWh (EIA, 2023), hydro, wind, solar and other count as zero, imports ignored. Marginal emissions would be the better measure but are not public. Tomorrow uses the average of the last 7 days by hour.',
   'Dollar values use CAISO day ahead (DAM) prices at the PacifiCorp East trading hub. Real time prices are not used. They are settlement style values, not a forecast of profit.',
 ];

@@ -44,7 +44,8 @@ export function directions(sc: Scenario, strategy: Strategy, jam: number): Step[
     else { flush(); cur = { kind: a, rows: [h] }; }
   }
   flush();
-  return steps;
+  // Steps under 1 MWh are real in the schedule and charts, but too small to list as a turn.
+  return steps.filter(st => st.mwh >= 1);
 }
 
 export function jamRanges(sc: Scenario): [number, number][] {

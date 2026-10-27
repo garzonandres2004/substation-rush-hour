@@ -18,6 +18,9 @@ export function loadHours(dir = 'data/raw', lmpNode = 'TH_PACE_GEN-APND'): Hour[
     const h = get(key(r.period));
     if (r.fueltype === 'SUN') h.solar = Number(r.value);
     if (r.fueltype === 'WND') h.wind = Number(r.value);
+    if (r.fueltype === 'COL') h.coal = Number(r.value);
+    if (r.fueltype === 'NG') h.gas = Number(r.value);
+    h.genTotal = (h.genTotal ?? 0) + Math.max(0, Number(r.value));
   }
   const w = read('weather.json').hourly;
   w.time.forEach((tm: string, i: number) => {

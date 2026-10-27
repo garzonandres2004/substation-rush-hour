@@ -4,6 +4,7 @@
 **Format:** Solo, 48 hours (Mon Oct 26 5 PM to Wed Oct 28 5 PM), judging Wed 5 to 6 PM, slot length depends on team count (8 to 25 min)
 **Bounty:** Torus, $5,000. Option 1 "Rush Hour for Electrons"
 **Live URL:** https://torus-green.vercel.app (Vercel project torus; redeploy with `npx vercel --prod`)
+**Repo:** https://github.com/garzonandres2004/substation-rush-hour
 **Submission:** repo plus deck, presented to sponsor judges. Register team in Luma for a judging slot.
 **Judges (slides):** Ryan Byrd, Angela Smith, Nicole Witmyer (Torus), Scott Holley, Tanner Potter
 

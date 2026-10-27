@@ -4,6 +4,7 @@ import { dispatch, naiveSchedule } from './dispatch.js';
 import { PARAMS } from './params.js';
 import { score } from './score.js';
 import type { DayInputs, Schedule } from './types.js';
+import { co2DeltaT, intensity } from './carbon.js';
 
 const a = PARAMS.asset;
 const eta = Math.sqrt(a.roundTripEff);
@@ -84,4 +85,11 @@ test('storage clears an existing overload without extra energy being invented', 
   const delivered = s.discharge.reduce((x, y) => x + y, 0);
   const bought = s.charge.reduce((x, y) => x + y, 0);
   assert.ok(delivered <= bought * a.roundTripEff + 1e-6);
+});
+
+test('carbon: charging in clean hours and discharging in dirty hours avoids CO2, and intensity uses EIA rates', () => {
+  assert.ok(co2DeltaT([400, 800], [10, 0], [0, 10]) < 0);
+  assert.equal(co2DeltaT([500, 500], [0, 0], [0, 0]), 0);
+  const k = intensity({ t: 'x', coal: 50, gas: 50, genTotal: 100 })!;
+  assert.ok(Math.abs(k - (2.31 + 0.96) / 2 * 453.592) < 1e-6);
 });

@@ -61,9 +61,11 @@ h3 { font-size: 24px; font-weight: 600; }
 .steps li.discharge { border-left-color: var(--discharge); }
 .steps li strong { font: 600 22px var(--head); }
 .steps li span { color: var(--slate); font-size: 15px; }
+.steps li span.why { color: var(--ink, inherit); font-size: 16px; line-height: 1.45; }
+.steps li span.facts { font-size: 13px; opacity: 0.8; }
 
 .result, .evidence, .honest { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
-.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 18px; }
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; margin-top: 18px; }
 .figures b { display: block; font: 700 clamp(26px, 3.4vw, 36px) var(--head); line-height: 1.1; }
 .figures span { display: block; margin-top: 6px; color: var(--slate); font-size: 15px; }
 .tablewrap { overflow-x: auto; margin-top: 14px; }
@@ -92,3 +94,5 @@ footer { margin-top: 48px; color: var(--slate); font-size: 14px; }
   .detail dl { grid-template-columns: 82px 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.honest h3 + .sources, .sources { font-size: 14px; }
+.sources a { color: var(--ink); overflow-wrap: anywhere; }

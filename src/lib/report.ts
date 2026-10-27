@@ -2,7 +2,7 @@ import raw from '../../public/data/report.json';
 
 export interface Slot { charge: number; discharge: number; soc: number; loadAfter: number }
 export interface HourRow {
-  hourLocal: number; t: string; lmp: number; mcc: number; stress: number; congested: boolean; loadBefore: number;
+  hourLocal: number; t: string; co2: number; lmp: number; mcc: number; stress: number; congested: boolean; loadBefore: number;
   demandHat: number; solarHat: number; windHat: number; netLoadHat: number;
   comps: { demand: number; netLoad: number; ramp: number; price: number };
   aware: Slot; priceOnly: Slot;
@@ -10,7 +10,7 @@ export interface HourRow {
 export interface Card {
   marketValue: number; cycleCost: number; netValue: number; congestedHours: number; congestedEnergyRelievedMWh: number;
   overloadBeforeMWh: number; overloadAfterMWh: number; overloadHoursBefore: number; overloadHoursAfter: number;
-  avgStressWhenCharging: number; avgStressWhenDischarging: number; equivalentCycles: number; checks: Record<string, boolean>;
+  avgStressWhenCharging: number; avgStressWhenDischarging: number; equivalentCycles: number; co2T: number; checks: Record<string, boolean>;
 }
 export interface Scenario {
   capMW: number; hours: HourRow[];
@@ -27,6 +27,7 @@ export interface Report {
       meanOverloadAfterMWh: Record<string, number>;
       daysPriceOnlyCausesOverload: number; daysStressAwareCausesOverload: number; daysWithOverload: number;
       allConstraintChecksPass: boolean;
+      carbonDays: number; meanCo2TPerDay: Record<string, number>;
       demandForecastMapePct: { ours: number; eiaDayAhead: number };
     };
     days: { date: string; overB: number; overA: Record<string, number> }[];

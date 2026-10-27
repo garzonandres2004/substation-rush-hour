@@ -6,6 +6,7 @@ import { dispatch, naiveSchedule, zeroSchedule } from '../src/engine/dispatch.js
 import { score, loadAfter } from '../src/engine/score.js';
 import { localDate } from '../src/engine/time.js';
 import { fitSolar } from '../src/engine/forecast.js';
+import { intensity, intensityHat, co2DeltaT } from '../src/engine/carbon.js';
 import type { Hour } from '../src/engine/types.js';
 
 const p = PARAMS;
@@ -27,7 +28,7 @@ function strategies(day: NonNullable<ReturnType<typeof buildDay>>) {
   return { stressAware, priceOnly, naive, none };
 }
 
-interface DayRow { date: string; overB: number; overA: Record<string, number>; net: Record<string, number>; relieved: Record<string, number>; peakRed: Record<string, number>; congestedHours: number; checksOk: boolean; demandMapeOurs?: number; demandMapeEia?: number; schedulesDiffer: number }
+interface DayRow { co2?: Record<string, number>; date: string; overB: number; overA: Record<string, number>; net: Record<string, number>; relieved: Record<string, number>; peakRed: Record<string, number>; congestedHours: number; checksOk: boolean; demandMapeOurs?: number; demandMapeEia?: number; schedulesDiffer: number }
 const rows: DayRow[] = [];
 let mapeOursSum = 0, mapeEiaSum = 0, mapeN = 0, mapeEiaN = 0;
 for (const d of backtestDates) {
@@ -56,7 +57,12 @@ for (const d of backtestDates) {
   if (dn) { mapeOursSum += dm; mapeN += dn; }
   if (en) { mapeEiaSum += em; mapeEiaN += en; }
   const keys = Object.keys(sc) as (keyof typeof sc)[];
+  const actInt = day.t.map(t => { const h = all.find(x => x.t === t); return h ? intensity(h) : undefined; });
+  const co2 = actInt.every(x => x !== undefined)
+    ? Object.fromEntries(keys.map(k => [k, co2DeltaT(actInt as number[], s[k].charge, s[k].discharge)]))
+    : undefined;
   rows.push({
+    co2,
     date: d,
     overB: sc.none.overloadBeforeMWh,
     overA: Object.fromEntries(keys.map(k => [k, sc[k].overloadAfterMWh])),
@@ -85,6 +91,8 @@ const summary = {
   meanCongestedHoursPerDay: mean(rows.map(r => r.congestedHours)),
   meanHoursStressAwareDiffersFromPriceOnly: mean(rows.map(r => r.schedulesDiffer)),
   allConstraintChecksPass: rows.every(r => r.checksOk),
+  carbonDays: rows.filter(r => r.co2).length,
+  meanCo2TPerDay: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.filter(r => r.co2).map(r => r.co2![k]))])),
   demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
 };
 
@@ -99,6 +107,9 @@ function pack(day: NonNullable<ReturnType<typeof buildDay>>, capFactor = 1) {
     naive: score(d, st.naive, p),
     none: score(d, st.none, p),
   };
+  const hist = all.filter(h => h.t < d.t[0]);
+  const co2Hat = d.hourLocal.map(hr => intensityHat(hist, hr));
+  for (const k of Object.keys(sc) as (keyof typeof sc)[]) (sc[k] as any).co2T = co2DeltaT(co2Hat, st[k].charge, st[k].discharge);
   const la = loadAfter(d, st.stressAware);
   const lp = loadAfter(d, st.priceOnly);
   return {
@@ -107,7 +118,7 @@ function pack(day: NonNullable<ReturnType<typeof buildDay>>, capFactor = 1) {
     hours: d.hourLocal.map((hr, i) => ({
       hourLocal: hr, t: d.t[i], lmp: d.lmp[i], mcc: d.mcc[i], mce: d.mce[i],
       demandHat: d.demandHat[i], solarHat: d.solarHat[i], windHat: d.windHat[i], netLoadHat: d.netLoadHat[i],
-      stress: d.stress[i],
+      stress: d.stress[i], co2: co2Hat[i],
       comps: { demand: d.comps.demand[i], netLoad: d.comps.netLoad[i], ramp: d.comps.ramp[i], price: d.comps.price[i] },
       congested: d.stress[i] >= p.congestedThreshold,
       loadBefore: d.loadMW[i],

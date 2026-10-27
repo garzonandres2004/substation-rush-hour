@@ -14,7 +14,7 @@ Built solo for the Hard Tech Week Hackathon, Torus challenge "Rush Hour for Elec
 4. Compares that plan against three baselines: no storage, a fixed schedule, and a price only dispatcher. A "transformer out" scenario shows where price only dispatch overloads the substation and the capacity aware plan does not.
 5. Backtests the forecast on past days (own demand forecast MAPE 5.0% vs EIA day ahead forecast 8.6%).
 
-All decisions are made by code. There is no AI in the dispatch loop.
+All decisions are made by code. There is no AI in the dispatch loop. AI only writes the plain English explanation of each battery step. Those texts are cached in `public/data/explanations.json` (no live calls), and `npm run explain` checks that every number in them matches the engine output. If the engine output changes, a stale explanation is dropped and the app falls back to the plain numbers.
 
 ## Real, modeled, assumed
 
@@ -33,6 +33,7 @@ npm install
 npm run dev        # http://localhost:3000
 npm test           # dispatch validity tests
 npm run engine     # rebuild public/data/report.json
+npm run explain    # validate and cache the plain English explanations
 ```
 
 To refresh the data, put an EIA key in `.env.local` as `EIA_API_KEY=...`, then run `node scripts/ingest.mjs` and `node scripts/pull-prices.mjs`, then `npm run engine`.

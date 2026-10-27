@@ -4,6 +4,9 @@ export interface Hour {
   demandEiaFcst?: number;
   solar?: number;
   wind?: number;
+  coal?: number;
+  gas?: number;
+  genTotal?: number;
   temp?: number;
   rad?: number;
   cloud?: number;
