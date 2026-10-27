@@ -2,7 +2,7 @@
 
 ## 5 minute flow (deck: Substation Rush Hour, 11 slides; speaker notes carry the full script)
 1. Cover, 15 s.
-2. Problem, 30 s: new load arrives faster than new wires; price following charged into the limit on 10 of 30 days.
+2. Problem, 30 s: new load arrives faster than new wires; the limit is real (Rocky Mountain Power allows 105 percent of nameplate in summer, 120 in winter); price following charged into the limit on 10 of 30 days.
 3. What we built, 20 s.
 4. Live demo, 90 s: jam 5 PM to 7 PM, tap a step for the why; Follows price only shows red overload; Capacity cut 10% shows the battery holding the line; scroll to the three cards.
 5. Finding 1, 40 s: planning once overloaded on 8 of 30 real days; replanning alone 9; margin 3 at $81 a day; replan plus real time guard 0 at about $10 a day.
@@ -11,14 +11,14 @@
 8. Tradeoffs, 20 s: index buys 7.3 MWh a day more jam relief for $12 a day.
 9. Torus fit, 20 s: Torus schedules Stations against forecasts for smaller utilities and co ops; this is that schedule plus a guard, in Torus's own four congestion steps.
 10. Vision, 20 s: three daily questions, a planning view in Torus Lasso.
-11. Limits and the pilot question, 20 s.
+11. Where the evidence stands, 25 s: verified, tested on real history, validated on a real feeder is next. Then the narrow ask: one anonymized feeder load trace, its limit and the Station's constraints, or run our schedule on a private case.
 If over time: cut slide 9 to its title sentence; the vision slide covers the fit.
 
 ## Hardest questions
 1. "Your substation is system load scaled to 100 MW and the limit moves with its own load. What congestion did you model?"
-   Two signals on purpose: grid traffic is a soft cost, the local limit is a hard rule held first. We also ran one fixed rating (90.9 MW): 3.75 to 8.25 MW. A real feeder's load and rating only swap the inputs.
+   Two signals on purpose: grid traffic is a soft cost, the local limit is a hard rule held first. We also ran one fixed rating (90.9 MW): 3.75 to 8.25 MW. A real feeder's load and rating only swap the inputs. And real limits exist: Rocky Mountain Power told the Utah PSC its guidelines allow a substation to load to 105 percent of nameplate in summer and 120 percent in winter (response to Vote Solar data request 7.2, docket 17-035-61, Oct 2019).
 2. "A transformer does not trip on one minute over nameplate."
-   Agree: the worst minute is 1.3 MW, about 2 percent. The point is who absorbs a 4.9 MW a minute swing all day. The battery can, but it changes power 62 times a day instead of 11 and still misses 34 minutes. Spin for power, Pulse for energy.
+   Agree, and Rocky Mountain Power's own guideline already allows 105 percent of nameplate in summer and 120 percent in winter. The worst minute is 1.3 MW, about 2 percent. The point is who absorbs a 4.9 MW a minute swing all day. The battery can, but it changes power 62 times a day instead of 11 and still misses 34 minutes. Spin for power, Pulse for energy.
 3. "Who gets paid the $314 a day? Wattsmart Stations are under utility dispatch."
    Price is a stress signal, not a revenue pitch. The value is capacity on the same wires. Under Wattsmart, jam hours are candidate event windows.
 4. "30 autumn days. What is the number in July?"
@@ -68,17 +68,27 @@ If over time: cut slide 9 to its title sentence; the vision slide covers the fit
 22. "Is your flywheel and battery model based on anything real?"
    The size and frequency of the swings, yes. We checked against real GPU power from MIT Supercloud: 44 labelled training jobs, 22 models, nvidia-smi every 100 ms. Swings repeat about every 5 seconds, 26 percent of peak in a typical minute, 58 percent in the busiest. Our earlier simulation had the size and frequency right but the speed wrong (minutes). Limits: the dataset is CC BY-NC-ND, so we use summary statistics only. The flywheel sizing (about 1.8 MW, 1.3 kWh per swing for a 5.75 MW synchronized site) is our estimate, not Torus data. Independent jobs smooth out (8 to 4 percent max minute step), one big synchronized run does not.
 
+## Validation (the question a grid expert will ask)
+23. "Is this a validated solution to Utah grid congestion?"
+   "Not yet, and here is exactly where it stands. Verified: every schedule passes physical checks, power, stored energy, energy balance, and the replay never sees the future. Tested on real history: a month on the live page, and a full year walked forward on weather forecasts as issued in the repo, where our plan never pushed the substation over its limit. Not validated on a real Utah feeder: the substation is PacifiCorp East demand scaled to 100 MW and the limit is modeled. Validation takes one feeder's load trace and rating, which is our ask."
+   Say "tested," never "validated," for our results. Name the gap before a judge does.
+24. "How would you validate it with us?"
+   "Three steps. Replay one anonymized feeder's history with its real limit and Station constraints, the same way we replayed PacifiCorp East: only what was known at each hour. Then shadow mode: read live data, recommend, never control, and log whether the plan stays feasible. Only then supervised control, with your authorization. If data cannot leave Torus, run our schedule on a private case and share the aggregate result."
+
 ## Do not say
 1. That 500 MW is deployed. It is an MOU target (70 MW expanded to 500 MW in September 2025).
 2. "4 to 8 hour Pulse" as a current spec. The current Pulse page says 0.5C.
 3. Any customer name or savings figure from Torus case studies; their page titles carry copy errors.
 4. A name for the customer software other than Lasso unless Torus confirms it at the venue.
+5. "Validated" for our results. Say "verified" and "tested on real history."
+6. "Rocky Mountain Power upgrades at 100 to 105 percent." The source says its guidelines allow loading to 105 percent of nameplate in summer and 120 percent in winter; it does not state an upgrade trigger.
+7. The claim that a Utah geothermal plant is being curtailed by transmission limits. Not verified by us.
 
 ## The sentence to say twice
 "Planning alone, our own charging pushed the substation over its limit 8 days out of 30. A real time guard fixed all of them, even on EIA's real forecast. Price only, which ignores the limit, overloaded it 10 days. And with the same Station this substation can take 5.75 MW of new load instead of 1, 7.25 in summer."
 
 ## Questions to ask Torus at the venue
-1. What would you need from us to run this on one real feeder?
+1. The narrow ask: could you share one anonymized feeder load trace, its limit and the Station's constraints, or run our schedule on a private case and share the result?
 2. Real Spin and Pulse specs or a case study we may use?
 3. Final rubric weights and submission details; can one entry also go to Nucleus?
 4. Is Lasso the screen customers open every day, or is there a separate customer view?
