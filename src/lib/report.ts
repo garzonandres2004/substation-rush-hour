@@ -18,6 +18,7 @@ export interface Scenario {
   description?: string;
 }
 export interface Report {
+  generatedAt: string;
   date: string; region: string; assumptions: string[]; params: { asset: { powerMW: number; energyMWh: number }; congestedThreshold: number };
   scenarios: { normal: Scenario; derate: Scenario };
   capacity: Capacity;

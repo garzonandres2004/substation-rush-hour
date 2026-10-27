@@ -43,6 +43,10 @@ npm run explain    # validate and cache the plain English explanations
 
 To refresh the data, put an EIA key in `.env.local` as `EIA_API_KEY=...`, then run `node scripts/ingest.mjs` and `node scripts/pull-prices.mjs`, then `npm run engine`.
 
+## Daily refresh
+
+`.github/workflows/daily-refresh.yml` runs every day at 21:30 UTC, after CAISO publishes next day prices: it pulls fresh EIA, CAISO and Open-Meteo data, reruns capacity, station and engine, keeps only explanations that still match (`--lenient`; other steps show plain numbers), refuses to deploy a stale forecast, commits `public/data` and deploys to Vercel. It can also be run by hand from the Actions tab. Repository secrets needed: `EIA_API_KEY`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+
 ## Layout
 
 | Path | What |

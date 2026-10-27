@@ -19,6 +19,7 @@ for (const sk of ['normal', 'derate'] as const) {
       const key = stepKey(sk, st, s.kind, s.start, s.end);
       const text = source[key];
       if (!text) { problems.push(`missing text for ${key}`); continue; }
+      const before = problems.length;
       const rows = sc.hours.filter(h => h.hourLocal >= s.start && h.hourLocal <= s.end);
       const allowed = new Set<number>();
       const add = (x: number) => { for (const d of [0, 1, 2]) allowed.add(+Math.abs(x).toFixed(d)); };
@@ -36,18 +37,22 @@ for (const sk of ['normal', 'derate'] as const) {
       }
       if (/[–—]| - /.test(text)) problems.push(`${key}: contains a dash used as punctuation`);
       if (text.includes('worst hour') && !rows.some(h => h.stress === maxStress)) problems.push(`${key}: says worst hour but it is not the peak index`);
-      entries[key] = { hash: stepHash(s.title, s.body), text };
+      if (problems.length === before) entries[key] = { hash: stepHash(s.title, s.body), text };
     }
   }
 }
 const extra = Object.keys(source).filter(k => !entries[k] && !problems.some(p => p.includes(k)));
 if (extra.length) problems.push(`source has unused keys (report changed?): ${extra.join(', ')}`);
 
-if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
+// --lenient (used by the daily refresh): keep only explanations that still match today's plan and
+// skip the rest. The page shows the plain numbers for any step without a checked explanation.
+const LENIENT = process.argv.includes('--lenient');
+if (problems.length && !LENIENT) { console.error(problems.join('\n')); process.exit(1); }
+if (problems.length) console.warn(`lenient: skipped ${problems.length} explanation problems; those steps show plain numbers`);
 const out = {
   generatedBy: 'Written by Claude from the engine facts, then checked by code. The model explains. It does not decide.',
   reportDate: report.date,
   entries,
 };
 fs.writeFileSync('public/data/explanations.json', JSON.stringify(out, null, 1) + '\n');
-console.log(`ok: ${Object.keys(entries).length} explanations, all numbers match engine facts`);
+console.log(`ok: ${Object.keys(entries).length} explanations written, all numbers match engine facts`);

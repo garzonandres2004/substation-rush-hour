@@ -94,7 +94,7 @@ export default function Dashboard() {
           <h1>Substation Rush Hour</h1>
           <p className="lede">Tomorrow's traffic on the PacifiCorp East grid, and a Torus style Station that keeps a substation out of it.</p>
         </div>
-        <p className="meta">Forecast for {dateLabel(report.date)}<span className="hide-sm">, the latest day with published day ahead prices</span><br />PacifiCorp East (Utah, Wyoming, Idaho)</p>
+        <p className="meta">Forecast for {dateLabel(report.date)}<span className="hide-sm">, the latest day with published day ahead prices</span><br />PacifiCorp East (Utah, Wyoming, Idaho)<br /><span className="updated">Data updated {new Date(report.generatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/Denver', timeZoneName: 'short' })}, refreshed daily</span></p>
       </header>
 
       <section className="summary" aria-label="Key findings">
@@ -176,7 +176,7 @@ export default function Dashboard() {
           </div>
           <div className="steps">
             <h3>Turn by turn for the battery</h3>
-            <p className="sub">{explainedBy}</p>
+            <p className="sub">{steps.some(s => explanationFor(stepKey(scenario, strategy, s.kind, s.start, s.end), s.title, s.body)) ? explainedBy : 'Each step shows the numbers behind the decision. Plain English explanations are written and checked for the demo day only.'}</p>
             {steps.length === 0 && <p className="sub">The battery holds all day.</p>}
             <ol>
               {steps.map(s => (

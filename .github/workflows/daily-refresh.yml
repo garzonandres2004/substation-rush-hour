@@ -1,0 +1,59 @@
+# Daily refresh: pulls fresh public data, reruns the engine and redeploys the live page.
+# Runs at 21:30 UTC (3:30 PM Utah in summer time, 2:30 PM in winter), after CAISO publishes
+# next day prices, so the page shows tomorrow. Can also be run by hand from the Actions tab.
+# Needs repository secrets: EIA_API_KEY, VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+name: Daily refresh
+on:
+  schedule:
+    - cron: '30 21 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: daily-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Pull data
+        env:
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+        run: |
+          echo "EIA_API_KEY=$EIA_API_KEY" > .env.local
+          node scripts/ingest.mjs
+          node scripts/pull-prices.mjs
+          rm -f .env.local
+      - name: Run engine
+        run: |
+          npm test
+          npm run capacity
+          npm run station
+          npm run engine
+          npx tsx scripts/explain-build.ts --lenient
+      - name: Check the new forecast is for today or later (else keep the old site)
+        run: |
+          node -e "const r=require('./public/data/report.json');const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Denver'});console.log('forecast for',r.date,'today',today);if(r.date<today){console.error('stale forecast, not deploying');process.exit(1)}"
+      - name: Save the new data to the repo
+        run: |
+          git config user.name "daily-refresh"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/data
+          git diff --cached --quiet || git commit -m "Daily data refresh $(date -u +%Y-%m-%d)"
+          git push
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"

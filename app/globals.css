@@ -133,3 +133,4 @@ details summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var
   .hide-sm { display: none; }
   .readout { display: block; }
 }
+.meta .updated { font-size: 14px; }

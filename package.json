@@ -10,6 +10,7 @@
     "explain": "tsx scripts/explain-build.ts",
     "capacity": "tsx scripts/capacity.ts",
     "station": "tsx scripts/station.ts",
+    "summer": "tsx scripts/summer.ts",
     "test": "tsx --test src/engine/engine.test.ts"
   },
   "devDependencies": {
