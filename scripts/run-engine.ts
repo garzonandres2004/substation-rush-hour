@@ -152,6 +152,7 @@ const report = {
   scenarios: { normal, derate },
   backtest: { summary, days: rows },
   capacity: JSON.parse(fs.readFileSync('public/data/capacity.json', 'utf8')),
+  summer: fs.existsSync('public/data/summer.json') ? JSON.parse(fs.readFileSync('public/data/summer.json', 'utf8')) : null,
 };
 fs.mkdirSync('public/data', { recursive: true });
 fs.writeFileSync('public/data/report.json', JSON.stringify(report));

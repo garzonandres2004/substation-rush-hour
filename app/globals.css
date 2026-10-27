@@ -134,3 +134,5 @@ details summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var
   .readout { display: block; }
 }
 .meta .updated { font-size: 14px; }
+.season { margin-top: 28px; }
+.season h3 { font-size: 24px; }

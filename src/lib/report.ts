@@ -22,6 +22,7 @@ export interface Report {
   date: string; region: string; assumptions: string[]; params: { asset: { powerMW: number; energyMWh: number }; congestedThreshold: number };
   scenarios: { normal: Scenario; derate: Scenario };
   capacity: Capacity;
+  summer: Summer | null;
   backtest: {
     summary: {
       days: number; firstDay: string; lastDay: string; maxForecastMissMW: number;
@@ -38,6 +39,11 @@ export interface Report {
   };
 }
 export interface CapacityLimit { withoutStorageMW: number; stations: { label: string; powerMW: number; energyMWh: number; awareMW: number; awareResidualMWh: number; shaverMW: number }[] }
+export interface Summer {
+  days: number; firstDay: string; lastDay: string; summerPeakMW: number; forecastMapePct: number;
+  ratedForSummerPeak: { capMW: number; stations: { label: string; powerMW: number; energyMWh: number; awareMW: number; shaverMW: number }[] };
+  autumnRating: { capMW: number; none: { daysOver: number; hours: number }; withMain: { daysOver: number; hours: number } };
+}
 export interface Capacity { days: number; toleranceMWh: number; stepMW: number; fixedLimitMW: number; limits: { moving: CapacityLimit; fixed: CapacityLimit } }
 export const report = raw as unknown as Report;
 

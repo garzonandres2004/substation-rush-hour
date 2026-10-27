@@ -95,3 +95,8 @@ UX fixes: summary strip with the three findings on top, section order follows th
 Torus fixes: Torus Spin and Pulse names, current Pulse spec (0.5C, 7,500 cycles), no transformer out (now capacity cut 10 percent), PacifiCorp East is Utah, Wyoming, Idaho, How this would run on a Torus Station block, price framed as a stress signal not revenue.
 
 Still open: summer run (needs July and August EIA demand pulled on the Mac), deck, video, rehearsal, redeploy.
+
+## Mon 10:30 PM: summer run and daily refresh
+
+15. Summer capacity test (scripts/pull-summer.mjs on the Mac, then npm run summer): July and August, 61 days, rated for the summer peak (119.0 MW on the same scale), planned on EIA's own day ahead forecast (8.7 percent MAPE). New load: 10 MW 2 h 4.75 MW, 10 MW 4 h 7.25 MW, 10 MW 8 h 9.75 MW; five line rule 3.75, 5.25, 7.5. With the autumn rating (90.9 MW): over on 58 of 61 days without storage, 51 with the Station. On the page, in the summary card, deck slide 6 and Q and A.
+16. Daily refresh: .github/workflows/daily-refresh.yml (21:30 UTC, manual run too), lenient explanations, freshness check, commits data, deploys with Vercel CLI. Needs secrets EIA_API_KEY, VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID. First push was rejected: the Mac's GitHub login lacks the workflow scope.

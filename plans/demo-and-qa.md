@@ -19,7 +19,7 @@
 3. "Who gets paid the $314 a day? Wattsmart Stations are under utility dispatch."
    Price is a stress signal, not a revenue pitch. The value is capacity on the same wires. Under Wattsmart, jam hours are candidate event windows.
 4. "30 autumn days. What is the number in July?"
-   Not run yet: the data starts in late August. Summer with a fixed rating is the next run; interconnection studies use the summer peak.
+   We ran it: July and August, 61 days, substation rated for its summer peak, planned on EIA's own day ahead forecast (8.7 percent error, a real forecast). The 10 MW, 4 h Station lets it take 7.25 MW of new load; the five line rule gets 5.25 MW. A substation rated only for autumn load would go over on 58 of 61 summer days, and one Station only cuts that to 51: storage adds room, it does not replace a rating sized for summer.
 5. "Your battery discharges in the morning when nothing is jammed and sits at the limit all afternoon."
    The plan must end the day half full and 6 PM scores higher than 5 PM. A headroom rule (charge only to 90 percent of the limit) is a one line change with a measurable cost.
 6. "So you fixed a problem your own battery created?"
@@ -28,6 +28,11 @@
    Yes, the guard holds the limit either way. The index decides the rest of the day: 12.1 MWh a day of jam relief vs 4.8 for price alone, for $12 a day.
 8. "Did your forecast see tomorrow's weather?"
    In the backtest, yes, observed weather. So beating EIA (5.0 vs 8.7 percent) is an upper bound, and the page says so.
+
+9. "Why not just follow prices? Prices already include congestion."
+   Wholesale prices are hub level, not feeder level, and most facilities pay flat or time of use rates that do not reflect a local limit. A limit is physical: no price tells you this substation cannot deliver. Our data shows it: follows price only overloaded on 10 of 30 days. (Point from the earlier research.)
+10. "Doesn't Tesla already do this?"
+   Tesla's dispatch software optimizes battery revenue for Tesla hardware. We plan a substation against its limit and size the storage for new load. Do not quote Tesla fleet numbers unless verified.
 
 ## Questions to ask Torus at the venue
 1. What would you need from us to run this on one real feeder?

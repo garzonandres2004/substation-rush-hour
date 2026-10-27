@@ -61,6 +61,8 @@ export default function Dashboard() {
   const mv = cap.limits.moving, fx = cap.limits.fixed;
   const main = mv.stations.find(x => x.powerMW === report.params.asset.powerMW && x.energyMWh === report.params.asset.energyMWh)!;
   const mainFx = fx.stations.find(x => x.label === main.label)!;
+  const summer = report.summer;
+  const summerMain = summer?.ratedForSummerPeak.stations.find(x => x.label === main.label);
   const capMax = Math.max(mv.withoutStorageMW, ...mv.stations.map(x => x.awareMW));
   const smallest = (lim: typeof mv) => [...lim.stations].sort((a, b) => a.energyMWh - b.energyMWh || a.powerMW - b.powerMW).find(x => x.awareMW >= newLoad);
 
@@ -98,7 +100,7 @@ export default function Dashboard() {
       </header>
 
       <section className="summary" aria-label="Key findings">
-        <a href="#cap-h"><b>{main.awareMW} MW</b><span>of new always on load this substation can take with a {main.label} Station. {mv.withoutStorageMW} MW without it. Tested on {cap.days} real days.</span></a>
+        <a href="#cap-h"><b>{main.awareMW} MW</b><span>of new always on load this substation can take with a {main.label} Station. {mv.withoutStorageMW} MW without it. Tested on {cap.days} real days{summerMain ? `, and ${summerMain.awareMW} MW in July and August` : ''}.</span></a>
         <a href="#ev-h"><b>{bt.daysCausingOverload.awareV1} to {bt.daysCausingOverload.stressAware} days</b><span>that our own plan's charging pushed the substation over its limit, before and after adding a real time guard. Graded on what actually happened.</span></a>
         <a href="#in-h"><b>{int(station.totals.hourly.overloadMinutes)} minutes</b><span>above the planning limit that an hourly plan cannot see. A {station.mainSpinMW} MW flywheel plus the battery: {int(station.totals.station.overloadMinutes)}.</span></a>
       </section>
@@ -279,6 +281,26 @@ export default function Dashboard() {
           <li>Stored energy matters most here. Doubling from 40 to 80 MWh gets {mv.stations.find(x => x.label === '10 MW, 8 h')!.awareMW} MW by adding hours, or {mv.stations.find(x => x.label === '20 MW, 4 h')!.awareMW} MW by adding power. This substation's crunch is a long afternoon plateau, not a short spike.</li>
           <li>The limit here moves with the last 30 days of load, so the substation starts nearly full by design. With one fixed rating ({f1(cap.fixedLimitMW)} MW, the 95th percentile of the month before the test): {fx.withoutStorageMW} MW without storage, {mainFx.awareMW} MW with the {main.label} Station. Real feeder ratings are not public. Zero overload here means within {cap.toleranceMWh} MWh a day.</li>
         </ul>
+        {summer && summerMain && (
+          <div className="season">
+            <h3>Summer, the season that sets ratings</h3>
+            <p className="sub">{summer.days} days, {shortDate(summer.firstDay)} to {shortDate(summer.lastDay)}, with the substation rated for its summer peak ({f1(summer.summerPeakMW)} MW on the same scale), so it has no room at all without storage. Planned on EIA's own day ahead demand forecast ({summer.forecastMapePct.toFixed(1)} percent error, a real forecast), with forecast load as the traffic signal. Same hourly replanning and guard.</p>
+            <div className="tablewrap">
+              <table>
+                <thead><tr><th>Station</th><th>New load, our planner</th><th>New load, five line rule</th></tr></thead>
+                <tbody>
+                  {summer.ratedForSummerPeak.stations.map(x => (
+                    <tr key={x.label} className={x.label === main.label ? 'best' : ''}><th scope="row">{x.label}</th><td>{x.awareMW} MW</td><td>{x.shaverMW} MW</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <ul className="notes">
+              <li>In summer the planner matters more: {summerMain.awareMW} MW against {summerMain.shaverMW} MW for the simple rule with the same {main.label} Station.</li>
+              <li>A substation rated only for autumn load ({f1(summer.autumnRating.capMW)} MW) would go over on {summer.autumnRating.none.daysOver} of {summer.days} summer days. One {main.label} Station cuts that to {summer.autumnRating.withMain.daysOver} days: storage adds room, it does not replace a rating sized for summer.</li>
+            </ul>
+          </div>
+        )}
       </section>
 
       <section className="inside" aria-labelledby="in-h">

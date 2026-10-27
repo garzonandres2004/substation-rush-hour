@@ -1,0 +1,48 @@
+{
+ "days": 61,
+ "firstDay": "2026-07-01",
+ "lastDay": "2026-08-30",
+ "summerPeakMW": 119.02421902421902,
+ "forecastMapePct": 8.689053100637626,
+ "ratedForSummerPeak": {
+  "capMW": 119.02421902421902,
+  "stations": [
+   {
+    "label": "10 MW, 2 h",
+    "powerMW": 10,
+    "energyMWh": 20,
+    "awareMW": 4.75,
+    "shaverMW": 3.75
+   },
+   {
+    "label": "10 MW, 4 h",
+    "powerMW": 10,
+    "energyMWh": 40,
+    "awareMW": 7.25,
+    "shaverMW": 5.25
+   },
+   {
+    "label": "10 MW, 8 h",
+    "powerMW": 10,
+    "energyMWh": 80,
+    "awareMW": 9.75,
+    "shaverMW": 7.5
+   }
+  ]
+ },
+ "autumnRating": {
+  "capMW": 90.89739089739089,
+  "none": {
+   "worst": 251.78425178425175,
+   "total": 5495.5773955773975,
+   "daysOver": 58,
+   "hours": 563
+  },
+  "withMain": {
+   "worst": 220.12449086562674,
+   "total": 3799.073930736055,
+   "daysOver": 51,
+   "hours": 374
+  }
+ }
+}
