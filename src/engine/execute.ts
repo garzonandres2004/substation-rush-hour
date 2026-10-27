@@ -53,9 +53,10 @@ export function runReplan(
   actualLoad: number[],
   useGuard: boolean,
   prevMiss = 0,
+  startMWh = a.energyMWh * a.startSocFrac,
 ): Schedule & { guardHours: number } {
   const T = r.signal.length;
-  let soc = a.energyMWh * a.startSocFrac;
+  let soc = startMWh;
   const charge: number[] = [],
     discharge: number[] = [],
     socs: number[] = [];
@@ -87,11 +88,17 @@ export function runReplan(
 
 // Simple reactive rule for comparison: discharge whatever is over the limit, recharge at night
 // (10 PM to 6 AM) back toward the starting charge when there is headroom. No forecast, no price.
-export function peakShaver(a: Asset, actualLoad: number[], hourLocal: number[], cap: number | number[]): Schedule {
+export function peakShaver(
+  a: Asset,
+  actualLoad: number[],
+  hourLocal: number[],
+  cap: number | number[],
+  startMWh = a.energyMWh * a.startSocFrac,
+): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
   const start = a.energyMWh * a.startSocFrac,
     min = a.energyMWh * a.socMinFrac;
-  let soc = start;
+  let soc = startMWh;
   const charge: number[] = [],
     discharge: number[] = [],
     socs: number[] = [];

@@ -1,4 +1,5 @@
 import raw from '../../public/data/lab.json';
+import YearLab from './YearLab';
 
 interface Range {
   mean: number;
@@ -63,8 +64,6 @@ const lab = raw as unknown as LabData;
 const f1 = (x: number) => x.toFixed(1);
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 const money = (x: number) => `${x < 0 ? '-' : ''}$${Math.abs(Math.round(x)).toLocaleString('en-US')}`;
-const shortDate = (d: string) =>
-  new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const NAMES: Record<string, string> = {
   ours: 'Stays out of traffic, with the guard (ours)',
   priceOnlyWithGuard: 'Price plus the guard',
@@ -87,9 +86,9 @@ export default function Lab() {
           <p className="eyebrow">Work in progress · separate from the main page</p>
           <h1>The lab</h1>
           <p className="lede">
-            Deeper checks on {lab.days} real days ({shortDate(lab.firstDay)} to {shortDate(lab.lastDay)}), recomputed
-            here. The confidence section uses the main page's own {lab.confidence.days} days. Every number is labeled
-            measured, modeled or assumed, like the main page.
+            Deeper checks with more real, open data: a full year walked forward on issued weather forecasts, capacity
+            over a full year, and real GPU power from AI training jobs. Every number is labeled measured, modeled or
+            assumed.
           </p>
         </div>
         <p className="meta">
@@ -97,8 +96,10 @@ export default function Lab() {
         </p>
       </header>
 
+      <YearLab />
+
       <section className="evidence" aria-labelledby="conf-h">
-        <p className="eyebrow">1 · Confidence</p>
+        <p className="eyebrow">D · On the main page's 30 days: confidence</p>
         <h2 id="conf-h">How sure can 30 days make us?</h2>
         <p className="sub">
           We resampled the {c.days} days {c.resamples.toLocaleString('en-US')} times (bootstrap) and report the middle
@@ -145,7 +146,7 @@ export default function Lab() {
       </section>
 
       <section className="evidence" aria-labelledby="ev2-h">
-        <p className="eyebrow">2 · Utility events</p>
+        <p className="eyebrow">E · Utility events</p>
         <h2 id="ev2-h">If the utility calls in the jam, is the energy there?</h2>
         <p className="sub">
           Assumed event: full power for {lab.events.hours} hours ({lab.events.requestMWh} MWh) starting at each day's
@@ -180,7 +181,7 @@ export default function Lab() {
       </section>
 
       <section className="evidence" aria-labelledby="fr-h">
-        <p className="eyebrow">3 · Margin versus guard</p>
+        <p className="eyebrow">F · Margin versus guard</p>
         <h2 id="fr-h">Could a bigger safety margin replace the guard?</h2>
         <p className="sub">
           Instead of reacting to the meter, plan as if load will run above the forecast by a margin taken from the last
@@ -225,7 +226,7 @@ export default function Lab() {
       </section>
 
       <section className="evidence" aria-labelledby="th-h">
-        <p className="eyebrow">4 · Transformer heat</p>
+        <p className="eyebrow">G · Transformer heat</p>
         <h2 id="th-h">A limit set by temperature, not a fixed MW number</h2>
         <p className="sub">
           A transformer's real limit is how hot its windings get. We model it with the IEEE C57.91 method: nameplate{' '}
@@ -281,7 +282,7 @@ export default function Lab() {
           <li>
             The planner here knew each hour's real temperature. Day ahead temperature forecasts are usually within a few
             degrees, but that error is not modeled yet. The hourly rating is steady state, which ignores the oil's heat
-            inertia, so it is conservative. Summer needs July and August weather, not pulled yet.
+            inertia, so it is conservative.
           </li>
         </ul>
       </section>

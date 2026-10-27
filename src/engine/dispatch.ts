@@ -22,9 +22,17 @@ export function dispatch(
   const lo = Math.round((a.energyMWh * a.socMinFrac) / step);
   const hi = Math.round((a.energyMWh * a.socMaxFrac) / step);
   const i0 = Math.round((startMWh ?? a.energyMWh * a.startSocFrac) / step) - lo;
-  const iEnd = Math.round((endMWh ?? a.energyMWh * a.startSocFrac) / step) - lo;
   const n = hi - lo + 1;
   const T = v.length;
+  // End of day target, moved to the nearest charge the battery can physically reach in the hours
+  // left (after a long discharge late in the day, returning to the target may be impossible).
+  const up = Math.floor((a.powerMW * eta) / step + 1e-9),
+    down = Math.floor(a.powerMW / eta / step + 1e-9);
+  const iEnd = Math.min(
+    Math.max(Math.round((endMWh ?? a.energyMWh * a.startSocFrac) / step) - lo, i0 - down * T),
+    i0 + up * T,
+    n - 1,
+  );
   const V: Float64Array[] = Array.from({ length: T + 1 }, () => new Float64Array(n).fill(-Infinity));
   const choice: Int32Array[] = Array.from({ length: T }, () => new Int32Array(n).fill(-1));
   V[T][iEnd] = 0;
