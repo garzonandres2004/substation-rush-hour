@@ -1,0 +1,11 @@
+.env*
+node_modules
+.next
+data/raw
+.DS_Store
+.vercel
+.vercel
+*.pptx
+*.docx
+I join this*
+setup-hackathon.sh

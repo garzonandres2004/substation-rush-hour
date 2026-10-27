@@ -1,0 +1,136 @@
+import fs from 'node:fs';
+import { loadHours, dataQuality } from '../src/engine/merge.js';
+import { PARAMS, ASSUMPTIONS } from '../src/engine/params.js';
+import { buildDay } from '../src/engine/stress.js';
+import { dispatch, naiveSchedule, zeroSchedule } from '../src/engine/dispatch.js';
+import { score, loadAfter } from '../src/engine/score.js';
+import { localDate } from '../src/engine/time.js';
+import { fitSolar } from '../src/engine/forecast.js';
+import type { Hour } from '../src/engine/types.js';
+
+const p = PARAMS;
+const all = loadHours();
+const quality = dataQuality(all);
+
+const dates = [...new Set(all.filter(h => h.lmp !== undefined).map(h => localDate(h.t)))].sort();
+const fullDates = dates.filter(d => all.filter(h => localDate(h.t) === d && h.lmp !== undefined).length === 24);
+const tomorrow = fullDates.at(-1)!;
+const firstBacktest = fullDates[8];
+const backtestDates = fullDates.filter(d => d >= firstBacktest && d < tomorrow);
+
+function strategies(day: NonNullable<ReturnType<typeof buildDay>>) {
+  const limit = { load: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty };
+  const stressAware = dispatch(day.lmp.map((x, i) => x + p.stressPremium * day.stress[i]), p.asset, limit);
+  const priceOnly = dispatch(day.lmp, p.asset);
+  const naive = naiveSchedule(p.asset, day.hourLocal);
+  const none = zeroSchedule(p.asset, 24);
+  return { stressAware, priceOnly, naive, none };
+}
+
+interface DayRow { date: string; overB: number; overA: Record<string, number>; net: Record<string, number>; relieved: Record<string, number>; peakRed: Record<string, number>; congestedHours: number; checksOk: boolean; demandMapeOurs?: number; demandMapeEia?: number; schedulesDiffer: number }
+const rows: DayRow[] = [];
+let mapeOursSum = 0, mapeEiaSum = 0, mapeN = 0, mapeEiaN = 0;
+for (const d of backtestDates) {
+  const day = buildDay(all, d, p);
+  if (!day) continue;
+  const s = strategies(day);
+  const sc = {
+    stressAware: score(day, s.stressAware, p),
+    priceOnly: score(day, s.priceOnly, p),
+    naive: score(day, s.naive, p),
+    none: score(day, s.none, p),
+  };
+  let diff = 0;
+  for (let t = 0; t < 24; t++) {
+    const a = s.stressAware.discharge[t] - s.stressAware.charge[t];
+    const b = s.priceOnly.discharge[t] - s.priceOnly.charge[t];
+    if (Math.abs(a - b) > 0.5) diff++;
+  }
+  let dm = 0, dn = 0, em = 0, en = 0;
+  day.actual!.demand.forEach((act, i) => {
+    if (act === undefined) return;
+    dm += Math.abs(day.demandHat[i] - act) / act; dn++;
+    const f = day.actual!.eiaFcst[i];
+    if (f !== undefined) { em += Math.abs(f - act) / act; en++; }
+  });
+  if (dn) { mapeOursSum += dm; mapeN += dn; }
+  if (en) { mapeEiaSum += em; mapeEiaN += en; }
+  const keys = Object.keys(sc) as (keyof typeof sc)[];
+  rows.push({
+    date: d,
+    overB: sc.none.overloadBeforeMWh,
+    overA: Object.fromEntries(keys.map(k => [k, sc[k].overloadAfterMWh])),
+    net: Object.fromEntries(keys.map(k => [k, sc[k].netValue])),
+    relieved: Object.fromEntries(keys.map(k => [k, sc[k].congestedEnergyRelievedMWh])),
+    peakRed: Object.fromEntries(keys.map(k => [k, sc[k].peakReductionMW])),
+    congestedHours: sc.none.congestedHours,
+    checksOk: keys.every(k => Object.values(sc[k].checks).every(Boolean)),
+    schedulesDiffer: diff,
+  });
+}
+
+const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / (xs.length || 1);
+const summary = {
+  days: rows.length,
+  firstDay: rows[0]?.date,
+  lastDay: rows.at(-1)?.date,
+  meanNetValuePerDay: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.net[k]))])),
+  meanCongestedEnergyRelievedMWh: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.relieved[k]))])),
+  meanPeakReductionMW: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.peakRed[k]))])),
+  meanOverloadBeforeMWh: mean(rows.map(r => r.overB)),
+  meanOverloadAfterMWh: Object.fromEntries(['stressAware', 'priceOnly', 'naive'].map(k => [k, mean(rows.map(r => r.overA[k]))])),
+  daysWithOverload: rows.filter(r => r.overB > 0).length,
+  daysPriceOnlyCausesOverload: rows.filter(r => r.overA.priceOnly > 1e-6).length,
+  daysStressAwareCausesOverload: rows.filter(r => r.overA.stressAware > 1e-6).length,
+  meanCongestedHoursPerDay: mean(rows.map(r => r.congestedHours)),
+  meanHoursStressAwareDiffersFromPriceOnly: mean(rows.map(r => r.schedulesDiffer)),
+  allConstraintChecksPass: rows.every(r => r.checksOk),
+  demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
+};
+
+const tDay = buildDay(all, tomorrow, p)!;
+
+function pack(day: NonNullable<ReturnType<typeof buildDay>>, capFactor = 1) {
+  const d = capFactor === 1 ? day : { ...day, capMW: day.capMW * capFactor };
+  const st = strategies(d);
+  const sc = {
+    stressAware: score(d, st.stressAware, p),
+    priceOnly: score(d, st.priceOnly, p),
+    naive: score(d, st.naive, p),
+    none: score(d, st.none, p),
+  };
+  const la = loadAfter(d, st.stressAware);
+  const lp = loadAfter(d, st.priceOnly);
+  return {
+    capMW: d.capMW,
+    scorecards: sc,
+    hours: d.hourLocal.map((hr, i) => ({
+      hourLocal: hr, t: d.t[i], lmp: d.lmp[i], mcc: d.mcc[i], mce: d.mce[i],
+      demandHat: d.demandHat[i], solarHat: d.solarHat[i], windHat: d.windHat[i], netLoadHat: d.netLoadHat[i],
+      stress: d.stress[i],
+      comps: { demand: d.comps.demand[i], netLoad: d.comps.netLoad[i], ramp: d.comps.ramp[i], price: d.comps.price[i] },
+      congested: d.stress[i] >= p.congestedThreshold,
+      loadBefore: d.loadMW[i],
+      aware: { charge: st.stressAware.charge[i], discharge: st.stressAware.discharge[i], soc: st.stressAware.soc[i], loadAfter: la[i] },
+      priceOnly: { charge: st.priceOnly.charge[i], discharge: st.priceOnly.discharge[i], soc: st.priceOnly.soc[i], loadAfter: lp[i] },
+    })),
+  };
+}
+
+const normal = pack(tDay);
+const derate = { description: 'A transformer is out and substation capacity drops 10 percent', capacityFactor: 0.9, ...pack(tDay, 0.9) };
+const solar = fitSolar(all.filter(h => h.t < tDay.t[0]));
+const report = {
+  generatedAt: new Date().toISOString(),
+  region: 'PacifiCorp East (Utah), CAISO day ahead hub TH_PACE_GEN-APND',
+  date: tomorrow,
+  params: p,
+  assumptions: ASSUMPTIONS,
+  dataQuality: quality,
+  solarModel: { a: solar.a, b: solar.b },
+  scenarios: { normal, derate },
+  backtest: { summary, days: rows },
+};
+fs.mkdirSync('public/data', { recursive: true });
+fs.writeFileSync('public/data/report.json', JSON.stringify(report));
+console.log(JSON.stringify({ date: tomorrow, summary, normal: normal.scorecards.stressAware, derate: derate.scorecards.stressAware }, null, 1));
