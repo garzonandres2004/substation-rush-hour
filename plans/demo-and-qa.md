@@ -31,6 +31,7 @@ If over time: cut slide 9 to its title sentence; the vision slide covers the fit
    Yes, the guard holds the limit either way. The index decides the rest of the day: 12.1 MWh a day of jam relief vs 4.8 for price alone, for $12 a day.
 8. "Did your forecast see tomorrow's weather?"
    In the backtest, yes, observed weather. So beating EIA (5.0 vs 8.7 percent) is an upper bound, and the page says so.
+   Follow up: we also re-ran a full year on weather forecasts as issued (Open-Meteo previous runs): 5.3 vs 7.4 percent for EIA from May to Oct, still ahead. In winter it is a tie, 3.7 vs 3.7. Lab branch work, public in the repo, not on the live page.
 
 9. "Why not just follow prices? Prices already include congestion."
    Wholesale prices are hub level, not feeder level, and most facilities pay flat or time of use rates that do not reflect a local limit. A limit is physical: no price tells you this substation cannot deliver. Our data shows it: follows price only overloaded on 10 of 30 days. (Point from the earlier research.)
@@ -57,6 +58,15 @@ If over time: cut slide 9 to its title sentence; the vision slide covers the fit
    The guard is the stop loss: it acts on the meter no matter what the plan said. The forecast miss is the slippage. The stress premium is the risk appetite: how much jam relief to buy.
 19. "What would you validate next?"
    "A full year walk forward test: calibrate on one season, test on the next, including winter peaks, with weather forecasts as they were issued instead of observed weather. Then sweep weights, premium, Station size and charge bounds and report the whole grid, not one best number."
+   Partly done on the lab branch: see 20 to 22. The sweep of weights, premium and Station size is still open.
+
+## Year walk forward answers (lab branch deeper-model, not on the live page)
+20. "Does it hold over a full year, not 30 autumn days?"
+   We walked the same plan forward over 359 days (Oct 31 2025 to Oct 26 2026), planned each night on the weather forecast as issued, battery charge carried day to day, nothing tuned. Our plan pushed the substation over its limit on 0 of 359 days. Plan once: 63. Follows price only: 63 of 178. Limits: before May 2026 there are no day ahead prices (PacifiCorp joined CAISO EDAM in 2026), so winter runs on traffic only with no dollar values. The substation is system load scaled to 100 MW, not a real feeder. Also, the 30 day limit lags load climbing into a season: the substation was over its own limit on 110 days, ours fully covered 82 of them and cut that overload energy about in half.
+21. "What is the capacity number all year, not just autumn or summer?"
+   Substation rated for its own annual peak (100 MW, Jul 20 2026): 0 MW of new load without storage. With the 10 MW, 4 h Station, 7 MW (five line rule 4.75). The 2 h Station gets 4.75, the 8 h gets 9.75. The binding days are Jul 20, 13 and 21. Limits: Station sizes are modeled, not Torus specs.
+22. "Is your flywheel and battery model based on anything real?"
+   The size and frequency of the swings, yes. We checked against real GPU power from MIT Supercloud: 44 labelled training jobs, 22 models, nvidia-smi every 100 ms. Swings repeat about every 5 seconds, 26 percent of peak in a typical minute, 58 percent in the busiest. Our earlier simulation had the size and frequency right but the speed wrong (minutes). Limits: the dataset is CC BY-NC-ND, so we use summary statistics only. The flywheel sizing (about 1.8 MW, 1.3 kWh per swing for a 5.75 MW synchronized site) is our estimate, not Torus data. Independent jobs smooth out (8 to 4 percent max minute step), one big synchronized run does not.
 
 ## Do not say
 1. That 500 MW is deployed. It is an MOU target (70 MW expanded to 500 MW in September 2025).

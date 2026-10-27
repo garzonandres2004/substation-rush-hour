@@ -43,6 +43,7 @@ The backtest window grows one day per refresh. Live page on Oct 27 = 31 days (Se
 | Number | Deck | Live Oct 27 |
 |---|---|---|
 | Plan once, days over | 8 of 30 | 8 of 31 |
+| Replan alone, days over | 9 of 30 | 9 of 31 |
 | Replan plus guard, days over | 0 | 0 |
 | Follows price only, days over | 10 of 30 | 11 of 31 |
 | EIA forecast, plan once / guard | 11 / 0 | 12 / 0 |
