@@ -1,0 +1,41 @@
+name: Lab data pull (deeper-model branch only)
+
+on:
+  push:
+    branches: [deeper-model]
+    paths:
+      - .github/workflows/lab-data.yml
+      - scripts/lab-pull/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: deeper-model
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Pull open data (EIA, CAISO, Open-Meteo)
+        env:
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+        run: node scripts/lab-pull/pull-year.mjs
+      - name: Explore open GPU power traces (log only)
+        continue-on-error: true
+        run: bash scripts/lab-pull/explore-gpu.sh
+      - name: Save to the branch
+        if: always()
+        run: |
+          rm -f lab-data/_tmp.zip
+          git config user.name "lab-data"
+          git config user.email "actions@users.noreply.github.com"
+          git add lab-data
+          git diff --cached --quiet || git commit -m "Lab data pull $(date -u +%Y-%m-%dT%H:%M)"
+          git pull --rebase -X theirs origin deeper-model
+          git push origin HEAD:deeper-model
