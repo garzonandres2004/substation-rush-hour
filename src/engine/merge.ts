@@ -1,13 +1,16 @@
 import fs from 'node:fs';
 import type { Hour } from './types.js';
 
-const key = (s: string) => s.slice(0, 13) + ':00:00Z';
+const key = (s: string) => `${s.slice(0, 13)}:00:00Z`;
 
 export function loadHours(dir = 'data/raw', lmpNode = 'TH_PACE_GEN-APND'): Hour[] {
   const m = new Map<string, Hour>();
   const get = (t: string) => {
     let h = m.get(t);
-    if (!h) { h = { t }; m.set(t, h); }
+    if (!h) {
+      h = { t };
+      m.set(t, h);
+    }
     return h;
   };
   const read = (f: string) => JSON.parse(fs.readFileSync(`${dir}/${f}`, 'utf8'));

@@ -1,6 +1,9 @@
 import raw from '../../public/data/explanations.json';
 
-interface Entry { hash: string; text: string }
+interface Entry {
+  hash: string;
+  text: string;
+}
 const file = raw as unknown as { generatedBy: string; entries: Record<string, Entry> };
 
 export const explainedBy = file.generatedBy;

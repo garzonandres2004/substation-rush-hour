@@ -19,7 +19,10 @@ export function intensityHat(hist: Hour[], hourLoc: number, days = 7): number {
     if (x === undefined || localHour(h.t) !== hourLoc) continue;
     byDate.set(localDate(h.t), x);
   }
-  const xs = [...byDate.keys()].sort().slice(-days).map(d => byDate.get(d)!);
+  const xs = [...byDate.keys()]
+    .sort()
+    .slice(-days)
+    .map(d => byDate.get(d)!);
   return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0;
 }
 

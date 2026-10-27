@@ -13,7 +13,8 @@ const KEY = process.env.EIA_API_KEY;
 if (!KEY) throw new Error('EIA_API_KEY missing in .env.local');
 mkdirSync('data/raw', { recursive: true });
 
-const START = '2026-07-01T00', END = '2026-09-01T00';
+const START = '2026-07-01T00',
+  END = '2026-09-01T00';
 async function eia(type) {
   const rows = [];
   for (let offset = 0; ; offset += 5000) {
@@ -37,7 +38,10 @@ async function eia(type) {
   }
   return rows;
 }
-for (const [type, name] of [['D', 'summer_demand'], ['DF', 'summer_demand_forecast']]) {
+for (const [type, name] of [
+  ['D', 'summer_demand'],
+  ['DF', 'summer_demand_forecast'],
+]) {
   const rows = await eia(type);
   writeFileSync(`data/raw/${name}.json`, JSON.stringify(rows));
   console.log(`${name}: ${rows.length} rows, ${rows[0]?.period} to ${rows.at(-1)?.period}`);

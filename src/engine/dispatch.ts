@@ -1,10 +1,21 @@
 import type { Asset, Schedule } from './types.js';
 
-export interface Limit { load: number[]; cap: number; penalty: number }
+export interface Limit {
+  load: number[];
+  cap: number;
+  penalty: number;
+}
 
 // startMWh / endMWh default to the asset's start of day charge. Replanning mid day passes the
 // current stored energy as startMWh and keeps the end of day target.
-export function dispatch(v: number[], a: Asset, limit?: Limit, step = 0.25, startMWh?: number, endMWh?: number): Schedule {
+export function dispatch(
+  v: number[],
+  a: Asset,
+  limit?: Limit,
+  step = 0.25,
+  startMWh?: number,
+  endMWh?: number,
+): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
   const lo = Math.round((a.energyMWh * a.socMinFrac) / step);
   const hi = Math.round((a.energyMWh * a.socMaxFrac) / step);
@@ -32,7 +43,8 @@ export function dispatch(v: number[], a: Asset, limit?: Limit, step = 0.25, star
 
   for (let t = T - 1; t >= 0; t--) {
     for (let i = 0; i < n; i++) {
-      let best = -Infinity, bj = -1;
+      let best = -Infinity,
+        bj = -1;
       // Only states reachable within the power limit (same result, much faster).
       const jLo = Math.max(0, i - Math.floor(a.powerMW / eta / step) - 1);
       const jHi = Math.min(n - 1, i + Math.floor((a.powerMW * eta) / step) + 1);
@@ -42,14 +54,19 @@ export function dispatch(v: number[], a: Asset, limit?: Limit, step = 0.25, star
         const r = reward(t, (j - i) * step);
         if (r === -Infinity) continue;
         const val = r + nxt;
-        if (val > best) { best = val; bj = j; }
+        if (val > best) {
+          best = val;
+          bj = j;
+        }
       }
       V[t][i] = best;
       choice[t][i] = bj;
     }
   }
 
-  const charge: number[] = [], discharge: number[] = [], soc: number[] = [];
+  const charge: number[] = [],
+    discharge: number[] = [],
+    soc: number[] = [];
   let i = i0;
   for (let t = 0; t < T; t++) {
     const j = choice[t][i];
@@ -66,18 +83,23 @@ export function naiveSchedule(a: Asset, hourLocal: number[]): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
   const chargeHours = new Set([10, 11, 12, 13, 14, 15]);
   const dischargeHours = new Set([18, 19, 20, 21]);
-  const nd = dischargeHours.size, nc = chargeHours.size;
+  const nd = dischargeHours.size,
+    nc = chargeHours.size;
   const start = a.energyMWh * a.startSocFrac;
-  const stored = Math.min(a.energyMWh * a.socMaxFrac - start, (a.powerMW * nd) / eta, (a.powerMW * nc * eta));
+  const stored = Math.min(a.energyMWh * a.socMaxFrac - start, (a.powerMW * nd) / eta, a.powerMW * nc * eta);
   const c = stored / (eta * nc);
   const d = (stored * eta) / nd;
   let soc = start;
-  const charge: number[] = [], discharge: number[] = [], socs: number[] = [];
+  const charge: number[] = [],
+    discharge: number[] = [],
+    socs: number[] = [];
   for (const hr of hourLocal) {
     const ch = chargeHours.has(hr) ? c : 0;
     const di = dischargeHours.has(hr) ? d : 0;
     soc += eta * ch - di / eta;
-    charge.push(ch); discharge.push(di); socs.push(soc);
+    charge.push(ch);
+    discharge.push(di);
+    socs.push(soc);
   }
   return { charge, discharge, soc: socs };
 }

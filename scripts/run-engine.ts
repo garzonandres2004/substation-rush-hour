@@ -6,7 +6,21 @@ import { fitSolar } from '../src/engine/forecast.js';
 import { intensity, co2DeltaT } from '../src/engine/carbon.js';
 import { planAhead, runReplan, peakShaver } from '../src/engine/execute.js';
 import type { DayInputs, Schedule } from '../src/engine/types.js';
-import { p, all, quality, byT, tomorrow, backtestDates, days, actualLoad, MARGIN_DAYS, marginFor, misses, co2HatFor, awareSignal } from './common.js';
+import {
+  p,
+  all,
+  quality,
+  byT,
+  tomorrow,
+  backtestDates,
+  days,
+  actualLoad,
+  MARGIN_DAYS,
+  marginFor,
+  misses,
+  co2HatFor,
+  awareSignal,
+} from './common.js';
 
 // Day ahead plans on forecast load (plus an optional margin, used only in the ablation).
 function plans(day: DayInputs, co2Hat: number[], margin: number) {
@@ -20,11 +34,31 @@ function plans(day: DayInputs, co2Hat: number[], margin: number) {
   };
 }
 
-const KEYS = ['stressAware', 'priceOnly', 'clean', 'naive', 'awareV1', 'awareReplan', 'awareReplanMargin', 'priceLimit', 'peakShaver'] as const;
+const KEYS = [
+  'stressAware',
+  'priceOnly',
+  'clean',
+  'naive',
+  'awareV1',
+  'awareReplan',
+  'awareReplanMargin',
+  'priceLimit',
+  'peakShaver',
+] as const;
 interface DayRow {
-  date: string; margin: number; overB: number; overA: Record<string, number>; net: Record<string, number>;
-  relieved: Record<string, number>; peakRed: Record<string, number>; co2?: Record<string, number>;
-  congestedHours: number; checksOk: boolean; guardHours: number; maxMissMW: number; jamHours: number[];
+  date: string;
+  margin: number;
+  overB: number;
+  overA: Record<string, number>;
+  net: Record<string, number>;
+  relieved: Record<string, number>;
+  peakRed: Record<string, number>;
+  co2?: Record<string, number>;
+  congestedHours: number;
+  checksOk: boolean;
+  guardHours: number;
+  maxMissMW: number;
+  jamHours: number[];
 }
 const rows: DayRow[] = [];
 // Robustness checks for the judges' questions: does the result depend on our own forecast, on the
@@ -42,7 +76,10 @@ const robust = {
   premium: Object.fromEntries(PREMIUMS.map(x => [x, [] as Sc[]])) as Record<number, Sc[]>,
   weights: Object.fromEntries(WEIGHTS.map(x => [x.name, [] as Sc[]])) as Record<string, Sc[]>,
 };
-let mapeOursSum = 0, mapeEiaSum = 0, mapeN = 0, mapeEiaN = 0;
+let mapeOursSum = 0,
+  mapeEiaSum = 0,
+  mapeN = 0,
+  mapeEiaN = 0;
 for (const d of backtestDates) {
   const day = days.get(d);
   if (!day) continue;
@@ -54,7 +91,12 @@ for (const d of backtestDates) {
   const plan = plans(day, co2Hat, 0);
   // What actually runs: price only, fixed and the first version follow their plan blindly.
   // Stays out of traffic and Stays clean replan every hour with the load measured that hour.
-  const prev = misses.get([...misses.keys()].filter(x => x < d).sort().at(-1) ?? '');
+  const prev = misses.get(
+    [...misses.keys()]
+      .filter(x => x < d)
+      .sort()
+      .at(-1) ?? '',
+  );
   const prevMiss = prev ? prev[prev.length - 1] : 0;
   const base = { forecastLoad: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty };
   // What actually runs, graded on the demand that showed up:
@@ -68,7 +110,13 @@ for (const d of backtestDates) {
   const run: Record<string, Schedule> = {
     stressAware: mainRun,
     priceOnly: plan.priceOnly,
-    clean: runReplan(p.asset, { ...base, margin: 0, signal: co2Hat, penalty: p.cleanOverloadPenalty }, act, true, prevMiss),
+    clean: runReplan(
+      p.asset,
+      { ...base, margin: 0, signal: co2Hat, penalty: p.cleanOverloadPenalty },
+      act,
+      true,
+      prevMiss,
+    ),
     naive: plan.naive,
     none: plan.none,
     awareV1: planAhead(p.asset, { ...base, margin: 0, signal: awareSignal(day) }),
@@ -85,7 +133,13 @@ for (const d of backtestDates) {
   if (eiaF.every(x => x !== undefined && x > 0)) {
     // Same plan, but built on EIA's own day ahead demand forecast instead of ours (no observed weather).
     const k = day.loadMW[0] / day.demandHat[0];
-    const b2 = { forecastLoad: (eiaF as number[]).map(x => x * k), cap: day.capMW, penalty: p.overloadPenalty, margin: 0, signal: awareSignal(day) };
+    const b2 = {
+      forecastLoad: (eiaF as number[]).map(x => x * k),
+      cap: day.capMW,
+      penalty: p.overloadPenalty,
+      margin: 0,
+      signal: awareSignal(day),
+    };
     robust.eia.v1.push(scoreRun(planAhead(p.asset, b2)));
     robust.eia.replan.push(scoreRun(runReplan(p.asset, b2, act, false, 0)));
     robust.eia.guard.push(scoreRun(runReplan(p.asset, b2, act, true, 0)));
@@ -95,23 +149,44 @@ for (const d of backtestDates) {
     robust.premium[prem].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
   }
   for (const { name, w } of WEIGHTS) {
-    const alt = day.lmp.map((_, i) => w.demand * day.comps.demand[i] + w.netLoad * day.comps.netLoad[i] + w.ramp * day.comps.ramp[i] + w.price * day.comps.price[i]);
+    const alt = day.lmp.map(
+      (_, i) =>
+        w.demand * day.comps.demand[i] +
+        w.netLoad * day.comps.netLoad[i] +
+        w.ramp * day.comps.ramp[i] +
+        w.price * day.comps.price[i],
+    );
     const sig = day.lmp.map((x, i) => x + p.stressPremium * alt[i]);
     robust.weights[name].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
   }
-  let dm = 0, dn = 0, em = 0, en = 0;
+  let dm = 0,
+    dn = 0,
+    em = 0,
+    en = 0;
   day.actual!.demand.forEach((a, i) => {
-    dm += Math.abs(day.demandHat[i] - a!) / a!; dn++;
+    dm += Math.abs(day.demandHat[i] - a!) / a!;
+    dn++;
     const f = day.actual!.eiaFcst[i];
-    if (f !== undefined) { em += Math.abs(f - a!) / a!; en++; }
+    if (f !== undefined) {
+      em += Math.abs(f - a!) / a!;
+      en++;
+    }
   });
-  mapeOursSum += dm; mapeN += dn; mapeEiaSum += em; mapeEiaN += en;
-  const actInt = day.t.map(t => { const h = byT.get(t); return h ? intensity(h) : undefined; });
+  mapeOursSum += dm;
+  mapeN += dn;
+  mapeEiaSum += em;
+  mapeEiaN += en;
+  const actInt = day.t.map(t => {
+    const h = byT.get(t);
+    return h ? intensity(h) : undefined;
+  });
   const co2 = actInt.every(x => x !== undefined)
     ? Object.fromEntries(KEYS.map(k => [k, co2DeltaT(actInt as number[], run[k].charge, run[k].discharge)]))
     : undefined;
   rows.push({
-    date: d, margin, co2,
+    date: d,
+    margin,
+    co2,
     overB: sc.none.overloadBeforeMWh,
     overA: Object.fromEntries(KEYS.map(k => [k, sc[k].overloadAfterMWh])),
     net: Object.fromEntries(KEYS.map(k => [k, sc[k].netValue])),
@@ -126,7 +201,8 @@ for (const d of backtestDates) {
 }
 
 const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / (xs.length || 1);
-const per = (f: (r: DayRow, k: string) => number, rs = rows) => Object.fromEntries(KEYS.map(k => [k, mean(rs.map(r => f(r, k)))]));
+const per = (f: (r: DayRow, k: string) => number, rs = rows) =>
+  Object.fromEntries(KEYS.map(k => [k, mean(rs.map(r => f(r, k)))]));
 const OVER_TOL = 0.1; // MWh per day; smaller amounts are rounding in the 0.25 MWh planning grid
 const summary = {
   days: rows.length,
@@ -147,10 +223,19 @@ const summary = {
   meanCongestedHoursPerDay: mean(rows.map(r => r.congestedHours)),
   allConstraintChecksPass: rows.every(r => r.checksOk),
   carbonDays: rows.filter(r => r.co2).length,
-  meanCo2TPerDay: per((r, k) => r.co2![k], rows.filter(r => r.co2)),
+  meanCo2TPerDay: per(
+    (r, k) => r.co2![k],
+    rows.filter(r => r.co2),
+  ),
   demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
   robust: (() => {
-    const agg = (xs: Sc[]) => ({ days: xs.length, daysOver: xs.filter(x => x.overloadAfterMWh > OVER_TOL).length, totalOverMWh: xs.reduce((a, x) => a + x.overloadAfterMWh, 0), jamReliefMWh: mean(xs.map(x => x.congestedEnergyRelievedMWh)), valuePerDay: mean(xs.map(x => x.netValue)) });
+    const agg = (xs: Sc[]) => ({
+      days: xs.length,
+      daysOver: xs.filter(x => x.overloadAfterMWh > OVER_TOL).length,
+      totalOverMWh: xs.reduce((a, x) => a + x.overloadAfterMWh, 0),
+      jamReliefMWh: mean(xs.map(x => x.congestedEnergyRelievedMWh)),
+      valuePerDay: mean(xs.map(x => x.netValue)),
+    });
     return {
       eiaForecast: { v1: agg(robust.eia.v1), replan: agg(robust.eia.replan), guard: agg(robust.eia.guard) },
       premium: PREMIUMS.map(x => ({ premium: x, ...agg(robust.premium[x]) })),
@@ -166,26 +251,50 @@ function pack(day: DayInputs, capFactor = 1) {
   const d = capFactor === 1 ? day : { ...day, capMW: day.capMW * capFactor };
   const co2Hat = co2HatFor(d);
   const st = plans(d, co2Hat, 0);
-  const sc = Object.fromEntries(Object.entries(st).map(([k, s]) => [k, { ...score(d, s, p), co2T: co2DeltaT(co2Hat, s.charge, s.discharge) }]));
-  const la = loadAfter(d, st.stressAware), lp = loadAfter(d, st.priceOnly), lc = loadAfter(d, st.clean);
-  const slot = (s: Schedule, l: number[], i: number) => ({ charge: s.charge[i], discharge: s.discharge[i], soc: s.soc[i], loadAfter: l[i] });
+  const sc = Object.fromEntries(
+    Object.entries(st).map(([k, s]) => [k, { ...score(d, s, p), co2T: co2DeltaT(co2Hat, s.charge, s.discharge) }]),
+  );
+  const la = loadAfter(d, st.stressAware),
+    lp = loadAfter(d, st.priceOnly),
+    lc = loadAfter(d, st.clean);
+  const slot = (s: Schedule, l: number[], i: number) => ({
+    charge: s.charge[i],
+    discharge: s.discharge[i],
+    soc: s.soc[i],
+    loadAfter: l[i],
+  });
   return {
     capMW: d.capMW,
     scorecards: sc,
     hours: d.hourLocal.map((hr, i) => ({
-      hourLocal: hr, t: d.t[i], lmp: d.lmp[i], mcc: d.mcc[i], mce: d.mce[i],
-      demandHat: d.demandHat[i], solarHat: d.solarHat[i], windHat: d.windHat[i], netLoadHat: d.netLoadHat[i],
-      stress: d.stress[i], co2: co2Hat[i],
+      hourLocal: hr,
+      t: d.t[i],
+      lmp: d.lmp[i],
+      mcc: d.mcc[i],
+      mce: d.mce[i],
+      demandHat: d.demandHat[i],
+      solarHat: d.solarHat[i],
+      windHat: d.windHat[i],
+      netLoadHat: d.netLoadHat[i],
+      stress: d.stress[i],
+      co2: co2Hat[i],
       comps: { demand: d.comps.demand[i], netLoad: d.comps.netLoad[i], ramp: d.comps.ramp[i], price: d.comps.price[i] },
       congested: d.stress[i] >= p.congestedThreshold,
       loadBefore: d.loadMW[i],
-      aware: slot(st.stressAware, la, i), priceOnly: slot(st.priceOnly, lp, i), clean: slot(st.clean, lc, i),
+      aware: slot(st.stressAware, la, i),
+      priceOnly: slot(st.priceOnly, lp, i),
+      clean: slot(st.clean, lc, i),
     })),
   };
 }
 
 const normal = pack(tDay);
-const derate = { description: 'An equipment derate cuts substation capacity 10 percent, for example a cooling failure or a hot day rating', capacityFactor: 0.9, ...pack(tDay, 0.9) };
+const derate = {
+  description:
+    'An equipment derate cuts substation capacity 10 percent, for example a cooling failure or a hot day rating',
+  capacityFactor: 0.9,
+  ...pack(tDay, 0.9),
+};
 const solar = fitSolar(all.filter(h => h.t < tDay.t[0]));
 const report = {
   generatedAt: new Date().toISOString(),
@@ -198,7 +307,9 @@ const report = {
   scenarios: { normal, derate },
   backtest: { summary, days: rows },
   capacity: JSON.parse(fs.readFileSync('public/data/capacity.json', 'utf8')),
-  summer: fs.existsSync('public/data/summer.json') ? JSON.parse(fs.readFileSync('public/data/summer.json', 'utf8')) : null,
+  summer: fs.existsSync('public/data/summer.json')
+    ? JSON.parse(fs.readFileSync('public/data/summer.json', 'utf8'))
+    : null,
 };
 fs.mkdirSync('public/data', { recursive: true });
 fs.writeFileSync('public/data/report.json', JSON.stringify(report));

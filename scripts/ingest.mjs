@@ -13,7 +13,7 @@ if (!KEY) throw new Error('EIA_API_KEY missing in .env.local');
 mkdirSync('data/raw', { recursive: true });
 
 const DAYS = 60;
-const start = new Date(Date.now() - DAYS * 864e5).toISOString().slice(0, 10) + 'T00';
+const start = `${new Date(Date.now() - DAYS * 864e5).toISOString().slice(0, 10)}T00`;
 
 async function eia(route, facets) {
   const rows = [];
@@ -50,9 +50,12 @@ writeFileSync('data/raw/eia_fuel.json', JSON.stringify(fuel));
 console.log(`EIA fuel mix: ${fuel.length} rows, fuels: ${[...new Set(fuel.map(r => r.fueltype))].join(',')}`);
 
 const w = new URLSearchParams({
-  latitude: '40.76', longitude: '-111.89', timezone: 'GMT',
+  latitude: '40.76',
+  longitude: '-111.89',
+  timezone: 'GMT',
   hourly: 'temperature_2m,shortwave_radiation,cloud_cover',
-  past_days: String(DAYS), forecast_days: '3',
+  past_days: String(DAYS),
+  forecast_days: '3',
 });
 const wr = await fetch(`https://api.open-meteo.com/v1/forecast?${w}`);
 if (!wr.ok) throw new Error(`Open-Meteo HTTP ${wr.status}`);

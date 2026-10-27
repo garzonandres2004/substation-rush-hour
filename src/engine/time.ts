@@ -9,7 +9,7 @@ export function localHour(t: string): number {
   return parseInt(hourFmt.format(new Date(t)), 10);
 }
 export function dayOfWeek(date: string): number {
-  return new Date(date + 'T12:00:00Z').getUTCDay();
+  return new Date(`${date}T12:00:00Z`).getUTCDay();
 }
 export function isWeekend(date: string): boolean {
   const d = dayOfWeek(date);

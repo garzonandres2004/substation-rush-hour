@@ -1,14 +1,27 @@
 import type { Hour } from './types.js';
 import { localDate, localHour, isWeekend } from './time.js';
 
-export interface SolarModel { a: number; b: number; predict: (rad: number, cloud: number) => number }
+export interface SolarModel {
+  a: number;
+  b: number;
+  predict: (rad: number, cloud: number) => number;
+}
 
 export function fitSolar(hist: Hour[]): SolarModel {
-  let s11 = 0, s12 = 0, s22 = 0, y1 = 0, y2 = 0;
+  let s11 = 0,
+    s12 = 0,
+    s22 = 0,
+    y1 = 0,
+    y2 = 0;
   for (const h of hist) {
     if (h.solar === undefined || h.rad === undefined || h.cloud === undefined) continue;
-    const x1 = h.rad, x2 = (h.rad * h.cloud) / 100;
-    s11 += x1 * x1; s12 += x1 * x2; s22 += x2 * x2; y1 += x1 * h.solar; y2 += x2 * h.solar;
+    const x1 = h.rad,
+      x2 = (h.rad * h.cloud) / 100;
+    s11 += x1 * x1;
+    s12 += x1 * x2;
+    s22 += x2 * x2;
+    y1 += x1 * h.solar;
+    y2 += x2 * h.solar;
   }
   const det = s11 * s22 - s12 * s12;
   const a = det === 0 ? 0 : (y1 * s22 - y2 * s12) / det;
@@ -30,7 +43,10 @@ export function windHat(hist: Hour[], hourLoc: number, days = 7): number {
   return avg(dates.map(d => byDate.get(d)!));
 }
 
-export interface DemandModel { beta: number; predict: (date: string, hourLoc: number, temp: number) => number }
+export interface DemandModel {
+  beta: number;
+  predict: (date: string, hourLoc: number, temp: number) => number;
+}
 
 export function fitDemand(hist: Hour[], lookbackDays = 21): DemandModel {
   const rows = hist.filter(h => h.demand !== undefined && h.temp !== undefined);
@@ -40,11 +56,13 @@ export function fitDemand(hist: Hour[], lookbackDays = 21): DemandModel {
   const cell = (weekend: boolean, hr: number) =>
     recent.filter(h => isWeekend(localDate(h.t)) === weekend && localHour(h.t) === hr);
   const base = new Map<string, { d: number; t: number }>();
-  for (const wk of [false, true]) for (let hr = 0; hr < 24; hr++) {
-    const c = cell(wk, hr);
-    base.set(`${wk}-${hr}`, { d: avg(c.map(h => h.demand!)), t: avg(c.map(h => h.temp!)) });
-  }
-  let sxy = 0, sxx = 0;
+  for (const wk of [false, true])
+    for (let hr = 0; hr < 24; hr++) {
+      const c = cell(wk, hr);
+      base.set(`${wk}-${hr}`, { d: avg(c.map(h => h.demand!)), t: avg(c.map(h => h.temp!)) });
+    }
+  let sxy = 0,
+    sxx = 0;
   for (const h of recent) {
     const b = base.get(`${isWeekend(localDate(h.t))}-${localHour(h.t)}`)!;
     const dx = h.temp! - b.t;

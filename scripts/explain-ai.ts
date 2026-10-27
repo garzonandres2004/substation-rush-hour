@@ -11,12 +11,20 @@ import { allSteps, checkText, factsFor } from './explain-check.js';
 const KEY = process.env.GEMINI_API_KEY;
 const OUT = 'scripts/explanations.ai.json';
 const API = 'https://generativelanguage.googleapis.com/v1beta';
-if (!KEY && !process.env.GEMINI_MOCK_FILE) { console.log('explain-ai: no GEMINI_API_KEY, skipping'); fs.writeFileSync(OUT, '{}\n'); process.exit(0); }
+if (!KEY && !process.env.GEMINI_MOCK_FILE) {
+  console.log('explain-ai: no GEMINI_API_KEY, skipping');
+  fs.writeFileSync(OUT, '{}\n');
+  process.exit(0);
+}
 
 const hand: Record<string, string> = JSON.parse(fs.readFileSync('scripts/explanations.source.json', 'utf8'));
 const steps = allSteps(report);
 const todo = steps.filter(f => !(hand[f.key] && checkText(f, report, hand[f.key]).length === 0));
-if (!todo.length) { console.log('explain-ai: hand written texts cover every step'); fs.writeFileSync(OUT, '{}\n'); process.exit(0); }
+if (!todo.length) {
+  console.log('explain-ai: hand written texts cover every step');
+  fs.writeFileSync(OUT, '{}\n');
+  process.exit(0);
+}
 
 async function pickModel(): Promise<string> {
   if (process.env.GEMINI_MODEL) return process.env.GEMINI_MODEL;
@@ -39,7 +47,10 @@ async function ask(model: string, prompt: string): Promise<Record<string, string
   const res = await fetch(`${API}/models/${model}:generateContent`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-goog-api-key': KEY! },
-    body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', temperature: 0.3 } }),
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.3 },
+    }),
   });
   if (!res.ok) throw new Error(`generateContent HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const text = (await res.json()).candidates?.[0]?.content?.parts?.map((p: any) => p.text ?? '').join('') ?? '';
@@ -60,21 +71,28 @@ try {
   console.log(`explain-ai: ${todo.length} steps, model ${model}`);
   const out: Record<string, string> = {};
   const first = await ask(model, instructions(todo.map(f => factsFor(f, report))));
-  const retry: { f: typeof todo[number]; problems: string[] }[] = [];
+  const retry: { f: (typeof todo)[number]; problems: string[] }[] = [];
   for (const f of todo) {
     const t = typeof first[f.key] === 'string' ? first[f.key].trim() : '';
     const p = t ? checkText(f, report, t) : ['no text returned'];
-    if (p.length) retry.push({ f, problems: p }); else out[f.key] = t;
+    if (p.length) retry.push({ f, problems: p });
+    else out[f.key] = t;
   }
   if (retry.length) {
     const feedback = `Your previous answers for these steps failed our checks. Fix them:\n${retry.map(r => `${r.f.key}: ${r.problems.join('; ')}`).join('\n')}\n`;
-    const second = await ask(model, instructions(retry.map(r => factsFor(r.f, report)), feedback));
+    const second = await ask(
+      model,
+      instructions(
+        retry.map(r => factsFor(r.f, report)),
+        feedback,
+      ),
+    );
     for (const r of retry) {
       const t = typeof second[r.f.key] === 'string' ? second[r.f.key].trim() : '';
       if (t && checkText(r.f, report, t).length === 0) out[r.f.key] = t;
     }
   }
-  fs.writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
+  fs.writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`);
   console.log(`explain-ai: ${Object.keys(out).length} of ${todo.length} passed the checks`);
 } catch (e) {
   // Never break the daily refresh over an explanation: the page shows plain numbers instead.

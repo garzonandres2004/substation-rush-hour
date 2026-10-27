@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 mkdirSync('data/raw', { recursive: true });
 const NODES = ['TH_PACE_GEN-APND', 'ELAP_PACE-APND'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const fmt = d => d.toISOString().slice(0, 10).replace(/-/g, '') + 'T07:00-0000';
+const fmt = d => `${d.toISOString().slice(0, 10).replace(/-/g, '')}T07:00-0000`;
 const day = n => new Date(Date.now() + n * 864e5);
 // windows of 10 days from 40 days back to 2 days ahead
 const windows = [];
@@ -18,7 +18,12 @@ function parseCsv(text) {
   const ix = k => head.indexOf(k);
   return lines.slice(1).map(l => {
     const c = l.split(',');
-    return { start: c[ix('INTERVALSTARTTIME_GMT')], node: c[ix('NODE')], type: c[ix('LMP_TYPE')], value: Number(c[ix('MW')]) };
+    return {
+      start: c[ix('INTERVALSTARTTIME_GMT')],
+      node: c[ix('NODE')],
+      type: c[ix('LMP_TYPE')],
+      value: Number(c[ix('MW')]),
+    };
   });
 }
 
@@ -42,6 +47,16 @@ for (const node of NODES) {
   }
   writeFileSync(`data/raw/lmp_${node}.json`, JSON.stringify(all));
   const lmp = all.filter(r => r.type === 'LMP');
-  console.log(node, 'total', all.length, 'rows, LMP hours:', lmp.length, 'first', lmp[0]?.start, 'last', lmp.at(-1)?.start);
+  console.log(
+    node,
+    'total',
+    all.length,
+    'rows, LMP hours:',
+    lmp.length,
+    'first',
+    lmp[0]?.start,
+    'last',
+    lmp.at(-1)?.start,
+  );
 }
 console.log('Done.');

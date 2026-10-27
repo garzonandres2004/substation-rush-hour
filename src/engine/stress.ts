@@ -29,10 +29,14 @@ export function buildDay(all: Hour[], date: string, p: Params, tempShiftC = 0): 
   const solar = fitSolar(hist);
   const dm = fitDemand(hist);
 
-  const lmp: number[] = [], mcc: number[] = [], mce: number[] = [];
+  const lmp: number[] = [],
+    mcc: number[] = [],
+    mce: number[] = [];
   for (const h of day) {
     if (h.lmp === undefined || h.temp === undefined || h.rad === undefined) return null;
-    lmp.push(h.lmp); mcc.push(h.mcc ?? 0); mce.push(h.mce ?? 0);
+    lmp.push(h.lmp);
+    mcc.push(h.mcc ?? 0);
+    mce.push(h.mce ?? 0);
   }
   const hourLocal = day.map(h => localHour(h.t));
   const demandHat = day.map((h, i) => dm.predict(date, hourLocal[i], h.temp! + tempShiftC));
@@ -42,14 +46,20 @@ export function buildDay(all: Hour[], date: string, p: Params, tempShiftC = 0): 
 
   const histD = histRecent.filter(h => h.demand !== undefined);
   const histNet: number[] = [];
-  const histNetSeries = histRecent.filter(h => h.demand !== undefined && h.solar !== undefined && h.wind !== undefined)
+  const histNetSeries = histRecent
+    .filter(h => h.demand !== undefined && h.solar !== undefined && h.wind !== undefined)
     .map(h => h.demand! - h.solar! - h.wind!);
   histNet.push(...histNetSeries);
   const histRamp = histNetSeries.map((_, i) => ramp(histNetSeries, i));
   const histLmp = histRecent.filter(h => h.lmp !== undefined).map(h => h.lmp!);
 
   const comps = {
-    demand: demandHat.map(x => pct(x, histD.map(h => h.demand!))),
+    demand: demandHat.map(x =>
+      pct(
+        x,
+        histD.map(h => h.demand!),
+      ),
+    ),
     netLoad: netLoadHat.map(x => pct(x, histNet)),
     ramp: netLoadHat.map((_, i) => pct(ramp(netLoadHat, i), histRamp)),
     price: lmp.map(x => pct(x, histLmp)),
@@ -60,12 +70,26 @@ export function buildDay(all: Hour[], date: string, p: Params, tempShiftC = 0): 
   const histLoads = histD.map(h => h.demand! * scale).sort((a, b) => a - b);
   const capMW = histLoads[Math.min(histLoads.length - 1, Math.floor(p.capacityPercentile * histLoads.length))];
   const w = p.stressWeights;
-  const stress = lmp.map((_, i) =>
-    w.demand * comps.demand[i] + w.netLoad * comps.netLoad[i] + w.ramp * comps.ramp[i] + w.price * comps.price[i]);
+  const stress = lmp.map(
+    (_, i) =>
+      w.demand * comps.demand[i] + w.netLoad * comps.netLoad[i] + w.ramp * comps.ramp[i] + w.price * comps.price[i],
+  );
 
   return {
-    date, hourLocal, t: day.map(h => h.t), lmp, mcc, mce, demandHat, solarHat, windHat: wHat, netLoadHat,
-    loadMW, capMW, stress, comps,
+    date,
+    hourLocal,
+    t: day.map(h => h.t),
+    lmp,
+    mcc,
+    mce,
+    demandHat,
+    solarHat,
+    windHat: wHat,
+    netLoadHat,
+    loadMW,
+    capMW,
+    stress,
+    comps,
     actual: { demand: day.map(h => h.demand), eiaFcst: day.map(h => h.demandEiaFcst) },
   };
 }

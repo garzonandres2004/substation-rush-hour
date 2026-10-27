@@ -19,7 +19,10 @@ export const firstBacktest = fullDates[8];
 export const backtestDates = fullDates.filter(d => d >= firstBacktest && d < tomorrow);
 
 export const days = new Map<string, DayInputs>();
-for (const d of fullDates) { const day = buildDay(all, d, p); if (day) days.set(d, day); }
+for (const d of fullDates) {
+  const day = buildDay(all, d, p);
+  if (day) days.set(d, day);
+}
 
 // Substation load uses the same scale for forecast and actual.
 export const actualLoad = (day: DayInputs) => {
@@ -30,14 +33,24 @@ export const actualLoad = (day: DayInputs) => {
 export const misses = new Map<string, number[]>();
 for (const [d, day] of days) {
   const act = actualLoad(day);
-  if (act.every(x => x !== undefined)) misses.set(d, act.map((x, i) => x! - day.loadMW[i]));
+  if (act.every(x => x !== undefined))
+    misses.set(
+      d,
+      act.map((x, i) => x! - day.loadMW[i]),
+    );
 }
 export const MARGIN_DAYS = 14;
-export const marginFor = (d: string) => marginFromMisses([...misses.keys()].filter(x => x < d).sort().slice(-MARGIN_DAYS).flatMap(x => misses.get(x)!));
+export const marginFor = (d: string) =>
+  marginFromMisses(
+    [...misses.keys()]
+      .filter(x => x < d)
+      .sort()
+      .slice(-MARGIN_DAYS)
+      .flatMap(x => misses.get(x)!),
+  );
 
 export const co2HatFor = (day: DayInputs) => {
   const hist = all.filter(h => h.t < day.t[0]);
   return day.hourLocal.map(hr => intensityHat(hist, hr));
 };
 export const awareSignal = (day: DayInputs) => day.lmp.map((x, i) => x + p.stressPremium * day.stress[i]);
-
