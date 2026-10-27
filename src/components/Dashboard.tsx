@@ -4,8 +4,19 @@ import { report, hourLabel, rangeLabel, dateLabel, stressColor, stressWord } fro
 import { directions, jamRanges, type Strategy } from '../lib/directions';
 import { LoadChart, BatteryChart } from './Charts';
 import { explanationFor, stepKey, explainedBy } from '../lib/explain';
+import { MinuteChart } from './MinuteChart';
+import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
+interface StationData {
+  days: number; dataCenterMW: number; mainSpinMW: number; spinMinutes: number; maxDataCenterRampMWPerMin: number; batteryBackupMinutes: number;
+  totals: Record<'hourly' | 'battery' | 'station', { overloadMinutes: number; batteryChanges: number }>;
+  perDay: Record<'hourly' | 'battery' | 'station', { batteryChanges: number; flywheelCycles: number }>;
+  sweep: { spinMW: number; overloadMinutesFlywheelAlone: number; batteryChangesPerDay: number; flywheelCyclesPerDay: number }[];
+  example: { date: string; startHour: number; capMW: number; hourly: number[]; station: number[] };
+}
+const station = stationRaw as unknown as StationData;
+const int = (x: number) => Math.round(x).toLocaleString('en-US');
 const SOURCES: [string, string][] = [
   ['Torus Nova Pulse (4 to 8 hour battery) and Nova Spin (flywheel), ESS News', 'https://www.ess-news.com/2024/11/26/torus-unveils-flywheel-battery-energy-storage-ai-driven-cybersecurity-solutions'],
   ['Rocky Mountain Power and Torus partnership, DCD', 'https://datacenterdynamics.com/en/news/rocky-mountain-power-and-torus-partner-on-energy-storage-integration-in-utah'],
@@ -15,6 +26,7 @@ const SOURCES: [string, string][] = [
   ['Demand, solar and wind, EIA Open Data', 'https://www.eia.gov/opendata/'],
   ['Weather, Open-Meteo', 'https://open-meteo.com'],
   ['CO2 per kWh by fuel, EIA', 'https://www.eia.gov/tools/faqs/faq.php?id=74'],
+  ['Torus Spin flywheel: 10C, 6 minute discharge, 25,000 cycles (company claims)', 'https://torus.co/torus-flywheel'],
 ];
 const f1 = (x: number) => x.toFixed(1);
 const money = (x: number) => `${x < 0 ? '-' : ''}$${Math.abs(Math.round(x)).toLocaleString('en-US')}`;
@@ -206,6 +218,29 @@ export default function Dashboard() {
         </ul>
       </section>
 
+      <section className="inside" aria-labelledby="in-h">
+        <h2 id="in-h">The hourly plan hides {int(station.totals.hourly.overloadMinutes)} minutes over the limit. A {station.mainSpinMW} MW flywheel catches them.</h2>
+        <p className="sub">Add the {station.dataCenterMW} MW data center from above, but as an AI load really behaves: compute bursts, sync dips and checkpoint drops, swinging up to {station.maxDataCenterRampMWPerMin.toFixed(1)} MW in a single minute. Each hour still averages {station.dataCenterMW} MW, so the hourly plan sees no problem. We replayed all {station.days} days minute by minute. The data center load is simulated. The substation load is real hourly data.</p>
+        <h3>Two hours on {shortDate(station.example.date)}, minute by minute</h3>
+        <p className="sub">Grey: hourly plan only, red where it crosses the limit. Blue: Torus style Station, flywheel plus battery. Dashed red: the {station.example.capMW.toFixed(1)} MW limit. Load in MW.</p>
+        <div className="scroll"><MinuteChart start={station.example.startHour} cap={station.example.capMW} hourly={station.example.hourly} station={station.example.station} /></div>
+        <div className="tablewrap">
+          <table>
+            <thead><tr><th>Who covers the fast swings</th><th>Minutes over the limit, {station.days} days</th><th>Battery power changes per day</th><th>Flywheel full cycles per day</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Nobody: hourly plan only</th><td>{int(station.totals.hourly.overloadMinutes)}</td><td>{int(station.perDay.hourly.batteryChanges)}</td><td>none</td></tr>
+              <tr><th scope="row">The battery chases every spike</th><td>{int(station.totals.battery.overloadMinutes)}</td><td>{int(station.perDay.battery.batteryChanges)}</td><td>none</td></tr>
+              <tr className="best"><th scope="row">Station: {station.mainSpinMW} MW, {station.spinMinutes} minute flywheel plus the battery</th><td>{int(station.totals.station.overloadMinutes)}</td><td>{int(station.perDay.station.batteryChanges)}</td><td>{station.perDay.station.flywheelCycles.toFixed(1)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul className="notes">
+          <li>The battery alone can hold the limit, but it has to change power about {int(station.perDay.battery.batteryChanges)} times a day instead of {int(station.perDay.hourly.batteryChanges)}. With the flywheel taking the spikes, the battery stays close to its hourly plan and steps in for only {int(station.batteryBackupMinutes)} minutes in {station.days} days, when the flywheel runs empty.</li>
+          <li>Sizing the flywheel on its own: {station.sweep.filter(r => [2, 3, 4].includes(r.spinMW)).map(r => `${r.spinMW} MW still misses ${int(r.overloadMinutesFlywheelAlone)} minutes`).join(', ')}. Six minutes of storage cannot outlast a long compute burst. That is why the Station pairs a flywheel for power with a battery for energy.</li>
+          <li>At {station.perDay.station.flywheelCycles.toFixed(1)} full cycles a day, the flywheel would use its 25,000 cycle life in about {(25000 / station.perDay.station.flywheelCycles / 365).toFixed(0)} years (Torus claim). We do not measure battery wear. Torus says the flywheel extends battery life; this shows where the fast work goes, not how much life it saves.</li>
+        </ul>
+      </section>
+
       <section className="evidence" aria-labelledby="ev-h">
         <h2 id="ev-h">Tested on {bt.days} past days, against what actually happened</h2>
         <p className="sub">{shortDate(bt.firstDay)} to {shortDate(bt.lastDay)}. Each day is planned the night before from the forecast, then run hour by hour against the demand that really showed up. Prices are real CAISO day ahead prices.</p>
@@ -256,7 +291,7 @@ export default function Dashboard() {
               <li>The traffic index, a blend of demand, net load, evening ramp and price.</li>
               <li>Grid CO2 per MWh by hour, from the fuel mix and EIA emission rates.</li>
               <li>The dispatch plan, solved exactly with dynamic programming, then replanned every hour with the load measured that hour. No AI makes the decisions.</li>
-              <li>Swings inside an hour are not modeled. That is the flywheel's job in a real Torus Station.</li>
+              <li>Swings inside an hour, in the flywheel section only, with a simulated data center load.</li>
             </ul>
           </div>
           <div>

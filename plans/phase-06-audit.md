@@ -67,4 +67,13 @@ Open: persona reviews, mobile, redeploy.
 12. Planner speedup (only reachable states), same results. 9 tests pass. Page checked by screenshot at 1280 and 390 px, no horizontal scroll.
 
 Pitch sentence: "A Torus style Station lets this Utah substation take a 6.75 MW data center instead of 1 MW, with zero overloads across 30 real days, proven on what actually happened, not on our forecast."
-Open stretch: Station model with flywheel at 1 minute resolution, or daily auto refresh.
+
+## Mon 10 to 11 PM: Station model (flywheel plus battery)
+
+13. New section "Inside the hour". The 6.75 MW data center from capacity unlocked, replayed at 1 minute steps as a SIMULATED AI load (each hour's mean preserved, so it matches the hourly model). Base load is real hourly actuals held flat inside the hour. 30 days.
+    Hourly plan only: 4,097 minutes over the limit (55 MWh). Battery chases spikes: 0 minutes, but 88 power changes a day vs 11. Station with 3 MW, 6 minute flywheel (Torus Spin claims, verified on torus.co/torus-flywheel: 10C, 6 min, 25,000 cycles) plus battery: 0 minutes, 13 changes a day, battery backup only 55 minutes in 30 days, flywheel 6.4 cycles a day (about 11 years at 25,000 cycles, Torus claim).
+    Flywheel alone: 2 MW misses 608 minutes, 3 MW 55, 4 MW 24. Six minutes cannot outlast a long compute burst, so flywheel for power plus battery for energy.
+    Honest limits: data center shape is simulated; battery wear not measured; flywheel standby losses not modeled; 3 MW is a modeled size (Torus publishes no per unit rating).
+14. Must have 4 (storage model with flywheel layer) now about 85%. 10 tests pass. Screenshots checked at 1280 and 390 px.
+
+Run order after new data: npm run capacity, npm run station, npm run engine, npm run explain.

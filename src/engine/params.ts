@@ -23,6 +23,7 @@ export const PARAMS: Params = {
 export const ASSUMPTIONS = [
   'Storage asset is a modeled 10 MW / 40 MWh battery (4 hour duration, inside the 4 to 8 hour range Torus gives for its Nova Pulse battery). It is not Torus hardware data.',
   'Round trip efficiency 88 percent, usable state of charge 10 to 95 percent, start and end of day at 50 percent. Assumed. NREL ATB 2024 uses 85 percent and EIA measured 82 percent for the US fleet in 2019, so 88 percent is on the optimistic side. To be replaced by Torus specs.',
+  'Inside the hour section: the data center load is SIMULATED at 1 minute steps (compute bursts, sync dips, checkpoint drops), averaging the capacity unlocked level each hour. Base substation load is held at its real hourly value. The flywheel follows Torus Spin claims (6 minute full discharge, 25,000 cycles) with an assumed 90 percent round trip efficiency; standby losses are not modeled. Power and energy per unit are not published, so 3 MW is a modeled size.',
   'The flywheel layer is not modeled in the hourly dispatch. Torus describes its Nova Spin flywheel as responding in under 250 milliseconds with twice the lifespan of traditional batteries. Sub hour behavior is out of scope this week.',
   'Cycling cost of 3 dollars per MWh throughput is an assumption standing in for battery wear.',
   'The substation is modeled as 100 MW at its peak, with a load shape equal to the PacifiCorp East system demand shape. Real feeder data is not public.',

@@ -108,3 +108,16 @@ test('replanning: respects every battery check, and matches the day ahead plan w
   const sc = score(fakeDay(lmp, actual, 72), s, PARAMS);
   assert.ok(Object.values(sc.checks).every(Boolean), JSON.stringify(sc.checks));
 });
+
+test('station: simulated data center keeps each hourly average, flywheel never exceeds its power', async () => {
+  const { dataCenterMinutes, runMinutes } = await import('./station.js');
+  const dc = dataCenterMinutes(6.75, 42);
+  for (let h = 0; h < 24; h++) assert.ok(Math.abs(dc.slice(h * 60, h * 60 + 60).reduce((x, y) => x + y, 0) / 60 - 6.75) < 1e-9);
+  const base = hours.map(() => 60);
+  const sp = hours.map(() => 0);
+  const spin = { powerMW: 3, energyMWh: 0.3, roundTripEff: 0.9 };
+  const r = runMinutes(base, dc, sp, 66.5, 10, 'station', spin, false);
+  const plain = runMinutes(base, dc, sp, 66.5, 10, 'hourly');
+  assert.ok(r.grid.every((g, m) => Math.abs(g - plain.grid[m]) <= 3 + 1e-9));
+  assert.ok(r.overloadMinutes <= plain.overloadMinutes);
+});
