@@ -2,9 +2,11 @@ import type { Asset, Schedule } from './types.js';
 
 export interface Limit {
   load: number[];
-  cap: number;
+  // One limit for every hour, or one per hour (a temperature based rating).
+  cap: number | number[];
   penalty: number;
 }
+export const capAt = (cap: number | number[], t: number) => (Array.isArray(cap) ? cap[t] : cap);
 
 // startMWh / endMWh default to the asset's start of day charge. Replanning mid day passes the
 // current stored energy as startMWh and keeps the end of day target.
@@ -28,7 +30,7 @@ export function dispatch(
   V[T][iEnd] = 0;
 
   const over = (t: number, c: number, d: number): number =>
-    limit ? limit.penalty * Math.max(0, limit.load[t] + c - d - limit.cap) : 0;
+    limit ? limit.penalty * Math.max(0, limit.load[t] + c - d - capAt(limit.cap, t)) : 0;
 
   const reward = (t: number, delta: number): number => {
     if (delta >= 0) {
