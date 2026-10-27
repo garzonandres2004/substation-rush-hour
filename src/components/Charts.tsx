@@ -4,7 +4,7 @@ import { hourLabel } from '../lib/report';
 import type { Strategy } from '../lib/directions';
 
 const W = 720;
-const M = { l: 46, r: 46, t: 14, b: 26 };
+const M = { l: 46, r: 46, t: 30, b: 26 };
 const iw = W - M.l - M.r;
 
 function xAt(h: number) { return M.l + (iw * h) / 23; }
@@ -23,7 +23,18 @@ function HoverBand({ hover }: { hover: number | null }) {
   return <rect x={xAt(hover) - step / 2} y={0} width={step} height="100%" fill="#101B2D" opacity={0.06} />;
 }
 function Hit({ setHover, h, height }: { setHover: (h: number | null) => void; h: number; height: number }) {
-  return <rect x={xAt(h) - step / 2} y={0} width={step} height={height} fill="transparent" onMouseEnter={() => setHover(h)} onMouseLeave={() => setHover(null)} />;
+  return <rect x={xAt(h) - step / 2} y={0} width={step} height={height} fill="transparent" onMouseEnter={() => setHover(h)} onMouseLeave={() => setHover(null)} onClick={() => setHover(h)} />;
+}
+// Light band behind the hours the Utah grid is jammed, so the substation charts line up with the traffic strip.
+function JamBand({ sc, height, label }: { sc: Scenario; height: number; label?: boolean }) {
+  const hs = sc.hours.filter(h => h.congested);
+  if (!hs.length) return null;
+  return (
+    <g>
+      {hs.map(h => <rect key={h.hourLocal} x={xAt(h.hourLocal) - step / 2} y={M.t} width={step} height={height - M.t - M.b} fill="#D7263D" opacity={0.07} />)}
+      {label && <text x={xAt(hs[0].hourLocal) - step / 2} y={M.t - 6} fontSize={13} fill="#B01E32">grid jam</text>}
+    </g>
+  );
 }
 function XAxis({ y }: { y: number }) {
   return (
@@ -36,7 +47,7 @@ function XAxis({ y }: { y: number }) {
 }
 
 export function LoadChart({ sc, strategy, hover, setHover }: Props) {
-  const H = 250;
+  const H = 266;
   const hs = sc.hours;
   const all = [...hs.map(h => h.loadBefore), ...hs.map(h => h[strategy].loadAfter), sc.capMW];
   const lo = Math.floor((Math.min(...all) - 2) / 5) * 5;
@@ -46,13 +57,14 @@ export function LoadChart({ sc, strategy, hover, setHover }: Props) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Substation load across the day, with and without the battery, against the capacity limit" className="chart">
       <HoverBand hover={hover} />
+      <JamBand sc={sc} height={H} label />
       {ticks(lo, hi, (hi - lo) / 5).map(v => (
         <g key={v}>
           <line x1={M.l} x2={W - M.r} y1={y(v)} y2={y(v)} stroke="#D9DDE3" strokeWidth={1} />
           <text x={M.l - 8} y={y(v) + 4} textAnchor="end" fontSize={14} fill="#5B6678">{v}</text>
         </g>
       ))}
-      <text x={M.l - 8} y={10} textAnchor="end" fontSize={14} fill="#5B6678">MW</text>
+      <text x={M.l - 8} y={14} textAnchor="end" fontSize={13} fill="#5B6678">MW</text>
       {hs.map(h => {
         const ob = Math.max(0, h.loadBefore - sc.capMW);
         const oa = Math.max(0, h[strategy].loadAfter - sc.capMW);
@@ -74,7 +86,7 @@ export function LoadChart({ sc, strategy, hover, setHover }: Props) {
 }
 
 export function BatteryChart({ sc, strategy, hover, setHover }: Props) {
-  const H = 190;
+  const H = 206;
   const hs = sc.hours;
   const P = 10.5;
   const mid = M.t + (H - M.t - M.b) / 2;
@@ -85,17 +97,19 @@ export function BatteryChart({ sc, strategy, hover, setHover }: Props) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Battery charging, discharging and stored energy across the day" className="chart">
       <HoverBand hover={hover} />
+      <JamBand sc={sc} height={H} />
       <line x1={M.l} x2={W - M.r} y1={mid} y2={mid} stroke="#9AA3B2" strokeWidth={1} />
-      <polyline points={`${xAt(0)},${yS(0)} ${soc.join(' ')} ${xAt(23)},${yS(0)}`} fill="#101B2D" opacity={0.07} />
-      <polyline points={soc.join(' ')} fill="none" stroke="#5B6678" strokeWidth={1.5} />
+      <polyline points={soc.join(' ')} fill="none" stroke="#5B6678" strokeWidth={2} strokeDasharray="5 3" />
+      <text x={M.l + 6} y={M.t + 12} fontSize={13} fill="#1D4ED8">Charging</text>
+      <text x={M.l + 6} y={H - M.b - 6} fontSize={13} fill="#7C3AED">Discharging</text>
       {[-10, -5, 0, 5, 10].map(v => (
         <text key={v} x={M.l - 8} y={yP(v) + 4} textAnchor="end" fontSize={14} fill="#5B6678">{Math.abs(v)}</text>
       ))}
-      <text x={M.l - 8} y={10} textAnchor="end" fontSize={14} fill="#5B6678">MW</text>
+      <text x={M.l - 8} y={14} textAnchor="end" fontSize={13} fill="#5B6678">MW</text>
       {[0, 20, 40].map(v => (
         <text key={v} x={W - M.r + 8} y={yS(v) + 4} fontSize={14} fill="#5B6678">{v}</text>
       ))}
-      <text x={W - M.r + 8} y={10} fontSize={14} fill="#5B6678">MWh</text>
+      <text x={W - M.r + 8} y={14} fontSize={13} fill="#5B6678">MWh</text>
       {hs.map(h => {
         const s = h[strategy];
         return (

@@ -94,19 +94,23 @@ test('carbon: charging in clean hours and discharging in dirty hours avoids CO2,
   assert.ok(Math.abs(k - (2.31 + 0.96) / 2 * 453.592) < 1e-6);
 });
 
-test('replanning: respects every battery check, and matches the day ahead plan when the forecast is perfect', async () => {
-  const { runWithReplan } = await import('./execute.js');
+test('replanning is causal and the guard holds the limit when power and energy allow', async () => {
+  const { runReplan } = await import('./execute.js');
   const r = rng(5);
   const lmp = hours.map(() => 10 + 60 * r());
   const load = hours.map(h => 60 + 15 * Math.sin((h - 9) / 3));
   const run = { signal: lmp, forecastLoad: load, cap: 72, penalty: PARAMS.overloadPenalty, margin: 0 };
   const plan = dispatch(lmp, a, { load, cap: 72, penalty: PARAMS.overloadPenalty });
-  const same = runWithReplan(a, run, load);
+  const same = runReplan(a, run, load, false);
   assert.ok(same.charge.every((c, t) => Math.abs(c - plan.charge[t]) < 1e-6 && Math.abs(same.discharge[t] - plan.discharge[t]) < 1e-6));
-  const actual = load.map((l, t) => l + (t >= 12 && t <= 17 ? 4 : 0));
-  const s = runWithReplan(a, run, actual);
-  const sc = score(fakeDay(lmp, actual, 72), s, PARAMS);
-  assert.ok(Object.values(sc.checks).every(Boolean), JSON.stringify(sc.checks));
+  // A surprise in hour 14 only: the replanner cannot know it in advance, the guard reacts to the meter.
+  const actual = load.map((l, t) => l + (t === 14 ? 3 : 0));
+  const noGuard = runReplan(a, run, actual, false);
+  const withGuard = runReplan(a, run, actual, true);
+  assert.ok(Math.abs(noGuard.charge[14] - same.charge[14]) < 1e-6 && Math.abs(noGuard.discharge[14] - same.discharge[14]) < 1e-6, 'no lookahead');
+  assert.ok(actual[14] + withGuard.charge[14] - withGuard.discharge[14] <= 72 + 1e-6);
+  const sc = score(fakeDay(lmp, actual, 72), withGuard, PARAMS);
+  assert.ok(sc.checks.socWithinBounds && sc.checks.powerWithinLimit && sc.checks.noSimultaneous && sc.checks.energyBalances, JSON.stringify(sc.checks));
 });
 
 test('station: simulated data center keeps each hourly average, flywheel never exceeds its power', async () => {
@@ -116,8 +120,9 @@ test('station: simulated data center keeps each hourly average, flywheel never e
   const base = hours.map(() => 60);
   const sp = hours.map(() => 0);
   const spin = { powerMW: 3, energyMWh: 0.3, roundTripEff: 0.9 };
-  const r = runMinutes(base, dc, sp, 66.5, 10, 'station', spin, false);
-  const plain = runMinutes(base, dc, sp, 66.5, 10, 'hourly');
+  const bat = { powerMW: 10, minStoredMWh: hours.map(() => 20), floorMWh: 4, eff: 0.88 };
+  const r = runMinutes(base, dc, sp, 66.5, bat, 'station', spin, false);
+  const plain = runMinutes(base, dc, sp, 66.5, bat, 'hourly');
   assert.ok(r.grid.every((g, m) => Math.abs(g - plain.grid[m]) <= 3 + 1e-9));
   assert.ok(r.overloadMinutes <= plain.overloadMinutes);
 });

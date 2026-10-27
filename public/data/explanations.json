@@ -56,19 +56,19 @@
   },
   "derate|aware|charge|0-0": {
    "hash": "1wa6cri",
-   "text": "Midnight is quiet and cheap, about $28 per MWh. The battery takes in 10 MWh. After the transformer outage the limit is 71.6 MW, and grid draw peaks at 69.1 MW, 2.5 MW under it."
+   "text": "Midnight is quiet and cheap, about $28 per MWh. The battery takes in 10 MWh. With capacity cut 10 percent the limit is 71.6 MW, and grid draw peaks at 69.1 MW, 2.5 MW under it."
   },
   "derate|aware|charge|9-10": {
    "hash": "17z55yl",
-   "text": "With the limit cut to 71.6 MW the battery gets a narrow window to refill. It takes in 9 MWh over 9 AM to 11 AM, at about $21 per MWh, and grid draw is held to the limit so charging does not make the outage worse."
+   "text": "With the limit cut to 71.6 MW the battery gets a narrow window to refill. It takes in 9 MWh over 9 AM to 11 AM, at about $21 per MWh, and grid draw is held to the limit so charging does not make the derate worse."
   },
   "derate|aware|discharge|11-17": {
-   "hash": "9v7h0i",
-   "text": "This is the job the outage creates. Without the battery, load reaches 75.5 MW, above the 71.6 MW limit. The battery discharges 19 MWh from 11 AM to 6 PM in small amounts, 0.7 to 4 MWh an hour, just enough to hold load at the limit. That clears 18.8 MWh of overload even though the traffic index averages only 0.48. This is a capacity problem, not only a price problem."
+   "hash": "mwdiii",
+   "text": "This is the job the derate creates. Without the battery, load reaches 75.5 MW, above the 71.6 MW limit. The battery discharges from 11 AM to 6 PM in small amounts, 0.9 to 4 MWh an hour, just enough to hold load at the limit. That clears 18.9 MWh of overload even though the traffic index averages only 0.48. This is a capacity problem, not only a price problem."
   },
   "derate|aware|charge|23-23": {
-   "hash": "gd9j4r",
-   "text": "At 11 PM the battery takes in 3 MWh so the day ends where it started, half full at 20 MWh. Prices are about $49 per MWh, but load is only 60.2 MW and grid draw peaks at 62.9 MW, 8.7 MW under the limit."
+   "hash": "etr4m3",
+   "text": "At 11 PM the battery takes in 3.5 MWh so the day ends where it started, half full at 20 MWh. Prices are about $49 per MWh, but load is only 60.2 MW and grid draw peaks at 63.7 MW, well under the limit."
   },
   "derate|priceOnly|charge|0-0": {
    "hash": "1wa6cri",
@@ -84,7 +84,7 @@
   },
   "derate|priceOnly|charge|12-15": {
    "hash": "26p6kv",
-   "text": "This is the failure the outage exposes. Load without the battery is already 73.7 MW or more from 12 PM to 4 PM, above the 71.6 MW limit. Price alone still says charge, about $17 per MWh, so the plan adds 36 MWh of charging and grid draw reaches 85.3 MW, 13.8 MW over the limit."
+   "text": "This is the failure the derate exposes. Load without the battery is already 73.7 MW or more from 12 PM to 4 PM, above the 71.6 MW limit. Price alone still says charge, about $17 per MWh, so the plan adds 36 MWh of charging and grid draw reaches 85.3 MW, 13.8 MW over the limit."
   },
   "derate|priceOnly|discharge|18-19": {
    "hash": "7kwrrd",

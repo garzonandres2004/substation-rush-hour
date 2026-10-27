@@ -77,3 +77,21 @@ Pitch sentence: "A Torus style Station lets this Utah substation take a 6.75 MW 
 14. Must have 4 (storage model with flywheel layer) now about 85%. 10 tests pass. Screenshots checked at 1280 and 390 px.
 
 Run order after new data: npm run capacity, npm run station, npm run engine, npm run explain.
+
+
+## Mon 11 PM: persona reviews and fixes
+
+Reviews: staff architect, UX lead, Torus judge (independent agents). Judge verdict: top three contender, not yet the clear winner.
+
+Architect fixes (claims that rested on hindsight or artifacts):
+1. Hourly replanning saw the current hour's actual load. Now causal: replan from forecast plus last hour's miss, and a separate real time guard reacts to the meter. Results: plan once 8 of 30 days over, causal replan 9 (half the energy), plus margin 3 ($81 a day), replan plus guard 0 for $10 a day.
+2. Limit was a $150 penalty, not a rule. Now 100,000 per MWh (hard).
+3. New baselines: price plus the same guard (0 days, 4.8 MWh a day jam relief vs our 12.1, $12 a day more) and a five line peak shaver.
+4. Capacity: linear 0.25 MW scan, fixed rating sensitivity (90.9 MW). Moving 1 to 5.75 MW, fixed 3.75 to 8.25 MW; peak shaver 5.25 MW.
+5. Forecast vs EIA labeled as an upper bound (observed weather).
+6. Minute model: renamed to planning limit, max excess and 15 minute metrics, wear dollars, stored energy enforced, battery refills in dips like the flywheel. Hourly only 2,438 minutes, battery chase 34 minutes and 62 changes a day, 3 MW Station 0 and 12.
+
+UX fixes: summary strip with the three findings on top, section order follows the demo, result card bug fixed, jam band on charts, chart label overlaps, tap support and midday scroll on phone, traffic shown out of 100, details collapsed, sizing slider.
+Torus fixes: Torus Spin and Pulse names, current Pulse spec (0.5C, 7,500 cycles), no transformer out (now capacity cut 10 percent), PacifiCorp East is Utah, Wyoming, Idaho, How this would run on a Torus Station block, price framed as a stress signal not revenue.
+
+Still open: summer run (needs July and August EIA demand pulled on the Mac), deck, video, rehearsal, redeploy.

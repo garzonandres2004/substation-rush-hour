@@ -4,7 +4,7 @@ import { dispatch, naiveSchedule, zeroSchedule } from '../src/engine/dispatch.js
 import { score, loadAfter } from '../src/engine/score.js';
 import { fitSolar } from '../src/engine/forecast.js';
 import { intensity, co2DeltaT } from '../src/engine/carbon.js';
-import { planAhead, runWithReplan } from '../src/engine/execute.js';
+import { planAhead, runReplan, peakShaver } from '../src/engine/execute.js';
 import type { DayInputs, Schedule } from '../src/engine/types.js';
 import { p, all, quality, byT, tomorrow, backtestDates, days, actualLoad, MARGIN_DAYS, marginFor, misses, co2HatFor, awareSignal } from './common.js';
 
@@ -20,7 +20,7 @@ function plans(day: DayInputs, co2Hat: number[], margin: number) {
   };
 }
 
-const KEYS = ['stressAware', 'priceOnly', 'clean', 'naive', 'awareV1', 'awareMarginOnly', 'awareReplanMargin'] as const;
+const KEYS = ['stressAware', 'priceOnly', 'clean', 'naive', 'awareV1', 'awareReplan', 'awareReplanMargin', 'priceLimit', 'peakShaver'] as const;
 interface DayRow {
   date: string; margin: number; overB: number; overA: Record<string, number>; net: Record<string, number>;
   relieved: Record<string, number>; peakRed: Record<string, number>; co2?: Record<string, number>;
@@ -39,18 +39,29 @@ for (const d of backtestDates) {
   const plan = plans(day, co2Hat, 0);
   // What actually runs: price only, fixed and the first version follow their plan blindly.
   // Stays out of traffic and Stays clean replan every hour with the load measured that hour.
+  const prev = misses.get([...misses.keys()].filter(x => x < d).sort().at(-1) ?? '');
+  const prevMiss = prev ? prev[prev.length - 1] : 0;
+  const base = { forecastLoad: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty };
+  // What actually runs, graded on the demand that showed up:
+  // awareV1      plan once the night before, never adjust
+  // awareReplan  replan every hour using only the forecast and last hour's miss
+  // awareReplanMargin  same, plus a safety margin from the last 14 days of misses
+  // stressAware  replan every hour plus a real time guard that reacts to the meter (main)
+  // priceLimit   same layers as main but no traffic index (price plus the limit only)
+  // peakShaver   five line rule: discharge whatever is over the limit, recharge at night
   const run: Record<string, Schedule> = {
-    stressAware: runWithReplan(p.asset, { forecastLoad: day.loadMW, cap: day.capMW, margin: 0, signal: awareSignal(day), penalty: p.overloadPenalty }, act),
+    stressAware: runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, true, prevMiss),
     priceOnly: plan.priceOnly,
-    clean: runWithReplan(p.asset, { forecastLoad: day.loadMW, cap: day.capMW, margin: 0, signal: co2Hat, penalty: p.cleanOverloadPenalty }, act),
+    clean: runReplan(p.asset, { ...base, margin: 0, signal: co2Hat, penalty: p.cleanOverloadPenalty }, act, true, prevMiss),
     naive: plan.naive,
     none: plan.none,
-    awareV1: dispatch(awareSignal(day), p.asset, { load: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty }),
-    // Ablation: which part of the fix matters.
-    // A safety margin (90th percentile of the last 14 days of forecast misses), tested and not used.
-    awareMarginOnly: planAhead(p.asset, { forecastLoad: day.loadMW, cap: day.capMW, margin, signal: awareSignal(day), penalty: p.overloadPenalty }),
-    awareReplanMargin: runWithReplan(p.asset, { forecastLoad: day.loadMW, cap: day.capMW, margin, signal: awareSignal(day), penalty: p.overloadPenalty }, act),
+    awareV1: planAhead(p.asset, { ...base, margin: 0, signal: awareSignal(day) }),
+    awareReplan: runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, false, prevMiss),
+    awareReplanMargin: runReplan(p.asset, { ...base, margin, signal: awareSignal(day) }, act, false, prevMiss),
+    priceLimit: runReplan(p.asset, { ...base, margin: 0, signal: day.lmp }, act, true, prevMiss),
+    peakShaver: peakShaver(p.asset, act, day.hourLocal, day.capMW),
   };
+
   const real = { ...day, loadMW: act };
   const sc = Object.fromEntries(Object.entries(run).map(([k, s]) => [k, score(real, s, p)]));
   let dm = 0, dn = 0, em = 0, en = 0;
@@ -128,7 +139,7 @@ function pack(day: DayInputs, capFactor = 1) {
 }
 
 const normal = pack(tDay);
-const derate = { description: 'A transformer is out and substation capacity drops 10 percent', capacityFactor: 0.9, ...pack(tDay, 0.9) };
+const derate = { description: 'An equipment derate cuts substation capacity 10 percent, for example a cooling failure or a hot day rating', capacityFactor: 0.9, ...pack(tDay, 0.9) };
 const solar = fitSolar(all.filter(h => h.t < tDay.t[0]));
 const report = {
   generatedAt: new Date().toISOString(),

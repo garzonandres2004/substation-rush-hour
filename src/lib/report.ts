@@ -36,10 +36,8 @@ export interface Report {
     days: { date: string; overB: number; overA: Record<string, number> }[];
   };
 }
-export interface Capacity {
-  days: number; withoutStorageMW: number;
-  stations: { label: string; powerMW: number; energyMWh: number; replanMW: number; replanMarginMW: number }[];
-}
+export interface CapacityLimit { withoutStorageMW: number; stations: { label: string; powerMW: number; energyMWh: number; awareMW: number; awareResidualMWh: number; shaverMW: number }[] }
+export interface Capacity { days: number; toleranceMWh: number; stepMW: number; fixedLimitMW: number; limits: { moving: CapacityLimit; fixed: CapacityLimit } }
 export const report = raw as unknown as Report;
 
 export function hourLabel(h: number): string {

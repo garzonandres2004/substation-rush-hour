@@ -35,22 +35,28 @@ export interface Spin { powerMW: number; energyMWh: number; roundTripEff: number
 
 export interface MinuteResult {
   overloadMinutes: number; overloadMWh: number;
+  maxExcessMW: number;             // largest single minute above the limit
+  max15ExcessMW: number;           // largest rolling 15 minute average above the limit
+  maxRampMWPerMin: number;         // steepest minute to minute change the grid sees
   batteryChanges: number;          // minutes where battery power moves by more than 0.1 MW
-  batteryExtraMWh: number;         // battery energy beyond its hourly plan
+  batteryExtraMWh: number;         // battery energy beyond its hourly plan (grid side)
   flywheelThroughputMWh: number;
   grid: number[];
 }
 
 // mode 'hourly': battery holds its hourly setpoint, nothing reacts inside the hour.
-// mode 'battery': battery also chases every spike above the limit (within its power limit).
-// mode 'station': the flywheel covers spikes first and recharges in headroom; the battery
-// holds its hourly setpoint and only steps in if the flywheel runs out.
-export function runMinutes(baseHourly: number[], dc: number[], setpointHourly: number[], cap: number, batteryPowerMW: number,
+// mode 'battery': battery also chases every spike above the limit, within its power limit and
+//   the energy it actually has left (minStoredMWh is the lowest planned stored energy per hour).
+// mode 'station': the flywheel covers spikes first and recharges in headroom; the battery holds
+//   its hourly setpoint and only steps in if the flywheel runs out.
+export function runMinutes(baseHourly: number[], dc: number[], setpointHourly: number[], cap: number, battery: { powerMW: number; minStoredMWh: number[]; floorMWh: number; eff: number },
   mode: 'hourly' | 'battery' | 'station', spin?: Spin, batteryBackup = true): MinuteResult {
   const eta = spin ? Math.sqrt(spin.roundTripEff) : 1;
+  const etaB = Math.sqrt(battery.eff);
   let e = spin ? spin.energyMWh : 0; // flywheel starts full
   let prevB = setpointHourly[0];
-  const res: MinuteResult = { overloadMinutes: 0, overloadMWh: 0, batteryChanges: 0, batteryExtraMWh: 0, flywheelThroughputMWh: 0, grid: [] };
+  let extraStored = 0;               // battery side energy drawn beyond plan so far today
+  const res: MinuteResult = { overloadMinutes: 0, overloadMWh: 0, maxExcessMW: 0, max15ExcessMW: 0, maxRampMWPerMin: 0, batteryChanges: 0, batteryExtraMWh: 0, flywheelThroughputMWh: 0, grid: [] };
   for (let m = 0; m < dc.length; m++) {
     const h = Math.floor(m / 60);
     const load = baseHourly[h] + dc[m];
@@ -67,15 +73,31 @@ export function runMinutes(baseHourly: number[], dc: number[], setpointHourly: n
       }
     }
     if ((mode === 'battery' || (mode === 'station' && batteryBackup)) && over > 1e-9) {
-      const nb = Math.max(-batteryPowerMW, b - over);
+      const room = Math.max(0, battery.minStoredMWh[h] - battery.floorMWh - extraStored) * etaB * 60; // MW for one minute
+      const nb = Math.max(-battery.powerMW, b - Math.min(over, room));
       res.batteryExtraMWh += (b - nb) / 60;
+      extraStored += (b - nb) / etaB / 60;
       over -= b - nb; b = nb;
+    } else if ((mode === 'battery' || mode === 'station') && extraStored > 1e-9 && over < -1e-9) {
+      // Same fairness rule as the flywheel: refill the extra energy in the dips, within headroom.
+      const c = Math.min(-over, battery.powerMW - b, (extraStored / etaB) * 60);
+      const add = Math.max(0, c);
+      res.batteryExtraMWh += add / 60;
+      extraStored -= (add * etaB) / 60;
+      over += add; b += add;
     }
     if (Math.abs(b - prevB) > 0.1) res.batteryChanges++;
     prevB = b;
-    if (over > 1e-6) { res.overloadMinutes++; res.overloadMWh += over / 60; }
+    if (over > 1e-6) { res.overloadMinutes++; res.overloadMWh += over / 60; res.maxExcessMW = Math.max(res.maxExcessMW, over); }
     res.flywheelThroughputMWh += Math.abs(f) / 60;
-    res.grid.push(load + b + f);
+    const g = load + b + f;
+    if (res.grid.length) res.maxRampMWPerMin = Math.max(res.maxRampMWPerMin, Math.abs(g - res.grid[res.grid.length - 1]));
+    res.grid.push(g);
+  }
+  let roll = 0;
+  for (let m = 0; m < res.grid.length; m++) {
+    roll += res.grid[m] - (m >= 15 ? res.grid[m - 15] : 0);
+    if (m >= 14) res.max15ExcessMW = Math.max(res.max15ExcessMW, roll / 15 - cap);
   }
   return res;
 }
