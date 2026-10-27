@@ -34,12 +34,15 @@ jobs:
           node scripts/pull-prices.mjs
           rm -f .env.local
       - name: Run engine
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           npm test
           npm run capacity
           npm run station
           npm run engine
-          npx tsx scripts/explain-build.ts --lenient
+          npx tsx scripts/explain-ai.ts
+          npx tsx scripts/explain-build.ts --lenient --source scripts/explanations.source.json --source scripts/explanations.ai.json
       - name: Check the new forecast is for today or later (else keep the old site)
         run: |
           node -e "const r=require('./public/data/report.json');const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Denver'});console.log('forecast for',r.date,'today',today);if(r.date<today){console.error('stale forecast, not deploying');process.exit(1)}"
@@ -47,7 +50,7 @@ jobs:
         run: |
           git config user.name "daily-refresh"
           git config user.email "actions@users.noreply.github.com"
-          git add public/data
+          git add public/data scripts/explanations.ai.json
           git diff --cached --quiet || git commit -m "Daily data refresh $(date -u +%Y-%m-%d)"
           # Someone may have pushed while this ran: replay the data commit on top, keeping this run's data.
           git pull --rebase -X theirs origin main

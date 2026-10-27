@@ -17,7 +17,7 @@ Built solo for the Hard Tech Week Hackathon, Torus challenge "Rush Hour for Elec
 7. Inside the hour, a Torus style Station: that data center replayed minute by minute as a SIMULATED AI load. The hourly plan alone sits above the planning limit for 2,438 minutes in 30 days (worst minute 1.3 MW, about 2 percent). The battery chasing every spike gets it to 34 minutes but changes power 62 times a day instead of 11. A modeled 3 MW, 6 minute flywheel (Torus Spin claims) plus the battery: 0 minutes, battery at 12 changes a day.
 8. Our demand forecast MAPE 5.0% vs EIA's day ahead 8.7%, but ours used observed weather for past days, so it is an upper bound, not a fair win.
 
-All decisions are made by code. There is no AI in the dispatch loop. AI only writes the plain English explanation of each battery step. Those texts are cached in `public/data/explanations.json` (no live calls), and `npm run explain` checks that every number in them matches the engine output. If the engine output changes, a stale explanation is dropped and the app falls back to the plain numbers.
+All decisions are made by code. There is no AI in the dispatch loop. AI only writes the plain English explanation of each battery step. The daily refresh asks Gemini (free tier, one request a day, `scripts/explain-ai.ts`) for any step the hand written texts no longer cover; `scripts/explain-check.ts` checks every number against the engine output, failures get one retry and then fall back to the plain numbers. Texts are cached in `public/data/explanations.json`; the page makes no live model calls.
 
 ## Real, modeled, assumed
 
@@ -45,7 +45,7 @@ To refresh the data, put an EIA key in `.env.local` as `EIA_API_KEY=...`, then r
 
 ## Daily refresh
 
-`.github/workflows/daily-refresh.yml` runs every day at 21:30 UTC, after CAISO publishes next day prices: it pulls fresh EIA, CAISO and Open-Meteo data, reruns capacity, station and engine, keeps only explanations that still match (`--lenient`; other steps show plain numbers), refuses to deploy a stale forecast, commits `public/data` and deploys to Vercel. It can also be run by hand from the Actions tab. Repository secrets needed: `EIA_API_KEY`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+`.github/workflows/daily-refresh.yml` runs every day at 21:30 UTC, after CAISO publishes next day prices: it pulls fresh EIA, CAISO and Open-Meteo data, reruns capacity, station and engine, keeps only explanations that still match (`--lenient`; other steps show plain numbers), refuses to deploy a stale forecast, commits `public/data` and deploys to Vercel. It can also be run by hand from the Actions tab. Repository secrets needed: `EIA_API_KEY`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, and optionally `GEMINI_API_KEY` for daily explanations.
 
 ## Layout
 

@@ -1,5 +1,5 @@
-// AI-07: prompt text lives here, not inline. The cached explanations were written
-// from this brief by Claude, offline, then checked by scripts/explain-build.ts.
+// AI-07: prompt text lives here, not inline. Used by scripts/explain-ai.ts (Gemini, daily) and as the
+// brief for the hand written demo day texts (Claude). Every text is checked by scripts/explain-check.ts.
 export const EXPLAIN_PROMPT = `You explain one battery dispatch decision to a non technical reader.
 Input: structured facts computed by code (hours, prices, traffic index, load before and after, limit).
 Rules:
