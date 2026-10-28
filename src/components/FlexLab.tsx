@@ -129,7 +129,7 @@ export default function FlexLab() {
         </li>
         {kgPaused !== null ? (
           <li>
-            <b>When, and how clean.</b> The paused hours are summer peak hours, and the grid here is only slightly
+            <b>When, and how clean.</b> The paused hours are the substation's peak hours, and the grid here is only slightly
             dirtier then: about {Math.round(kgPaused)} kg CO2 per MWh, against {Math.round(fx.gridKgPerMWhMean)} on
             average over the year. At this substation, yielding to traffic is about congestion, not carbon. Where the
             cleanest power is, the other half of the bounty's question, needs other regions' data.
