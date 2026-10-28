@@ -49,9 +49,9 @@ If over time: cut slide 9 to its title sentence; the vision slide covers the fit
    Each day's limit is the 95th percentile of its last 30 days of load: tomorrow 79.5 MW, 71.6 with the 10 percent derate, Oct 5 (the minute chart) 88.2. The capacity test also uses one fixed rating, 90.9 MW. Summer is rated for the July peak, 119.0 MW. The page explains it under What is real and what is modeled.
 
 15. "Pulse is 0.5C, about 2 hours at rated power. Why model a 4 hour Station?"
-   Station sizes are modeled, not Torus specs, and the page says so. The 10 MW, 2 h row is the native 0.5C ratio and gives 4 MW of new load. The 4 h case is 40 MWh of Pulse behind a 10 MW connection. Stored energy matters most here: the crunch is a long afternoon plateau.
+   Torus's CEO at the 2025 Battery Show described "a 2 hour or 4 hour dispatchable product" for data centers and utility capacity, so we test both. Station sizes are modeled, not Torus specs, and the page says so. The 10 MW, 2 h row is the native 0.5C ratio and gives 4 MW of new load. The 4 h case is 40 MWh of Pulse behind a 10 MW connection. Stored energy matters most here: the crunch is a long afternoon plateau.
 16. "Wattsmart dispatches under 1 percent of hours. Your plan acts every day?"
-   Utility events come first. The plan runs the other hours and keeps energy ready for the next event. That is the dual use Torus describes: behind the meter assets keep serving the host between events.
+   Torus's CEO said Stations are dispatched "right off the transmission services desk" like a modular power plant, over 300 times last year. Utility events come first. The plan runs the other hours and keeps energy ready for the next event. That is the dual use Torus describes: behind the meter assets keep serving the host between events.
 17. "How does this relate to Lasso?"
    Torus says smaller utilities and co ops let Torus schedule against forecasts through Lasso. This is that forecast schedule, plus a guard for when the forecast is wrong. It is a concept on public data; there is no public Lasso API and no integration.
 18. "How did you think about risk?" (only if asked; analogy from trading)
@@ -66,7 +66,7 @@ If over time: cut slide 9 to its title sentence; the vision slide covers the fit
 21. "What is the capacity number all year, not just autumn or summer?"
    Substation rated for its own annual peak (100 MW, Jul 20 2026): 0 MW of new load without storage. With the 10 MW, 4 h Station, 7 MW (five line rule 4.75). The 2 h Station gets 4.75, the 8 h gets 9.75. The binding days are Jul 20, 13 and 21. Limits: Station sizes are modeled, not Torus specs.
 22. "Is your flywheel and battery model based on anything real?"
-   The size and frequency of the swings, yes. We checked against real GPU power from MIT Supercloud: 44 labelled training jobs, 22 models, nvidia-smi every 100 ms. Swings repeat about every 5 seconds, 26 percent of peak in a typical minute, 58 percent in the busiest. Our earlier simulation had the size and frequency right but the speed wrong (minutes). Limits: the dataset is CC BY-NC-ND, so we use summary statistics only. The flywheel sizing (about 1.8 MW, 1.3 kWh per swing for a 5.75 MW synchronized site) is our estimate, not Torus data. Independent jobs smooth out (8 to 4 percent max minute step), one big synchronized run does not.
+   Torus's CEO said a 1 MW Nvidia stack needs its droop caught within 5 to 8 milliseconds. Our hourly plan and minute model cannot see that, and the real GPU traces show swings every few seconds: that is exactly why the fast layer is Spin, not the battery. The size and frequency of the swings, yes. We checked against real GPU power from MIT Supercloud: 44 labelled training jobs, 22 models, nvidia-smi every 100 ms. Swings repeat about every 5 seconds, 26 percent of peak in a typical minute, 58 percent in the busiest. Our earlier simulation had the size and frequency right but the speed wrong (minutes). Limits: the dataset is CC BY-NC-ND, so we use summary statistics only. The flywheel sizing (about 1.8 MW, 1.3 kWh per swing for a 5.75 MW synchronized site) is our estimate, not Torus data. Independent jobs smooth out (8 to 4 percent max minute step), one big synchronized run does not.
 
 ## Validation (the question a grid expert will ask)
 23. "Is this a validated solution to Utah grid congestion?"
@@ -76,6 +76,7 @@ If over time: cut slide 9 to its title sentence; the vision slide covers the fit
    "Three steps. Replay one anonymized feeder's history with its real limit and Station constraints, the same way we replayed PacifiCorp East: only what was known at each hour. Then shadow mode: read live data, recommend, never control, and log whether the plan stays feasible. Only then supervised control, with your authorization. If data cannot leave Torus, run our schedule on a private case and share the aggregate result."
 
 ## Do not say
+0. Quote the CEO interview as "Torus's CEO at the 2025 Battery Show said," never as a spec sheet. It is an auto generated transcript.
 1. That 500 MW is deployed. It is an MOU target (70 MW expanded to 500 MW in September 2025).
 2. "4 to 8 hour Pulse" as a current spec. The current Pulse page says 0.5C.
 3. Any customer name or savings figure from Torus case studies; their page titles carry copy errors.
