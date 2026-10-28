@@ -2,7 +2,7 @@
 // steps per hour, and conserve energy at 1 second steps.
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { blockMean, runSteps, scaleHours } from './seconds.js';
+import { blockMean, runSteps, scaleHours, swingHours } from './seconds.js';
 import { dataCenterMinutes, runMinutes } from './station.js';
 
 const base = Array.from({ length: 24 }, (_, h) => 80 + 8 * Math.sin((h / 24) * 2 * Math.PI));
@@ -56,4 +56,22 @@ test('a flywheel big enough for every swing leaves nothing over at 1 s', () => {
   );
   assert.ok(hourly.overSteps > 0);
   assert.equal(big.overSteps, 0);
+});
+
+test('swingHours keeps the hour average and the real swing size', () => {
+  const x = new Float64Array(7200).map((_, i) => (i < 3600 ? (i % 6 < 4 ? 1 : 0.6) : i % 6 < 4 ? 0.5 : 0.1));
+  const y = swingHours(x, 3600, 7, 7.8);
+  for (let h = 0; h < 2; h++) {
+    let s = 0;
+    let lo = Infinity;
+    let hi = -Infinity;
+    for (let i = 0; i < 3600; i++) {
+      const v = y[h * 3600 + i];
+      s += v;
+      lo = Math.min(lo, v);
+      hi = Math.max(hi, v);
+    }
+    assert.ok(Math.abs(s / 3600 - 7) < 1e-9);
+    assert.ok(Math.abs(hi - lo - 0.4 * 7.8) < 1e-9); // a quiet hour is not blown up
+  }
 });

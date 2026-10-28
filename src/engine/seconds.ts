@@ -134,6 +134,22 @@ export function scaleHours(x: Float64Array, stepsPerHour: number, avgMW: number)
   return out;
 }
 
+// Keep each hour's average at exactly avgMW, but size the swings around it by the site's full power:
+// out = avgMW + (x - hour mean of x) * nameplateMW, floored at 0. x is power as a share of peak.
+// Unlike scaleHours, a quiet hour in the trace is not blown up: swings keep their real size.
+export function swingHours(x: Float64Array, stepsPerHour: number, avgMW: number, nameplateMW: number) {
+  const out = new Float64Array(x.length);
+  for (let h = 0; h * stepsPerHour < x.length; h++) {
+    const a = h * stepsPerHour;
+    const b = Math.min(x.length, a + stepsPerHour);
+    let s = 0;
+    for (let i = a; i < b; i++) s += x[i];
+    const m = s / (b - a);
+    for (let i = a; i < b; i++) out[i] = Math.max(0, avgMW + (x[i] - m) * nameplateMW);
+  }
+  return out;
+}
+
 // Average consecutive blocks: seconds to minutes with n = 60.
 export function blockMean(x: ArrayLike<number>, n: number) {
   const out = new Float64Array(Math.floor(x.length / n));

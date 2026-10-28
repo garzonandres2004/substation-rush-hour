@@ -12,7 +12,7 @@ import { gunzipSync } from 'node:zlib';
 import { runReplan } from '../src/engine/execute.js';
 import { loadHours } from '../src/engine/merge.js';
 import { PARAMS as p } from '../src/engine/params.js';
-import { addResult, blockMean, emptyResult, runSteps, scaleHours, type StepResult } from '../src/engine/seconds.js';
+import { addResult, blockMean, emptyResult, runSteps, type StepResult, swingHours } from '../src/engine/seconds.js';
 import { rng } from '../src/engine/station.js';
 import { buildDay } from '../src/engine/stress.js';
 import { localDate } from '../src/engine/time.js';
@@ -104,6 +104,10 @@ function stream(seed: number) {
     return out;
   };
 }
+// Site full power: real jobs average about 90% of their peak (gpu-stats.json), so a site averaging
+// X MW over the hour has a full power of X / 0.9. Swings are sized against that.
+const gpuStats = JSON.parse(fs.readFileSync('lab-data/gpu-stats.json', 'utf8'));
+const MEAN_OF_PEAK: number = gpuStats.acrossJobsMedian.meanOfPeak;
 const FLEET = 16;
 const sync = stream(42);
 const fleet = Array.from({ length: FLEET }, (_, k) => stream(100 + k));
@@ -154,13 +158,13 @@ for (const c of cases) {
       const tot = new Float64Array(24 * S);
       for (const f of fleet) {
         const x = f(24 * S);
-        for (let i = 0; i < tot.length; i++) tot[i] += x[i];
+        for (let i = 0; i < tot.length; i++) tot[i] += x[i] / FLEET;
       }
       return tot;
     })(),
   };
   for (const k of ['sync', 'fleet'] as const) {
-    const dc = scaleHours(raw[k], S, X);
+    const dc = swingHours(raw[k], S, X, X / MEAN_OF_PEAK);
     // Shape check against the published statistics: second steps and within minute range, as a
     // share of the hour's average new load (sampled every 7th day to keep it light).
     if (cases.indexOf(c) % 7 === 0) {
@@ -250,6 +254,7 @@ const out = {
   last: cases.at(-1)!.date,
   ratingMW: RATING,
   newLoadMW: X,
+  siteFullPowerMW: +(X / MEAN_OF_PEAK).toFixed(2),
   station: `${A.powerMW} MW, ${A.energyMWh / A.powerMW} h`,
   spinMinutes: SPIN_MIN,
   spinEff: SPIN_EFF,
