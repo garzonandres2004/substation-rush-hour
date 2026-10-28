@@ -10,7 +10,7 @@
 | 02 | Congestion index, forecast, storage model, dispatcher, baseline, constraint tests | No | 03 | phase-02-engine.md | Done: engine and 7 tests pass, report.json generated |
 | 03 | Traffic report UI (heatmap timeline, schedule view, assumptions panel) on stubbed engine output | No | 02 | phase-03-ui.md | Done: live page built and checked at desktop and phone width. Deployed: https://torus-green.vercel.app |
 | 04 | Backtest and evidence page, transformer out scenario | No | needs 02 | none (built inside phase 03 session) | Done: 31 day backtest table and scenario toggle are live |
-| 05 | AI explanations (cached), seed demo data, README | No | needs 02 | none (done from HANDOFF.md) | Done Oct 26: 20 cached explanations (scripts/explanations.source.json, validated by npm run explain), static report.json means no empty states, README and repo link in brief |
+| 05 | AI explanations (cached), seed demo data, README | No | needs 02 | none (done from a session handoff note) | Done Oct 26: 20 cached explanations (scripts/explanations.source.json, validated by npm run explain), static report.json means no empty states, README and repo link in brief |
 | 06 | Last mile: audit vs brief, persona reviews, UI polish, mobile, deck, recorded backup | | | | |
 
 ## Requirements from the brief
