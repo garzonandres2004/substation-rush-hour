@@ -116,7 +116,7 @@ const fleet = Array.from({ length: FLEET }, (_, k) => stream(100 + k));
 const SPIN_MIN = 6;
 const SPIN_EFF = 0.9;
 const spinOf = (mw: number) => ({ powerMW: mw, energyMWh: (mw * SPIN_MIN) / 60, roundTripEff: SPIN_EFF });
-const SIZES = [0.25, 0.5, 1, 1.5, 2, 3, 4];
+const SIZES = [0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6];
 type Agg = Record<string, StepResult>;
 const names = [
   'hourly',
