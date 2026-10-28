@@ -90,7 +90,6 @@ export default function YearLab() {
   const P = year.priced;
   const W = year.trafficOnly;
   const totalDays = P.days + W.days;
-  const worseOurs = P.byStrategy.ours.daysMadeWorse + W.byStrategy.ours.daysMadeWorse;
   const subOver = P.substationOverDays + W.substationOverDays;
   const covered = P.byStrategy.ours.substationDaysFullyCovered + W.byStrategy.ours.substationDaysFullyCovered;
   const main = cap.stations.find(s => s.label === '10 MW, 4 h')!;
@@ -146,44 +145,6 @@ export default function YearLab() {
   );
   return (
     <>
-      <section className="summary" aria-label="Lab findings">
-        <a href="#yr-h">
-          <em>A year, walked forward</em>
-          <b>
-            <span className="now">{worseOurs}</span>&nbsp;of {totalDays} days
-          </b>
-          <span>
-            on which our plan pushed the substation over its limit, planned every night on the weather forecast as it
-            was issued. Plan once: {P.byStrategy.planOnce.daysMadeWorse + W.byStrategy.planOnce.daysMadeWorse}.
-          </span>
-        </a>
-        <a href="#yc-h">
-          <em>Capacity, all year</em>
-          <b>
-            <span className="was">{cap.withoutStorage.mw}</span>
-            <span className="arrow" aria-hidden="true">
-              →
-            </span>
-            <span className="sr"> to </span>
-            <span className="now">{main.ours.mw}</span> MW
-          </b>
-          <span>
-            of new always on load a substation rated for its own annual peak can take with a 10 MW, 4 h Station, every
-            one of {cap.days} days.
-          </span>
-        </a>
-        <a href="#gpu-h">
-          <em>Real AI training power</em>
-          <b>
-            every <span className="now">{g.repeatPeriodS}</span> seconds
-          </b>
-          <span>
-            measured GPU power swings by about {pct(g.withinMinuteRangeP50)} of peak (typical minute) in {gpu.jobs} real
-            training jobs. Minute and hour models cannot see it. A flywheel can.
-          </span>
-        </a>
-      </section>
-
       <section className="evidence" aria-labelledby="yr-h">
         <p className="eyebrow">A · {totalDays} days, real forecasts, battery carried day to day</p>
         <h2 id="yr-h">

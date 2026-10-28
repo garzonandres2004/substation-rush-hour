@@ -1,4 +1,5 @@
 import raw from '../../public/data/lab.json';
+import LabOverview from './LabOverview';
 import SecondsLab from './SecondsLab';
 import SweepLab from './SweepLab';
 import FlexLab from './FlexLab';
@@ -77,9 +78,6 @@ const NAMES: Record<string, string> = {
 
 export default function Lab() {
   const c = lab.confidence;
-  const t = lab.thermal;
-  const fx = t.results.fixed;
-  const tm = t.results.temperature;
   const guardRow = lab.frontier.find(r => r.guard)!;
   const margins = lab.frontier.filter(r => !r.guard);
   const zeroMargin = margins.find(r => r.daysOver === 0);
@@ -87,12 +85,12 @@ export default function Lab() {
     <main className="page">
       <header className="top">
         <div>
-          <p className="eyebrow">Work in progress · separate from the main page</p>
+          <p className="eyebrow">The deeper checks behind the main page</p>
           <h1>The lab</h1>
           <p className="lede">
-            Deeper checks with more real, open data: a full year walked forward on issued weather forecasts, capacity
-            over a full year, and real GPU power from AI training jobs. Every number is labeled measured, modeled or
-            assumed.
+            We tried to break our own results with more real, open data: a full year planned on weather forecasts as
+            they were issued, 17 different settings, real GPU power second by second, a heat based transformer limit and
+            flexible data centers. Every number is labeled measured, modeled or assumed.
           </p>
         </div>
         <p className="meta">
@@ -100,6 +98,7 @@ export default function Lab() {
         </p>
       </header>
 
+      <LabOverview />
       <YearLab />
       <SecondsLab />
       <SweepLab />
@@ -107,7 +106,7 @@ export default function Lab() {
       <ThermalLab />
 
       <section className="evidence" aria-labelledby="conf-h">
-        <p className="eyebrow">D · On the main page's 30 days: confidence</p>
+        <p className="eyebrow">H · On the main page's 30 days: confidence</p>
         <h2 id="conf-h">How sure can 30 days make us?</h2>
         <p className="sub">
           We resampled the {c.days} days {c.resamples.toLocaleString('en-US')} times (bootstrap) and report the middle
@@ -154,7 +153,7 @@ export default function Lab() {
       </section>
 
       <section className="evidence" aria-labelledby="ev2-h">
-        <p className="eyebrow">E · Utility events</p>
+        <p className="eyebrow">I · Utility events</p>
         <h2 id="ev2-h">If the utility calls in the jam, is the energy there?</h2>
         <p className="sub">
           Assumed event: full power for {lab.events.hours} hours ({lab.events.requestMWh} MWh) starting at each day's
@@ -189,7 +188,7 @@ export default function Lab() {
       </section>
 
       <section className="evidence" aria-labelledby="fr-h">
-        <p className="eyebrow">F · Margin versus guard</p>
+        <p className="eyebrow">J · Margin versus guard</p>
         <h2 id="fr-h">Could a bigger safety margin replace the guard?</h2>
         <p className="sub">
           Instead of reacting to the meter, plan as if load will run above the forecast by a margin taken from the last
@@ -233,76 +232,16 @@ export default function Lab() {
         </ul>
       </section>
 
-      <section className="evidence" aria-labelledby="th-h">
-        <p className="eyebrow">G · Transformer heat</p>
-        <h2 id="th-h">A limit set by temperature, not a fixed MW number</h2>
-        <p className="sub">
-          A transformer's real limit is how hot its windings get. We model it with the IEEE C57.91 method: nameplate{' '}
-          {f1(t.nameplateMW)} MW (the fixed rating from the capacity test) gives a 110 C hot spot at 30 C air. Salt Lake
-          City air on these days ran {f1(t.ambientC.min)} to {f1(t.ambientC.max)} C, so the hourly rating ran{' '}
-          {f1(t.ratingMW.min)} to {f1(t.ratingMW.max)} MW. Transformer parameters are assumed typical values, not a real
-          substation.
-        </p>
-        <div className="tablewrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Limit</th>
-                <th>New load, no storage</th>
-                <th>New load, 10 MW, 4 h Station</th>
-                <th>New load, five line rule</th>
-                <th>Hottest hot spot with the Station</th>
-                <th>Insulation aging with the Station</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(
-                [
-                  ['Fixed rating', fx],
-                  ['Temperature based rating', tm],
-                ] as [string, LimitResult][]
-              ).map(([name, r]) => (
-                <tr key={name} className={name.startsWith('Temperature') ? 'best' : ''}>
-                  <th scope="row">{name}</th>
-                  <td>{r.withoutStorageMW} MW</td>
-                  <td>{r.stationMW} MW</td>
-                  <td>{r.fiveLineRuleMW} MW</td>
-                  <td>{f1(r.heatAtStationMax.maxHotSpotC)} C</td>
-                  <td>
-                    {f1(r.heatAtStationMax.agingDays)} days in {r.heatAtStationMax.calendarDays}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <ul className="notes">
-          <li>
-            Aging is equivalent days of insulation life used: 1 day per calendar day at a steady 110 C hot spot. Below 1
-            means the transformer aged slower than its design rate.
-          </li>
-          <li>
-            The rating depends on the warmest busy hour, not the average. Autumn air averaged {f1(t.ambientC.mean)} C,
-            so the average hourly rating was {f1(t.ratingMW.mean)} MW, but the tightest hour of the warmest days dropped
-            it to {f1(t.ratingAtTightestHourMW.min)} MW. Without storage that costs room; with the Station, the planner
-            uses the cool hours.
-          </li>
-          <li>
-            The planner here knew each hour's real temperature. Day ahead temperature forecasts are usually within a few
-            degrees, but that error is not modeled yet. The hourly rating is steady state, which ignores the oil's heat
-            inertia, so it is conservative.
-          </li>
-        </ul>
-      </section>
-
       <section className="honest" aria-labelledby="next-h">
         <h2 id="next-h">Not done yet</h2>
         <ul className="notes">
-          <li>
-            Weather forecasts as they were issued (Open-Meteo archive), to remove the observed weather upper bound.
-          </li>
-          <li>Summer with the heat model, and a full year walk forward test including winter peaks.</li>
+          <li>One real feeder: its load trace, its rating and a real Station's limits. That is the validation step.</li>
+          <li>Settings changed together, not one at a time (section E).</li>
           <li>Battery aging from cycle depth and temperature instead of a flat cost per MWh.</li>
+          <li>Flywheel response below one second; the data here is 100 ms GPU power averaged to 1 s.</li>
+          <li>
+            Where to run: other regions' grid traffic and clean power, the other half of the bounty's second question.
+          </li>
         </ul>
       </section>
       <footer>
