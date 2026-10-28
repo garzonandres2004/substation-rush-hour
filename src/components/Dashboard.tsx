@@ -187,6 +187,9 @@ export default function Dashboard() {
             Live data, refreshed daily
           </p>
           <p>
+            <a href="/history">Today, tomorrow and past days</a>
+          </p>
+          <p>
             Forecast for {dateLabel(report.date)}
             <span className="hide-sm">, the latest day with published day ahead prices</span>
             <br />

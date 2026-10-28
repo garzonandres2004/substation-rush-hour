@@ -859,3 +859,27 @@ tbody tr:not(.best):hover {
     font-size: 0;
   }
 }
+
+.pastpick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0 16px;
+  font: 600 15px var(--body);
+  color: var(--ink);
+}
+.pastpick select {
+  font: 500 15px var(--body);
+  min-height: 44px;
+  padding: 0 10px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--ink);
+}
+@media (max-width: 640px) {
+  .pastpick {
+    margin-left: 0;
+    display: flex;
+  }
+}
