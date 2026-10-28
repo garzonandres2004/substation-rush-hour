@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-28T06:55:38.800Z",
+ "generatedAt": "2026-10-28T07:03:57.994Z",
  "source": "GPU power: MIT Supercloud Dataset (Samsi et al., IEEE HPEC 2021), nvidia-smi at 100 ms averaged to 1 s, CC BY-NC-ND 4.0, used only inside the run; aggregates only. Grid: EIA, CAISO, Open-Meteo issued forecasts.",
  "days": 359,
  "first": "2025-10-31",
@@ -231,6 +231,46 @@
      "flywheelMaxMW": 4
     },
     "flywheelCyclesPerBusyDay": 1.1912889384463667
+   },
+   {
+    "spinMW": 5,
+    "spinMWh": 0.5,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0.251,
+     "flywheelMaxMW": 5
+    },
+    "batteryChangesPerBusyDay": 79.46666666666667,
+    "flywheelAlone": {
+     "overSeconds": 122,
+     "overMWh": 0.1175,
+     "maxExcessMW": 4.247,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 5
+    },
+    "flywheelCyclesPerBusyDay": 0.9667210434985545
+   },
+   {
+    "spinMW": 6,
+    "spinMWh": 0.6,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0.048,
+     "flywheelMaxMW": 6
+    },
+    "batteryChangesPerBusyDay": 24.666666666666668,
+    "flywheelAlone": {
+     "overSeconds": 24,
+     "overMWh": 0.0227,
+     "maxExcessMW": 3.98,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 6
+    },
+    "flywheelCyclesPerBusyDay": 0.816727402090129
    }
   ],
   "shape": {
@@ -435,6 +475,46 @@
      "flywheelMaxMW": 3.962
     },
     "flywheelCyclesPerBusyDay": 0.23923798358496656
+   },
+   {
+    "spinMW": 5,
+    "spinMWh": 0.5,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3.962
+    },
+    "batteryChangesPerBusyDay": 11.785714285714286,
+    "flywheelAlone": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3.962
+    },
+    "flywheelCyclesPerBusyDay": 0.19139038686797324
+   },
+   {
+    "spinMW": 6,
+    "spinMWh": 0.6,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3.962
+    },
+    "batteryChangesPerBusyDay": 11.785714285714286,
+    "flywheelAlone": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3.962
+    },
+    "flywheelCyclesPerBusyDay": 0.1594919890566442
    }
   ],
   "shape": {
