@@ -3,7 +3,7 @@
 A traffic report for tomorrow's Utah grid, and a plan that keeps a Torus style Station out of the jam. Graded on what actually happened.
 
 **Live demo:** https://torus-green.vercel.app (refreshes itself every day from EIA, CAISO and Open-Meteo)
-**Demo video, 100 s:** [docs/media/demo.mp4](docs/media/demo.mp4)
+**Demo video, 100 s:** [download demo.mp4](https://github.com/garzonandres2004/substation-rush-hour/raw/main/docs/media/demo.mp4) (the clip below plays right here)
 
 Built solo in 48 hours for the Hard Tech Week Hackathon, Torus bounty Option 1 "Rush Hour for Electrons".
 
