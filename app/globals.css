@@ -75,6 +75,7 @@ h3 {
   text-align: right;
   color: var(--slate);
   font-size: 15px;
+  margin-left: auto; /* when the header wraps, keep this block on the right */
 }
 .meta p {
   margin: 0;
