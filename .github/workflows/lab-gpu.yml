@@ -1,0 +1,39 @@
+name: Lab GPU power statistics (deeper-model branch only)
+
+on:
+  push:
+    branches: [deeper-model]
+    paths:
+      - .github/workflows/lab-gpu.yml
+      - scripts/lab-gpu/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: deeper-model
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy
+      - name: Statistics of real GPU training power (MIT Supercloud, aggregates only)
+        continue-on-error: true
+        run: |
+          mkdir -p lab-data
+          python scripts/lab-gpu/gpu-stats.py
+      - name: Save to the branch
+        if: always()
+        run: |
+          git config user.name "lab-data"
+          git config user.email "actions@users.noreply.github.com"
+          git add lab-data/gpu-stats.json lab-data/gpu-stats-log.txt 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Lab GPU statistics $(date -u +%Y-%m-%dT%H:%M)"
+          git pull --rebase -X theirs origin deeper-model
+          git push origin HEAD:deeper-model

@@ -1,5 +1,5 @@
 import type { Asset, Schedule } from './types.js';
-import { dispatch } from './dispatch.js';
+import { capAt, dispatch } from './dispatch.js';
 
 const STEP = 0.25;
 
@@ -14,7 +14,7 @@ export function marginFromMisses(misses: number[], q = 0.9): number {
 export interface Run {
   signal: number[];
   forecastLoad: number[];
-  cap: number;
+  cap: number | number[];
   penalty: number;
   margin: number;
 }
@@ -53,9 +53,11 @@ export function runReplan(
   actualLoad: number[],
   useGuard: boolean,
   prevMiss = 0,
+  startMWh = a.energyMWh * a.startSocFrac,
+  guardCap?: number | number[], // the limit the guard sees in real time, if it differs from the plan's
 ): Schedule & { guardHours: number } {
   const T = r.signal.length;
-  let soc = a.energyMWh * a.startSocFrac;
+  let soc = startMWh;
   const charge: number[] = [],
     discharge: number[] = [],
     socs: number[] = [];
@@ -63,12 +65,13 @@ export function runReplan(
   for (let t = 0; t < T; t++) {
     const miss = t > 0 ? actualLoad[t - 1] - r.forecastLoad[t - 1] : prevMiss;
     const est = r.forecastLoad.slice(t).map(x => x + miss + r.margin);
-    const s = dispatch(r.signal.slice(t), a, { load: est, cap: r.cap, penalty: r.penalty }, STEP, soc);
+    const cap = Array.isArray(r.cap) ? r.cap.slice(t) : r.cap;
+    const s = dispatch(r.signal.slice(t), a, { load: est, cap, penalty: r.penalty }, STEP, soc);
     let c = s.charge[0],
       d = s.discharge[0],
       next = s.soc[0];
     if (useGuard) {
-      const g = guard(a, soc, c, d, actualLoad[t], r.cap);
+      const g = guard(a, soc, c, d, actualLoad[t], capAt(guardCap ?? r.cap, t));
       if (g.acted) {
         c = g.charge;
         d = g.discharge;
@@ -86,18 +89,24 @@ export function runReplan(
 
 // Simple reactive rule for comparison: discharge whatever is over the limit, recharge at night
 // (10 PM to 6 AM) back toward the starting charge when there is headroom. No forecast, no price.
-export function peakShaver(a: Asset, actualLoad: number[], hourLocal: number[], cap: number): Schedule {
+export function peakShaver(
+  a: Asset,
+  actualLoad: number[],
+  hourLocal: number[],
+  cap: number | number[],
+  startMWh = a.energyMWh * a.startSocFrac,
+): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
   const start = a.energyMWh * a.startSocFrac,
     min = a.energyMWh * a.socMinFrac;
-  let soc = start;
+  let soc = startMWh;
   const charge: number[] = [],
     discharge: number[] = [],
     socs: number[] = [];
   for (let t = 0; t < actualLoad.length; t++) {
     let c = 0,
       d = 0;
-    const over = actualLoad[t] - cap;
+    const over = actualLoad[t] - capAt(cap, t);
     if (over > 0) d = Math.min(over, a.powerMW, (soc - min) * eta);
     else if ((hourLocal[t] >= 22 || hourLocal[t] < 6) && soc < start)
       c = Math.min(-over, a.powerMW, (start - soc) / eta);
