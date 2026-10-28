@@ -1,4 +1,5 @@
 import raw from '../../public/data/lab.json';
+import SecondsLab from './SecondsLab';
 import YearLab from './YearLab';
 
 interface Range {
@@ -97,6 +98,7 @@ export default function Lab() {
       </header>
 
       <YearLab />
+      <SecondsLab />
 
       <section className="evidence" aria-labelledby="conf-h">
         <p className="eyebrow">D · On the main page's 30 days: confidence</p>

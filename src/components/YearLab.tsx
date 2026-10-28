@@ -388,7 +388,8 @@ export default function YearLab() {
             <b>Sizing, as an estimate:</b> for a {dcAvg} MW synchronized training load shaped like these jobs, holding
             grid draw flat inside the minute takes about {f1(swingP50MW)} MW of fast power in a typical minute and{' '}
             {f1(swingP95MW)} MW in the busiest 5 percent of minutes, with only about {f1(kWhPerSwing)} kWh moved per
-            swing. A 3 MW Spin covers it with room to spare; the battery keeps its hourly plan.
+            swing. Section D below replays it second by second: fast swings take a few MW of flywheel, and minutes long
+            stretches above the hour's average still need the battery.
           </li>
           <li>
             <b>Many jobs smooth out, one big job does not.</b> Adding independent jobs at random times, the largest
