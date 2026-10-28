@@ -2,6 +2,7 @@ import raw from '../../public/data/lab.json';
 import SecondsLab from './SecondsLab';
 import SweepLab from './SweepLab';
 import FlexLab from './FlexLab';
+import ThermalLab from './ThermalLab';
 import YearLab from './YearLab';
 
 interface Range {
@@ -103,6 +104,7 @@ export default function Lab() {
       <SecondsLab />
       <SweepLab />
       <FlexLab />
+      <ThermalLab />
 
       <section className="evidence" aria-labelledby="conf-h">
         <p className="eyebrow">D · On the main page's 30 days: confidence</p>

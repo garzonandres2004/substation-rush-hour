@@ -54,6 +54,7 @@ export function runReplan(
   useGuard: boolean,
   prevMiss = 0,
   startMWh = a.energyMWh * a.startSocFrac,
+  guardCap?: number | number[], // the limit the guard sees in real time, if it differs from the plan's
 ): Schedule & { guardHours: number } {
   const T = r.signal.length;
   let soc = startMWh;
@@ -70,7 +71,7 @@ export function runReplan(
       d = s.discharge[0],
       next = s.soc[0];
     if (useGuard) {
-      const g = guard(a, soc, c, d, actualLoad[t], capAt(r.cap, t));
+      const g = guard(a, soc, c, d, actualLoad[t], capAt(guardCap ?? r.cap, t));
       if (g.acted) {
         c = g.charge;
         d = g.discharge;
