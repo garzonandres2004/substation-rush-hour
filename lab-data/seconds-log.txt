@@ -1,0 +1,2 @@
+359 days, new load 7 MW, rating 100 MW
+runs 17.7 s

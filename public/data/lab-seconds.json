@@ -1,0 +1,447 @@
+{
+ "generatedAt": "2026-10-28T06:48:22.226Z",
+ "source": "GPU power: MIT Supercloud Dataset (Samsi et al., IEEE HPEC 2021), nvidia-smi at 100 ms averaged to 1 s, CC BY-NC-ND 4.0, used only inside the run; aggregates only. Grid: EIA, CAISO, Open-Meteo issued forecasts.",
+ "days": 359,
+ "first": "2025-10-31",
+ "last": "2026-10-26",
+ "ratingMW": 100,
+ "newLoadMW": 7,
+ "station": "10 MW, 4 h",
+ "spinMinutes": 6,
+ "spinEff": 0.9,
+ "jobs": 44,
+ "jobSeconds": 829794,
+ "models": [
+  "U3-128",
+  "U3-32",
+  "U3-64",
+  "U4-128",
+  "U4-32",
+  "U4-64",
+  "U5-128",
+  "U5-32",
+  "U5-64",
+  "conv",
+  "dimenet",
+  "inception3",
+  "inception4",
+  "resnet101",
+  "resnet101_v2",
+  "resnet152",
+  "resnet152_v2",
+  "resnet50_v1.5",
+  "schnet",
+  "vgg11",
+  "vgg16",
+  "vgg19"
+ ],
+ "fleetJobs": 16,
+ "sync": {
+  "daysWithSecondsOver": 16,
+  "worstDays": [
+   {
+    "date": "2026-07-20",
+    "seconds": 14091
+   },
+   {
+    "date": "2026-07-13",
+    "seconds": 5061
+   },
+   {
+    "date": "2026-07-21",
+    "seconds": 4873
+   },
+   {
+    "date": "2026-07-31",
+    "seconds": 4056
+   },
+   {
+    "date": "2026-08-10",
+    "seconds": 3824
+   }
+  ],
+  "hourly": {
+   "overSeconds": 54321,
+   "overMWh": 9.5985,
+   "maxExcessMW": 8.345,
+   "batteryExtraMWh": 0,
+   "flywheelMaxMW": 0
+  },
+  "hourlyMinuteView": {
+   "overSeconds": 23220,
+   "overMWh": 4.4987,
+   "maxExcessMW": 6.909,
+   "batteryExtraMWh": 0,
+   "flywheelMaxMW": 0
+  },
+  "battery": {
+   "overSeconds": 0,
+   "overMWh": 0,
+   "maxExcessMW": 0,
+   "batteryExtraMWh": 20.506,
+   "flywheelMaxMW": 0,
+   "batteryChangesPerBusyDay": 5488.0625
+  },
+  "hourlyBatteryChangesPerBusyDay": 11.5625,
+  "station3MinuteView": {
+   "overSeconds": 0,
+   "overMWh": 0,
+   "maxExcessMW": 0,
+   "batteryExtraMWh": 2.764,
+   "flywheelMaxMW": 3
+  },
+  "sweep": [
+   {
+    "spinMW": 0.25,
+    "spinMWh": 0.025,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 15.382,
+     "flywheelMaxMW": 0.25
+    },
+    "batteryChangesPerBusyDay": 3654.5,
+    "flywheelAlone": {
+     "overSeconds": 33942,
+     "overMWh": 7.2,
+     "maxExcessMW": 8.175,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 0.25
+    },
+    "flywheelCyclesPerBusyDay": 6.32924365204435
+   },
+   {
+    "spinMW": 0.5,
+    "spinMWh": 0.05,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 12.511,
+     "flywheelMaxMW": 0.5
+    },
+    "batteryChangesPerBusyDay": 2211.8125,
+    "flywheelAlone": {
+     "overSeconds": 21018,
+     "overMWh": 5.8561,
+     "maxExcessMW": 8.175,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 0.5
+    },
+    "flywheelCyclesPerBusyDay": 4.93781166601648
+   },
+   {
+    "spinMW": 1,
+    "spinMWh": 0.1,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 9.348,
+     "flywheelMaxMW": 1
+    },
+    "batteryChangesPerBusyDay": 1031.5625,
+    "flywheelAlone": {
+     "overSeconds": 10132,
+     "overMWh": 4.3758,
+     "maxExcessMW": 8.175,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 1
+    },
+    "flywheelCyclesPerBusyDay": 3.4455176061910606
+   },
+   {
+    "spinMW": 1.5,
+    "spinMWh": 0.15,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 7.694,
+     "flywheelMaxMW": 1.5
+    },
+    "batteryChangesPerBusyDay": 821,
+    "flywheelAlone": {
+     "overSeconds": 7701,
+     "overMWh": 3.6015,
+     "maxExcessMW": 8.175,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 1.5
+    },
+    "flywheelCyclesPerBusyDay": 2.637551400851823
+   },
+   {
+    "spinMW": 2,
+    "spinMWh": 0.2,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 6.29,
+     "flywheelMaxMW": 2
+    },
+    "batteryChangesPerBusyDay": 696.8125,
+    "flywheelAlone": {
+     "overSeconds": 5734,
+     "overMWh": 2.9444,
+     "maxExcessMW": 8.175,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 2
+    },
+    "flywheelCyclesPerBusyDay": 2.1949291786309377
+   },
+   {
+    "spinMW": 3,
+    "spinMWh": 0.3,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 4.305,
+     "flywheelMaxMW": 3
+    },
+    "batteryChangesPerBusyDay": 407.1875,
+    "flywheelAlone": {
+     "overSeconds": 2500,
+     "overMWh": 2.015,
+     "maxExcessMW": 8.175,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3
+    },
+    "flywheelCyclesPerBusyDay": 1.667664087200853
+   },
+   {
+    "spinMW": 4,
+    "spinMWh": 0.4,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 2.764,
+     "flywheelMaxMW": 4
+    },
+    "batteryChangesPerBusyDay": 307,
+    "flywheelAlone": {
+     "overSeconds": 1478,
+     "overMWh": 1.294,
+     "maxExcessMW": 8.143,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 4
+    },
+    "flywheelCyclesPerBusyDay": 1.3696657117584115
+   }
+  ],
+  "shape": {
+   "secondStepP95OfAvg": 0.3756,
+   "secondStepMaxOfAvg": 2.074,
+   "secondStepMaxMW": 14.518,
+   "withinMinuteRangeP50OfAvg": 0.3325,
+   "withinMinuteRangeP95OfAvg": 0.893
+  }
+ },
+ "fleet": {
+  "daysWithSecondsOver": 14,
+  "worstDays": [
+   {
+    "date": "2026-07-20",
+    "seconds": 11007
+   },
+   {
+    "date": "2026-07-13",
+    "seconds": 3043
+   },
+   {
+    "date": "2026-08-10",
+    "seconds": 2869
+   },
+   {
+    "date": "2026-07-25",
+    "seconds": 2819
+   },
+   {
+    "date": "2026-07-31",
+    "seconds": 2690
+   }
+  ],
+  "hourly": {
+   "overSeconds": 32766,
+   "overMWh": 1.3704,
+   "maxExcessMW": 0.875,
+   "batteryExtraMWh": 0,
+   "flywheelMaxMW": 0
+  },
+  "hourlyMinuteView": {
+   "overSeconds": 18780,
+   "overMWh": 0.4511,
+   "maxExcessMW": 0.432,
+   "batteryExtraMWh": 0,
+   "flywheelMaxMW": 0
+  },
+  "battery": {
+   "overSeconds": 0,
+   "overMWh": 0,
+   "maxExcessMW": 0,
+   "batteryExtraMWh": 2.928,
+   "flywheelMaxMW": 0,
+   "batteryChangesPerBusyDay": 3137.3571428571427
+  },
+  "hourlyBatteryChangesPerBusyDay": 11.785714285714286,
+  "station3MinuteView": {
+   "overSeconds": 0,
+   "overMWh": 0,
+   "maxExcessMW": 0,
+   "batteryExtraMWh": 0,
+   "flywheelMaxMW": 2.084
+  },
+  "sweep": [
+   {
+    "spinMW": 0.25,
+    "spinMWh": 0.025,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0.573,
+     "flywheelMaxMW": 0.25
+    },
+    "batteryChangesPerBusyDay": 568.9285714285714,
+    "flywheelAlone": {
+     "overSeconds": 6603,
+     "overMWh": 0.2684,
+     "maxExcessMW": 0.789,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 0.25
+    },
+    "flywheelCyclesPerBusyDay": 3.3234398951317483
+   },
+   {
+    "spinMW": 0.5,
+    "spinMWh": 0.05,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0.223,
+     "flywheelMaxMW": 0.5
+    },
+    "batteryChangesPerBusyDay": 144.14285714285714,
+    "flywheelAlone": {
+     "overSeconds": 1486,
+     "overMWh": 0.1043,
+     "maxExcessMW": 0.771,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 0.5
+    },
+    "flywheelCyclesPerBusyDay": 1.9090746711796365
+   },
+   {
+    "spinMW": 1,
+    "spinMWh": 0.1,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0.094,
+     "flywheelMaxMW": 1
+    },
+    "batteryChangesPerBusyDay": 58.714285714285715,
+    "flywheelAlone": {
+     "overSeconds": 499,
+     "overMWh": 0.0439,
+     "maxExcessMW": 0.771,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 1
+    },
+    "flywheelCyclesPerBusyDay": 1.000104598040462
+   },
+   {
+    "spinMW": 1.5,
+    "spinMWh": 0.15,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 1.5
+    },
+    "batteryChangesPerBusyDay": 11.785714285714286,
+    "flywheelAlone": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 1.5
+    },
+    "flywheelCyclesPerBusyDay": 0.6888023932283787
+   },
+   {
+    "spinMW": 2,
+    "spinMWh": 0.2,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 2
+    },
+    "batteryChangesPerBusyDay": 11.785714285714286,
+    "flywheelAlone": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 2
+    },
+    "flywheelCyclesPerBusyDay": 0.5166017949212839
+   },
+   {
+    "spinMW": 3,
+    "spinMWh": 0.3,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3
+    },
+    "batteryChangesPerBusyDay": 11.785714285714286,
+    "flywheelAlone": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 3
+    },
+    "flywheelCyclesPerBusyDay": 0.3444011966141894
+   },
+   {
+    "spinMW": 4,
+    "spinMWh": 0.4,
+    "withBatteryBackup": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 4
+    },
+    "batteryChangesPerBusyDay": 11.785714285714286,
+    "flywheelAlone": {
+     "overSeconds": 0,
+     "overMWh": 0,
+     "maxExcessMW": 0,
+     "batteryExtraMWh": 0,
+     "flywheelMaxMW": 4
+    },
+    "flywheelCyclesPerBusyDay": 0.25830089746064205
+   }
+  ],
+  "shape": {
+   "secondStepP95OfAvg": 0.0742,
+   "secondStepMaxOfAvg": 0.4935,
+   "secondStepMaxMW": 3.455,
+   "withinMinuteRangeP50OfAvg": 0.1253,
+   "withinMinuteRangeP95OfAvg": 0.1867
+  }
+ }
+}
