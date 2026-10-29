@@ -85,17 +85,17 @@ The live page recomputes these every day over the trailing 30 days, so it is the
 
 ## The lab: trying to break our own results
 
-**Live:** https://torus-green.vercel.app/lab. Eleven more tests on real open data. The safety held in every one, and three changed what we say.
+**Live:** https://torus-green.vercel.app/lab. Eleven more tests on real open data. The safety held in every one, and three changed what we say. Rerun on Oct 29, 2026 with EIA hours read as hour ending.
 
 | Test | Result | Verdict |
 | --- | --- | --- |
 | A full year, planned each night on weather forecasts as issued | Our plan made the substation worse on 0 of 359 days | Held |
-| New load all year, substation rated at its annual peak | 0 MW without storage, 7 MW with a 10 MW, 4 h Station | Held |
+| New load all year, substation rated at its annual peak | 0 MW without storage, 5.5 MW with a 10 MW, 4 h Station | Held |
 | Real AI training power (MIT Supercloud, 44 jobs) | Swings repeat about every 5 seconds: our simulation had the size right, the speed wrong | Corrected our model |
-| Inside the hour, second by second | Independent jobs: a 1.5 MW flywheel covers it. One synchronized run needs the battery behind the flywheel | Corrected our claim |
-| Did we tune it to win? 17 settings | 0 days made worse in all 17. Index ahead of price plus guard in 16, about 1.2 times over a year (2.6 on the 30 autumn days) | Held, smaller than it looked |
-| Compute that yields to traffic | Pausing 0.5 percent of yearly energy: 17.5 MW with the Station (7 firm), about 123 hours a year | New |
-| The limit as heat (IEEE C57.91), not a fixed number | Year round 7 to 7.5 MW. November to April 47 MW or more | New |
+| Inside the hour, second by second | Independent jobs: a 0.5 MW flywheel covers it. One synchronized run: a 4 MW flywheel | Corrected our claim |
+| Did we tune it to win? 17 settings | 0 days made worse in all 17. Index ahead of price plus guard in 16, about 1.5 times over a year (3.2 on the 30 autumn days) | Held, smaller than it looked |
+| Compute that yields to traffic | Pausing 0.5 percent of yearly energy: 17 MW with the Station (5.5 firm), about 121 hours a year | New |
+| The limit as heat (IEEE C57.91), not a fixed number | Year round 5.5 to 6.5 MW. November to April 47 MW or more | New |
 | Many customer batteries behind one substation, built with [DETOUR](https://detourgrid.com) | 60 businesses cutting their own bills: 230 new hours over the limit. Guard on the meter: 119, at no cost to customers. Room traded by need plus guard: 63, customers keep 90% | New, cut but not closed |
 
 **Built with DETOUR.** Test K uses DETOUR by Juan Lizarazo (same bounty, MIT, used with his permission): Rocky Mountain Power Schedule 6 and 8 bills, three simulated businesses and his bill planner, vendored unchanged under `src/detour` (see its README). `src/merge` adds the fleet guard and the substation's room inside his plan. `npx tsx scripts/merge-fleet.ts` rebuilds `public/data/merge-fleet.json` from the lab's EIA pull in `data/lab-raw`.

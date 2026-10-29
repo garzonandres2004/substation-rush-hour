@@ -238,11 +238,6 @@ export default function Lab() {
       <section className="honest" aria-labelledby="next-h">
         <h2 id="next-h">Not done yet</h2>
         <ul className="notes">
-          <li>
-            Rerun with the corrected EIA hours. EIA-930 values are hour ending; until Oct 29, 2026 this project filed
-            them one hour late against prices and weather. The main page is recomputed daily with the fix; the lab
-            results above were computed before it.
-          </li>
           <li>One real feeder: its load trace, its rating and a real Station's limits. That is the validation step.</li>
           <li>Settings changed together, not one at a time (section E).</li>
           <li>Battery aging from cycle depth and temperature instead of a flat cost per MWh.</li>

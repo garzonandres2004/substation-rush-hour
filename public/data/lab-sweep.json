@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-28T07:39:30.002Z",
+ "generatedAt": "2026-10-29T06:38:26.904Z",
  "method": "Full year walk forward (lab-year.ts) rerun once per setting, one setting changed at a time from the main page defaults. Planned every night on the weather forecast as issued, battery charge carried day to day, graded on real demand. Jam relief is measured on the default index jam hours (index 65 and up) for every setting; the threshold row varies that referee only.",
  "first": "2025-10-31",
  "last": "2026-10-26",
@@ -13,43 +13,43 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 82,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 80,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 13.980157872285783,
-    "priceGuard": 11.478343286399355
+    "ours": 9.322380986174082,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 436.89543358968155,
-    "priceGuard": 447.44474031979473
+    "ours": 408.62471375264937,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 10.75479823563029,
+   "oursJamReliefTrafficOnlyDays": 11.865974455376513,
    "thresholds": [
     {
      "threshold": 0.55,
-     "ours": 15.238341537992257,
-     "priceGuard": 12.023262757781303
+     "ours": 11.241906087474653,
+     "priceGuard": 6.88722156806964
     },
     {
      "threshold": 0.6,
-     "ours": 15.411896503160401,
-     "priceGuard": 12.238499660753785
+     "ours": 10.175483290804884,
+     "priceGuard": 6.544782889383858
     },
     {
      "threshold": 0.65,
-     "ours": 13.980157872285783,
-     "priceGuard": 11.478343286399355
+     "ours": 9.322380986174082,
+     "priceGuard": 6.382247287083543
     },
     {
      "threshold": 0.7,
-     "ours": 11.331498298617337,
-     "priceGuard": 9.578401509325833
+     "ours": 7.471008248697296,
+     "priceGuard": 6.080951555627056
     },
     {
      "threshold": 0.75,
-     "ours": 8.76027370423201,
-     "priceGuard": 7.412797266591217
+     "ours": 5.28845574676925,
+     "priceGuard": 4.33611928848641
     }
    ]
   },
@@ -62,18 +62,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 82,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 80,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 14.145927418036436,
-    "priceGuard": 11.478343286399355
+    "ours": 9.30124057806354,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 439.6156144176941,
-    "priceGuard": 447.44474031979473
+    "ours": 411.4471999613011,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 10.75479823563029
+   "oursJamReliefTrafficOnlyDays": 11.865974455376513
   },
   {
    "id": "w-demand",
@@ -84,18 +84,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 83,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 82,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 14.387455083503344,
-    "priceGuard": 11.478343286399355
+    "ours": 9.362266288728247,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 433.25262556988446,
-    "priceGuard": 447.44474031979473
+    "ours": 401.30559288989934,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 10.75479823563029
+   "oursJamReliefTrafficOnlyDays": 11.865974455376513
   },
   {
    "id": "w-net",
@@ -106,18 +106,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 80,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 79,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 13.229284113390651,
-    "priceGuard": 11.478343286399355
+    "ours": 9.297647307563162,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 425.1966730714621,
-    "priceGuard": 447.44474031979473
+    "ours": 394.62243485076726,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 10.75479823563029
+   "oursJamReliefTrafficOnlyDays": 11.865974455376513
   },
   {
    "id": "w-ramp",
@@ -128,18 +128,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 82,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 80,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 14.09478320124776,
-    "priceGuard": 11.478343286399355
+    "ours": 9.44545050081194,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 439.9583514606015,
-    "priceGuard": 447.44474031979473
+    "ours": 410.3243116484055,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 10.75479823563029
+   "oursJamReliefTrafficOnlyDays": 11.865974455376513
   },
   {
    "id": "w-price",
@@ -150,18 +150,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 82,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 80,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 13.858465778006396,
-    "priceGuard": 11.478343286399355
+    "ours": 8.853219634508392,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 439.4169279934811,
-    "priceGuard": 447.44474031979473
+    "ours": 410.3639310315755,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 10.75479823563029
+   "oursJamReliefTrafficOnlyDays": 11.865974455376513
   },
   {
    "id": "p-0",
@@ -172,18 +172,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 76,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 73,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 11.478343286399355,
-    "priceGuard": 11.478343286399355
+    "ours": 6.382247287083543,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 447.44474031979473,
-    "priceGuard": 447.44474031979473
+    "ours": 422.1854077561106,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 1.8053153476377148
+   "oursJamReliefTrafficOnlyDays": 2.167638774991227
   },
   {
    "id": "p-5",
@@ -194,18 +194,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 79,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 77,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 13.021593078468943,
-    "priceGuard": 11.478343286399355
+    "ours": 7.852853127203867,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 447.76110801897516,
-    "priceGuard": 447.44474031979473
+    "ours": 419.10381186929646,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 3.4001391592933987
+   "oursJamReliefTrafficOnlyDays": 3.554798021489485
   },
   {
    "id": "p-10",
@@ -216,18 +216,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 79,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 77,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 13.580825744010722,
-    "priceGuard": 11.478343286399355
+    "ours": 8.713082084993747,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 442.7359303082419,
-    "priceGuard": 447.44474031979473
+    "ours": 416.70878715127293,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 3.4001391592933987
+   "oursJamReliefTrafficOnlyDays": 3.553502326528208
   },
   {
    "id": "p-40",
@@ -238,18 +238,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 83,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 78,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 14.589516661307787,
-    "priceGuard": 11.478343286399355
+    "ours": 11.010619242933812,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 421.0985228901331,
-    "priceGuard": 447.44474031979473
+    "ours": 388.0177689790101,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 15.889696262397349
+   "oursJamReliefTrafficOnlyDays": 21.37502088096432
   },
   {
    "id": "p-80",
@@ -260,18 +260,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 82,
-   "priceOnlyDaysMadeWorse": 63,
+   "oursFullyCovered": 76,
+   "priceOnlyDaysMadeWorse": 84,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 15.815181228985859,
-    "priceGuard": 11.478343286399355
+    "ours": 12.931042661859482,
+    "priceGuard": 6.382247287083543
    },
    "valuePerDay": {
-    "ours": 383.44536460372234,
-    "priceGuard": 447.44474031979473
+    "ours": 340.5224700449922,
+    "priceGuard": 422.1854077561106
    },
-   "oursJamReliefTrafficOnlyDays": 18.57455290784022
+   "oursJamReliefTrafficOnlyDays": 26.032396419275177
   },
   {
    "id": "a-5x4",
@@ -282,18 +282,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 60,
-   "priceOnlyDaysMadeWorse": 31,
+   "oursFullyCovered": 59,
+   "priceOnlyDaysMadeWorse": 42,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 6.924711356956894,
-    "priceGuard": 5.447937069144246
+    "ours": 4.57249659956944,
+    "priceGuard": 2.8836594643929763
    },
    "valuePerDay": {
-    "ours": 209.8115836085648,
-    "priceGuard": 214.6849659546132
+    "ours": 199.56356034248267,
+    "priceGuard": 205.73964863822346
    },
-   "oursJamReliefTrafficOnlyDays": 5.690868955605956
+   "oursJamReliefTrafficOnlyDays": 6.3384808553425085
   },
   {
    "id": "a-10x2",
@@ -304,18 +304,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 63,
-   "priceOnlyDaysMadeWorse": 50,
+   "oursFullyCovered": 62,
+   "priceOnlyDaysMadeWorse": 65,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 8.316265246068967,
-    "priceGuard": 6.52184584602313
+    "ours": 5.833854320884572,
+    "priceGuard": 3.6213578981200603
    },
    "valuePerDay": {
-    "ours": 261.76471013159676,
-    "priceGuard": 267.61013825878405
+    "ours": 249.09780147730456,
+    "priceGuard": 255.68262245510434
    },
-   "oursJamReliefTrafficOnlyDays": 6.344782644472355
+   "oursJamReliefTrafficOnlyDays": 7.646543813977359
   },
   {
    "id": "a-10x8",
@@ -326,18 +326,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 95,
-   "priceOnlyDaysMadeWorse": 84,
+   "oursFullyCovered": 93,
+   "priceOnlyDaysMadeWorse": 106,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 22.201740440669855,
-    "priceGuard": 18.711716579338514
+    "ours": 14.343916622607122,
+    "priceGuard": 10.338078780946876
    },
    "valuePerDay": {
-    "ours": 659.2782931955816,
-    "priceGuard": 678.0796895049565
+    "ours": 602.6156005769949,
+    "priceGuard": 619.9027707791613
    },
-   "oursJamReliefTrafficOnlyDays": 15.832862369777663
+   "oursJamReliefTrafficOnlyDays": 16.625003152922147
   },
   {
    "id": "a-20x4",
@@ -348,18 +348,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 98,
-   "priceOnlyDaysMadeWorse": 143,
+   "oursFullyCovered": 96,
+   "priceOnlyDaysMadeWorse": 157,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 27.673812310008273,
-    "priceGuard": 23.26163546259724
+    "ours": 18.438029142893225,
+    "priceGuard": 12.874987642053629
    },
    "valuePerDay": {
-    "ours": 845.3566928898586,
-    "priceGuard": 876.1978505998533
+    "ours": 777.0697519972529,
+    "priceGuard": 796.7689368058726
    },
-   "oursJamReliefTrafficOnlyDays": 19.57989440734025
+   "oursJamReliefTrafficOnlyDays": 21.08454962873614
   },
   {
    "id": "c-0",
@@ -370,18 +370,18 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 77,
-   "priceOnlyDaysMadeWorse": 83,
+   "oursFullyCovered": 70,
+   "priceOnlyDaysMadeWorse": 100,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 15.117248322129601,
-    "priceGuard": 12.119562407191355
+    "ours": 10.882219710387071,
+    "priceGuard": 8.0943209048291
    },
    "valuePerDay": {
-    "ours": 664.6000914808344,
-    "priceGuard": 670.3041849035466
+    "ours": 627.2347672619687,
+    "priceGuard": 646.2567699900536
    },
-   "oursJamReliefTrafficOnlyDays": 21.371310481757007
+   "oursJamReliefTrafficOnlyDays": 28.320475930439677
   },
   {
    "id": "c-10",
@@ -392,45 +392,45 @@
    "pricedDays": 178,
    "oursDaysMadeWorse": 0,
    "substationOverDays": 110,
-   "oursFullyCovered": 77,
-   "priceOnlyDaysMadeWorse": 27,
+   "oursFullyCovered": 74,
+   "priceOnlyDaysMadeWorse": 36,
    "priceGuardDaysMadeWorse": 0,
    "jamReliefPerDay": {
-    "ours": 9.036176990819174,
-    "priceGuard": 6.266723640496468
+    "ours": 5.520341469726813,
+    "priceGuard": 3.5799753995240677
    },
    "valuePerDay": {
-    "ours": 111.57368630975633,
-    "priceGuard": 123.58588627161147
+    "ours": 91.11389009536828,
+    "priceGuard": 100.4902069503076
    },
-   "oursJamReliefTrafficOnlyDays": 3.4001391592933987
+   "oursJamReliefTrafficOnlyDays": 3.5560937164507624
   }
  ],
  "thresholds": [
   {
    "threshold": 0.55,
-   "ours": 15.238341537992257,
-   "priceGuard": 12.023262757781303
+   "ours": 11.241906087474653,
+   "priceGuard": 6.88722156806964
   },
   {
    "threshold": 0.6,
-   "ours": 15.411896503160401,
-   "priceGuard": 12.238499660753785
+   "ours": 10.175483290804884,
+   "priceGuard": 6.544782889383858
   },
   {
    "threshold": 0.65,
-   "ours": 13.980157872285783,
-   "priceGuard": 11.478343286399355
+   "ours": 9.322380986174082,
+   "priceGuard": 6.382247287083543
   },
   {
    "threshold": 0.7,
-   "ours": 11.331498298617337,
-   "priceGuard": 9.578401509325833
+   "ours": 7.471008248697296,
+   "priceGuard": 6.080951555627056
   },
   {
    "threshold": 0.75,
-   "ours": 8.76027370423201,
-   "priceGuard": 7.412797266591217
+   "ours": 5.28845574676925,
+   "priceGuard": 4.33611928848641
   }
  ]
 }
