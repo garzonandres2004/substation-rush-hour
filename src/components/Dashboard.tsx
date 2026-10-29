@@ -8,6 +8,7 @@ import { MinuteChart } from './MinuteChart';
 import { FleetView } from './FleetView';
 import { DispatchOrders } from './DispatchOrders';
 import { PlanDials } from './PlanDials';
+import { StackedValue } from './StackedValue';
 import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
@@ -1015,6 +1016,12 @@ export default function Dashboard() {
             schedules to.
           </li>
         </ol>
+        <h3 style={{ marginTop: 28 }}>What one Station and its neighbors are worth</h3>
+        <p className="sub">
+          The same Station seen by everyone it serves. Each line comes from a test on this site; the money for
+          businesses comes from DETOUR's Rocky Mountain Power bills.
+        </p>
+        <StackedValue />
         <h3 style={{ marginTop: 28 }}>Tomorrow's orders, as the Station would get them</h3>
         <DispatchOrders />
       </section>

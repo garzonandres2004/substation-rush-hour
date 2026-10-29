@@ -54,7 +54,7 @@ export interface Report {
   region: string;
   assumptions: string[];
   params: {
-    asset: { powerMW: number; energyMWh: number };
+    asset: { powerMW: number; energyMWh: number; cycleCostPerMWh: number };
     congestedThreshold: number;
     stressPremium: number;
     stressWeights: { demand: number; netLoad: number; ramp: number; price: number };
