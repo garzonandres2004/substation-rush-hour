@@ -1,12 +1,23 @@
 # Daily refresh: pulls fresh public data, reruns the engine and redeploys the live page.
-# Runs at 21:30 UTC (3:30 PM Utah in summer time, 2:30 PM in winter), after CAISO publishes
-# next day prices, so the page shows tomorrow. Can also be run by hand from the Actions tab.
+# Tries at 21:41, 22:13, 22:47 and 00:19 UTC (3:41 to 6:19 PM Utah in summer time), after CAISO
+# publishes next day prices, so the page shows tomorrow. Can also be run by hand from the Actions tab.
 # Needs repository secrets: EIA_API_KEY, VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
 name: Daily refresh
 on:
+  # GitHub runs scheduled jobs on a best effort basis: at busy minutes (on the hour, half hour) they
+  # can start hours late or be dropped. So: four tries each afternoon at quiet minutes, and each run
+  # skips itself if the page already shows tomorrow. The first that succeeds wins.
   schedule:
-    - cron: '30 21 * * *'
+    - cron: '41 21 * * *'
+    - cron: '13 22 * * *'
+    - cron: '47 22 * * *'
+    - cron: '19 0 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Run even if the page already shows tomorrow'
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -20,12 +31,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - name: Skip if the page already shows tomorrow
+        id: fresh
+        run: |
+          node -e "const r=require('./public/data/report.json');const t=new Date(Date.now()+864e5).toLocaleDateString('en-CA',{timeZone:'America/Denver'});const fresh=r.date>=t;console.log('page shows',r.date,'tomorrow is',t,'fresh',fresh);require('fs').appendFileSync(process.env.GITHUB_OUTPUT,'fresh='+fresh+'\n')"
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: npm
-      - run: npm ci
-      - name: Pull data
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        run: npm ci
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        name: Pull data
         env:
           EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
         run: |
@@ -33,7 +51,8 @@ jobs:
           node scripts/ingest.mjs
           node scripts/pull-prices.mjs
           rm -f .env.local
-      - name: Run engine
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        name: Run engine
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -44,10 +63,12 @@ jobs:
           npx tsx scripts/explain-ai.ts
           npx tsx scripts/explain-build.ts --lenient --source scripts/explanations.source.json --source scripts/explanations.ai.json
           npx tsx scripts/archive.ts
-      - name: Check the new forecast is for today or later (else keep the old site)
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        name: Check the new forecast is for today or later (else keep the old site)
         run: |
           node -e "const r=require('./public/data/report.json');const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Denver'});console.log('forecast for',r.date,'today',today);if(r.date<today){console.error('stale forecast, not deploying');process.exit(1)}"
-      - name: Save the new data to the repo
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        name: Save the new data to the repo
         run: |
           git config user.name "daily-refresh"
           git config user.email "actions@users.noreply.github.com"
@@ -56,7 +77,8 @@ jobs:
           # Someone may have pushed while this ran: replay the data commit on top, keeping this run's data.
           git pull --rebase -X theirs origin main
           git push
-      - name: Deploy to Vercel
+      - if: steps.fresh.outputs.fresh != 'true' || inputs.force
+        name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
