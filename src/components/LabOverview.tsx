@@ -155,8 +155,8 @@ export default function LabOverview() {
       <p className="sub">
         Rerun on Oct 29, 2026 with EIA hours read as hour ending (they had been filed one hour late against prices and
         weather), and again after the everyday planner stopped charging in forecast jam hours. The safety held in every
-        test. Sections A, I and J, and B's capacity mode, use the planner with that rule, and so does K's full stack; D,
-        E, F and G were run before it.
+        test. Sections A, B, I and J use the planner with that rule, and so does K's full stack; D, E, F and G were run
+        before it.
       </p>
       <div className="tablewrap">
         <table>
