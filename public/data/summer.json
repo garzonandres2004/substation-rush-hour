@@ -12,7 +12,7 @@
     "powerMW": 10,
     "energyMWh": 20,
     "awareMW": 3.75,
-    "capacityModeMW": 4.75,
+    "capacityModeMW": 5.5,
     "shaverMW": 3.75,
     "shaverFullMW": 5.5
    },
@@ -21,7 +21,7 @@
     "powerMW": 10,
     "energyMWh": 40,
     "awareMW": 7.25,
-    "capacityModeMW": 7.25,
+    "capacityModeMW": 7.75,
     "shaverMW": 5.25,
     "shaverFullMW": 7.75
    },
@@ -30,7 +30,7 @@
     "powerMW": 10,
     "energyMWh": 80,
     "awareMW": 9.75,
-    "capacityModeMW": 9.75,
+    "capacityModeMW": 10,
     "shaverMW": 7.5,
     "shaverFullMW": 10
    }
