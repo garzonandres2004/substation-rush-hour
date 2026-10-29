@@ -17,11 +17,17 @@ export interface Run {
   cap: number | number[];
   penalty: number;
   margin: number;
+  noCharge?: boolean[]; // hours the plan may not charge in (see dispatch)
 }
 
 // Day ahead plan: solved once, the night before, on forecast load plus the margin.
 export function planAhead(a: Asset, r: Run): Schedule {
-  return dispatch(r.signal, a, { load: r.forecastLoad.map(x => x + r.margin), cap: r.cap, penalty: r.penalty });
+  return dispatch(r.signal, a, {
+    load: r.forecastLoad.map(x => x + r.margin),
+    cap: r.cap,
+    penalty: r.penalty,
+    noCharge: r.noCharge,
+  });
 }
 
 // Real time guard. Applied to what the meter shows during the hour: if the planned action would
@@ -55,6 +61,11 @@ export function runReplan(
   prevMiss = 0,
   startMWh = a.energyMWh * a.startSocFrac,
   guardCap?: number | number[], // the limit the guard sees in real time, if it differs from the plan's
+  floorMWh?: (number | undefined)[], // optional reserve per hour of the day (see dispatch)
+  // Capacity mode: the plan decides when and how much to charge, but energy only leaves to shave what the
+  // meter shows over the limit, to the kWh. The planning grid rounds discharge to 0.25 MWh, and over a long
+  // afternoon those roundings add up to the last fraction of an MWh that a full day needs.
+  exactShave = false,
 ): Schedule & { guardHours: number } {
   const T = r.signal.length;
   let soc = startMWh;
@@ -66,7 +77,13 @@ export function runReplan(
     const miss = t > 0 ? actualLoad[t - 1] - r.forecastLoad[t - 1] : prevMiss;
     const est = r.forecastLoad.slice(t).map(x => x + miss + r.margin);
     const cap = Array.isArray(r.cap) ? r.cap.slice(t) : r.cap;
-    const s = dispatch(r.signal.slice(t), a, { load: est, cap, penalty: r.penalty }, STEP, soc);
+    const s = dispatch(
+      r.signal.slice(t),
+      a,
+      { load: est, cap, penalty: r.penalty, floorMWh: floorMWh?.slice(t), noCharge: r.noCharge?.slice(t) },
+      STEP,
+      soc,
+    );
     let c = s.charge[0],
       d = s.discharge[0],
       next = s.soc[0];
@@ -79,6 +96,18 @@ export function runReplan(
         guardHours++;
       }
     }
+    if (exactShave) {
+      const eta = Math.sqrt(a.roundTripEff);
+      const over = actualLoad[t] - capAt(guardCap ?? r.cap, t);
+      if (over > 0) {
+        c = 0;
+        d = Math.min(over, a.powerMW, Math.max(0, soc - a.energyMWh * a.socMinFrac) * eta);
+      } else {
+        d = 0;
+        c = Math.min(c, -over);
+      }
+      next = soc + c * eta - d / eta;
+    }
     charge.push(c);
     discharge.push(d);
     socs.push(next);
@@ -89,15 +118,17 @@ export function runReplan(
 
 // Simple reactive rule for comparison: discharge whatever is over the limit, recharge at night
 // (10 PM to 6 AM) back toward the starting charge when there is headroom. No forecast, no price.
+// targetMWh lets the rule recharge to another level instead (for example full, for new load).
 export function peakShaver(
   a: Asset,
   actualLoad: number[],
   hourLocal: number[],
   cap: number | number[],
   startMWh = a.energyMWh * a.startSocFrac,
+  targetMWh = a.energyMWh * a.startSocFrac,
 ): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
-  const start = a.energyMWh * a.startSocFrac,
+  const start = targetMWh,
     min = a.energyMWh * a.socMinFrac;
   let soc = startMWh;
   const charge: number[] = [],

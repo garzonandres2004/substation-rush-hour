@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-29T13:43:48.208Z",
+ "generatedAt": "2026-10-29T16:54:29.979Z",
  "first": "2025-11-01",
  "last": "2026-09-30",
  "days": 332,
@@ -31,21 +31,21 @@
    "hoursNotOverWithoutBatteries": 59
   },
   "station": {
-   "overloadHours": 138,
-   "overloadDays": 30,
-   "overloadMWh": 1009.1,
+   "overloadHours": 141,
+   "overloadDays": 31,
+   "overloadMWh": 1015,
    "hoursNotOverWithoutBatteries": 0
   },
   "stationFleetAlone": {
-   "overloadHours": 158,
-   "overloadDays": 42,
-   "overloadMWh": 1046.9,
-   "hoursNotOverWithoutBatteries": 35
+   "overloadHours": 164,
+   "overloadDays": 44,
+   "overloadMWh": 1090,
+   "hoursNotOverWithoutBatteries": 38
   },
   "stationFleetTraded": {
-   "overloadHours": 130,
-   "overloadDays": 27,
-   "overloadMWh": 863.3,
+   "overloadHours": 132,
+   "overloadDays": 28,
+   "overloadMWh": 855,
    "hoursNotOverWithoutBatteries": 2
   }
  }

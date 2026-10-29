@@ -4,6 +4,7 @@ import { dispatch, naiveSchedule, zeroSchedule } from '../src/engine/dispatch.js
 import { score, loadAfter } from '../src/engine/score.js';
 import { fitSolar } from '../src/engine/forecast.js';
 import { intensity, co2DeltaT } from '../src/engine/carbon.js';
+import { marginalFit } from '../src/engine/marginal.js';
 import { planAhead, runReplan, peakShaver } from '../src/engine/execute.js';
 import type { DayInputs, Schedule } from '../src/engine/types.js';
 import {
@@ -20,13 +21,15 @@ import {
   misses,
   co2HatFor,
   awareSignal,
+  aware,
+  jamHours,
 } from './common.js';
 
 // Day ahead plans on forecast load (plus an optional margin, used only in the ablation).
 function plans(day: DayInputs, co2Hat: number[], margin: number) {
   const base = { forecastLoad: day.loadMW, cap: day.capMW, margin };
   return {
-    stressAware: planAhead(p.asset, { ...base, signal: awareSignal(day), penalty: p.overloadPenalty }),
+    stressAware: planAhead(p.asset, { ...base, ...aware(day), penalty: p.overloadPenalty }),
     priceOnly: dispatch(day.lmp, p.asset),
     clean: planAhead(p.asset, { ...base, signal: co2Hat, penalty: p.cleanOverloadPenalty }),
     naive: naiveSchedule(p.asset, day.hourLocal),
@@ -44,6 +47,7 @@ const KEYS = [
   'awareReplanMargin',
   'priceLimit',
   'peakShaver',
+  'hindsight',
 ] as const;
 interface DayRow {
   date: string;
@@ -54,6 +58,7 @@ interface DayRow {
   relieved: Record<string, number>;
   peakRed: Record<string, number>;
   co2?: Record<string, number>;
+  co2Marginal: Record<string, number>;
   congestedHours: number;
   checksOk: boolean;
   guardHours: number;
@@ -106,7 +111,7 @@ for (const d of backtestDates) {
   // stressAware  replan every hour plus a real time guard that reacts to the meter (main)
   // priceLimit   same layers as main but no traffic index (price plus the limit only)
   // peakShaver   five line rule: discharge whatever is over the limit, recharge at night
-  const mainRun = runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, true, prevMiss);
+  const mainRun = runReplan(p.asset, { ...base, margin: 0, ...aware(day) }, act, true, prevMiss);
   const run: Record<string, Schedule> = {
     stressAware: mainRun,
     priceOnly: plan.priceOnly,
@@ -119,11 +124,19 @@ for (const d of backtestDates) {
     ),
     naive: plan.naive,
     none: plan.none,
-    awareV1: planAhead(p.asset, { ...base, margin: 0, signal: awareSignal(day) }),
-    awareReplan: runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, false, prevMiss),
-    awareReplanMargin: runReplan(p.asset, { ...base, margin, signal: awareSignal(day) }, act, false, prevMiss),
+    awareV1: planAhead(p.asset, { ...base, margin: 0, ...aware(day) }),
+    awareReplan: runReplan(p.asset, { ...base, margin: 0, ...aware(day) }, act, false, prevMiss),
+    awareReplanMargin: runReplan(p.asset, { ...base, margin, ...aware(day) }, act, false, prevMiss),
     priceLimit: runReplan(p.asset, { ...base, margin: 0, signal: day.lmp }, act, true, prevMiss),
     peakShaver: peakShaver(p.asset, act, day.hourLocal, day.capMW),
+    // Perfect hindsight: the same objective planned once with the real load known in advance. Nothing can
+    // do better on this day, so it is the yardstick for how much of the possible value ours captures.
+    hindsight: dispatch(awareSignal(day), p.asset, {
+      load: act,
+      cap: day.capMW,
+      penalty: p.overloadPenalty,
+      noCharge: jamHours(day),
+    }),
   };
 
   const real = { ...day, loadMW: act };
@@ -138,7 +151,7 @@ for (const d of backtestDates) {
       cap: day.capMW,
       penalty: p.overloadPenalty,
       margin: 0,
-      signal: awareSignal(day),
+      ...aware(day),
     };
     robust.eia.v1.push(scoreRun(planAhead(p.asset, b2)));
     robust.eia.replan.push(scoreRun(runReplan(p.asset, b2, act, false, 0)));
@@ -146,7 +159,9 @@ for (const d of backtestDates) {
   }
   for (const prem of PREMIUMS) {
     const sig = day.lmp.map((x, i) => x + prem * day.stress[i]);
-    robust.premium[prem].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
+    robust.premium[prem].push(
+      scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig, noCharge: jamHours(day) }, act, true, prevMiss)),
+    );
   }
   for (const { name, w } of WEIGHTS) {
     const alt = day.lmp.map(
@@ -157,7 +172,9 @@ for (const d of backtestDates) {
         w.price * day.comps.price[i],
     );
     const sig = day.lmp.map((x, i) => x + p.stressPremium * alt[i]);
-    robust.weights[name].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
+    robust.weights[name].push(
+      scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig, noCharge: jamHours(day) }, act, true, prevMiss)),
+    );
   }
   let dm = 0,
     dn = 0,
@@ -183,10 +200,15 @@ for (const d of backtestDates) {
   const co2 = actInt.every(x => x !== undefined)
     ? Object.fromEntries(KEYS.map(k => [k, co2DeltaT(actInt as number[], run[k].charge, run[k].discharge)]))
     : undefined;
+  // Marginal CO2 (method from DETOUR), fitted on the 60 days before this one.
+  const mfit = marginalFit(all.filter(h => h.t < day.t[0])).kgPerMWh;
+  const mHat = day.hourLocal.map(hr => mfit[hr]);
+  const co2Marginal = Object.fromEntries(KEYS.map(k => [k, co2DeltaT(mHat, run[k].charge, run[k].discharge)]));
   rows.push({
     date: d,
     margin,
     co2,
+    co2Marginal,
     overB: sc.none.overloadBeforeMWh,
     overA: Object.fromEntries(KEYS.map(k => [k, sc[k].overloadAfterMWh])),
     net: Object.fromEntries(KEYS.map(k => [k, sc[k].netValue])),
@@ -227,6 +249,14 @@ const summary = {
     (r, k) => r.co2![k],
     rows.filter(r => r.co2),
   ),
+  meanCo2MarginalTPerDay: per((r, k) => r.co2Marginal[k]),
+  // Share of the perfect hindsight plan's value and jam relief that ours gets, summed over the days.
+  captureVsHindsight: (() => {
+    const sum = (k: string, f: (r: DayRow) => Record<string, number>) => rows.reduce((a, r) => a + f(r)[k], 0);
+    const pct = (f: (r: DayRow) => Record<string, number>) =>
+      sum('hindsight', f) > 0 ? (100 * sum('stressAware', f)) / sum('hindsight', f) : null;
+    return { valuePct: pct(r => r.net), jamReliefPct: pct(r => r.relieved) };
+  })(),
   demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
   robust: (() => {
     const agg = (xs: Sc[]) => ({

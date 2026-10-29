@@ -1,0 +1,51 @@
+{
+ "generatedAt": "2026-10-29T16:49:43.205Z",
+ "pageAssumption": 3,
+ "detour": {
+  "pulsePerMWhDischarged": 70.6,
+  "spinPerMWhDischarged": 23.6,
+  "pulsePerMWhThroughputApprox": 35.3
+ },
+ "rows": [
+  {
+   "costPerMWhThroughput": 3,
+   "valuePerDay": 279.0004594424121,
+   "jamReliefMWhPerDay": 10.834860405192122,
+   "throughputMWhPerDay": 57.76780010013442,
+   "daysOver": 0,
+   "days": 30
+  },
+  {
+   "costPerMWhThroughput": 8,
+   "valuePerDay": 115.48841634465086,
+   "jamReliefMWhPerDay": 5.917741216977226,
+   "throughputMWhPerDay": 23.347610448102895,
+   "daysOver": 0,
+   "days": 30
+  },
+  {
+   "costPerMWhThroughput": 15,
+   "valuePerDay": 43.97429650055115,
+   "jamReliefMWhPerDay": 2.564093948703475,
+   "throughputMWhPerDay": 7.582128142660026,
+   "daysOver": 0,
+   "days": 30
+  },
+  {
+   "costPerMWhThroughput": 25,
+   "valuePerDay": 2.7016302993597434,
+   "jamReliefMWhPerDay": 1.5869239987402604,
+   "throughputMWhPerDay": 4.091677081391423,
+   "daysOver": 0,
+   "days": 30
+  },
+  {
+   "costPerMWhThroughput": 35,
+   "valuePerDay": -25.54169026823681,
+   "jamReliefMWhPerDay": 0.6566582063752802,
+   "throughputMWhPerDay": 2.1042910704298747,
+   "daysOver": 0,
+   "days": 30
+  }
+ ]
+}

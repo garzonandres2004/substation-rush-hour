@@ -46,7 +46,7 @@ interface Cap {
   pricedDays: number;
   peakDay: string;
   withoutStorage: CapRes;
-  stations: { label: string; ours: CapRes; rule: CapRes }[];
+  stations: { label: string; ours: CapRes; rule: CapRes; capacityMode?: CapRes; ruleFull?: CapRes }[];
 }
 interface Gpu {
   jobs: number;
@@ -93,6 +93,8 @@ export default function YearLab() {
   const subOver = P.substationOverDays + W.substationOverDays;
   const covered = P.byStrategy.ours.substationDaysFullyCovered + W.byStrategy.ours.substationDaysFullyCovered;
   const main = cap.stations.find(s => s.label === '10 MW, 4 h')!;
+  // Capacity mode when the data has it, else the everyday planner (older runs).
+  const best = (s: (typeof cap.stations)[number]) => s.capacityMode ?? s.ours;
   const g = gpu.acrossJobsMedian;
   const peakPerAvg = 1 / g.meanOfPeak;
   const dcAvg = 5.75;
@@ -231,21 +233,27 @@ export default function YearLab() {
         <p className="eyebrow">B · Capacity over a full year</p>
         <h2 id="yc-h">
           Rated for its own annual peak, the substation has {cap.withoutStorage.mw} MW of room. With a 10 MW, 4 h
-          Station: {main.ours.mw} MW, every day of the year.
+          Station: {best(main).mw} MW, every day of the year.
         </h2>
         <p className="sub">
           The interconnection question over {cap.days} days ({shortDate(cap.first)} to {shortDate(cap.last)}). One fixed
           scale for the year: 100 MW is the highest demand hour ({shortDate(cap.peakDay)}), and the rating is exactly
           100 MW. We add a constant block of new load to every hour and find the largest one that never goes over on any
-          day, planned on issued weather forecasts.
+          day, planned on issued weather forecasts
+          {main.capacityMode
+            ? ', with the Station in capacity mode (on days at risk it stays full and shaves exactly what is over)'
+            : ''}
+          .
         </p>
         <div className="tablewrap">
           <table>
             <thead>
               <tr>
                 <th>Station</th>
-                <th>New load, all year, ours</th>
-                <th>New load, all year, five line rule</th>
+                {main.capacityMode && <th>Capacity mode</th>}
+                <th>Everyday planner</th>
+                <th>Five line rule</th>
+                {main.ruleFull && <th>Rule, recharging to full</th>}
                 <th>Winter</th>
                 <th>Spring</th>
                 <th>Summer</th>
@@ -257,15 +265,17 @@ export default function YearLab() {
               {cap.stations.map(s => (
                 <tr key={s.label} className={s.label === '10 MW, 4 h' ? 'best' : ''}>
                   <th scope="row">{s.label}</th>
+                  {main.capacityMode && <td>{best(s).mw} MW</td>}
                   <td>{s.ours.mw} MW</td>
                   <td>{s.rule.mw} MW</td>
-                  <td>{mwCap(s.ours.winterMW)}</td>
-                  <td>{mwCap(s.ours.springMW)}</td>
-                  <td>{mwCap(s.ours.summerMW)}</td>
-                  <td>{mwCap(s.ours.autumnMW)}</td>
+                  {main.ruleFull && <td>{s.ruleFull?.mw} MW</td>}
+                  <td>{mwCap(best(s).winterMW)}</td>
+                  <td>{mwCap(best(s).springMW)}</td>
+                  <td>{mwCap(best(s).summerMW)}</td>
+                  <td>{mwCap(best(s).autumnMW)}</td>
                   <td>
-                    {s.ours.bindingDays
-                      .slice(0, 3)
+                    {best(s)
+                      .bindingDays.slice(0, 3)
                       .map(b => shortDate(b.date).replace(/, \d{4}/, ''))
                       .join(', ')}
                   </td>
@@ -277,7 +287,7 @@ export default function YearLab() {
         <ul className="notes">
           <li>
             The season columns show how much new load each season alone would allow: the year is set by its hardest
-            days. On a median day the 10 MW, 4 h Station could carry {mwCap(main.ours.medianDayMW)}; 24 MW is where the
+            days. On a median day the 10 MW, 4 h Station could carry {mwCap(best(main).medianDayMW)}; 24 MW is where the
             search stops.
           </li>
           <li>
