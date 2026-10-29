@@ -83,7 +83,21 @@ The live page recomputes these every day over the trailing 30 days, so it is the
 | Inside the hour, simulated AI load | Hourly plan alone: 2,362 minutes over in 30 days. Battery chasing every spike: 0 minutes but about 61 power changes a day. Flywheel plus battery: 0 minutes, battery at about 12 changes a day |
 | Demand forecast error | Ours 5.0 percent vs 8.6 percent for the day ahead forecast reported to EIA. Ours used observed weather here, so read it as an upper bound |
 
-**A full year, on branch [`deeper-model`](https://github.com/garzonandres2004/substation-rush-hour/tree/deeper-model):** 359 days walked forward, planned each night on the weather forecast as issued, battery charge carried day to day, nothing tuned. Our plan pushed the substation over its limit on 0 of 359 days. On issued weather our forecast missed 5.3 percent vs 7.4 for the reported day ahead forecast from May to October, and tied in winter (3.7 vs 3.7). The branch also has a transformer heat model (IEEE C57.91) and real GPU power statistics (MIT Supercloud) that check the minute level model.
+## The lab: trying to break our own results
+
+**Live:** https://torus-green.vercel.app/lab. Ten more tests on real open data. The safety held in every one, and three changed what we say.
+
+| Test | Result | Verdict |
+| --- | --- | --- |
+| A full year, planned each night on weather forecasts as issued | Our plan made the substation worse on 0 of 359 days | Held |
+| New load all year, substation rated at its annual peak | 0 MW without storage, 7 MW with a 10 MW, 4 h Station | Held |
+| Real AI training power (MIT Supercloud, 44 jobs) | Swings repeat about every 5 seconds: our simulation had the size right, the speed wrong | Corrected our model |
+| Inside the hour, second by second | Independent jobs: a 1.5 MW flywheel covers it. One synchronized run needs the battery behind the flywheel | Corrected our claim |
+| Did we tune it to win? 17 settings | 0 days made worse in all 17. Index ahead of price plus guard in 16, about 1.2 times over a year (2.6 on the 30 autumn days) | Held, smaller than it looked |
+| Compute that yields to traffic | Pausing 0.5 percent of yearly energy: 17.5 MW with the Station (7 firm), about 123 hours a year | New |
+| The limit as heat (IEEE C57.91), not a fixed number | Year round 7 to 7.5 MW. November to April 47 MW or more | New |
+
+Lab data is pulled by branch workflows (`.github/workflows/lab-*.yml`) and is not refreshed daily. GPU traces are processed inside GitHub Actions and never saved (CC BY-NC-ND 4.0).
 
 ## Real, modeled, assumed
 
@@ -124,6 +138,7 @@ To refresh data, put an EIA key in `.env.local` as `EIA_API_KEY=...`, run `node 
 | `public/data/` | Daily output the page reads |
 | `docs/media/` | Demo video and preview |
 | `docs/build-process/` | Brief, plans, rules and prompts I used to build it |
+| `app/lab`, `scripts/lab*`, `lab-data/` | The lab: deeper tests and their open data |
 
 ## Stack
 

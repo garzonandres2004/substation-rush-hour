@@ -1,0 +1,495 @@
+{
+ "generatedAt": "2026-10-27T15:46:58.026Z",
+ "days": 30,
+ "firstDay": "2026-09-26",
+ "lastDay": "2026-10-25",
+ "confidence": {
+  "days": 31,
+  "resamples": 10000,
+  "jamReliefMWh": {
+   "ours": {
+    "mean": 11.954026617209818,
+    "lo": 9.90936297293488,
+    "hi": 14.011069657918304
+   },
+   "priceOnlyWithGuard": {
+    "mean": 4.607542578143266,
+    "lo": 1.839028114628718,
+    "hi": 7.429357220746715
+   },
+   "difference": {
+    "mean": 7.34648403906655,
+    "lo": 5.215852364003063,
+    "hi": 9.504969356105528
+   },
+   "shareOfResamplesOursAhead": 1
+  },
+  "valuePerDay": {
+   "mean": 319.0511768691812,
+   "lo": 237.49223092669462,
+   "hi": 407.1471905580458
+  },
+  "costOfIndexPerDay": {
+   "mean": 12.435465398762949,
+   "lo": 1.2067576459060303,
+   "hi": 21.60748569531903
+  },
+  "overloadDayRate": {
+   "planOnce": {
+    "days": 8,
+    "lo": 0.1370154373686976,
+    "hi": 0.432464724277151
+   },
+   "priceOnly": {
+    "days": 11,
+    "lo": 0.21116447741565816,
+    "hi": 0.5305236195718509
+   },
+   "oursUpper95": 0.09211405994732369,
+   "oursDays": 0
+  }
+ },
+ "events": {
+  "hours": 2,
+  "requestMWh": 20,
+  "byStrategy": {
+   "ours": {
+    "meanReadyPct": 100,
+    "fullDays": 30,
+    "worstPct": 100
+   },
+   "priceOnlyWithGuard": {
+    "meanReadyPct": 99.1572662351141,
+    "fullDays": 28,
+    "worstPct": 75.04665215717488
+   },
+   "priceOnly": {
+    "meanReadyPct": 98.336443477145,
+    "fullDays": 28,
+    "worstPct": 75.04665215717488
+   },
+   "fiveLineRule": {
+    "meanReadyPct": 75.04665215717488,
+    "fullDays": 0,
+    "worstPct": 75.04665215717488
+   }
+  },
+  "days": [
+   {
+    "date": "2026-09-26",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-09-27",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-09-28",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-09-29",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-09-30",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-01",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-02",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-03",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-04",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-05",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-06",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-07",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-08",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-09",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-10",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-11",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 0.7504665215717488,
+     "priceOnly": 0.7504665215717488,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-12",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-13",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-14",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-15",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-16",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 0.7504665215717488,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-17",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-18",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-19",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-20",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-21",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-22",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-23",
+    "hour": 17,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-24",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 0.9967133489624788,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   },
+   {
+    "date": "2026-10-25",
+    "hour": 18,
+    "ready": {
+     "ours": 1,
+     "priceOnlyWithGuard": 1,
+     "priceOnly": 1,
+     "fiveLineRule": 0.7504665215717488
+    }
+   }
+  ]
+ },
+ "frontier": [
+  {
+   "label": "margin at the 50th percentile of misses",
+   "guard": false,
+   "meanMarginMW": 0.006278446132701039,
+   "daysOver": 9,
+   "totalOverMWh": 19.834362606599,
+   "valuePerDay": 315.5328588410069,
+   "jamReliefMWh": 12.352494171116813
+  },
+  {
+   "label": "margin at the 75th percentile of misses",
+   "guard": false,
+   "meanMarginMW": 1.1680998966187623,
+   "daysOver": 7,
+   "totalOverMWh": 10.613348980944863,
+   "valuePerDay": 292.15906782819064,
+   "jamReliefMWh": 12.161324195451284
+  },
+  {
+   "label": "margin at the 90th percentile of misses",
+   "guard": false,
+   "meanMarginMW": 3.447295805916581,
+   "daysOver": 3,
+   "totalOverMWh": 3.4697386905812664,
+   "valuePerDay": 243.00372039078562,
+   "jamReliefMWh": 12.610467037907101
+  },
+  {
+   "label": "margin at the 95th percentile of misses",
+   "guard": false,
+   "meanMarginMW": 4.767338580768405,
+   "daysOver": 1,
+   "totalOverMWh": 0.1807045833099039,
+   "valuePerDay": 210.32003538647285,
+   "jamReliefMWh": 12.429246429004836
+  },
+  {
+   "label": "margin at the 99th percentile of misses",
+   "guard": false,
+   "meanMarginMW": 6.604190188896625,
+   "daysOver": 0,
+   "totalOverMWh": 0,
+   "valuePerDay": 145.39540516674222,
+   "jamReliefMWh": 11.986499608039683
+  },
+  {
+   "label": "no margin, real time guard",
+   "guard": true,
+   "meanMarginMW": 0,
+   "daysOver": 0,
+   "totalOverMWh": 0,
+   "valuePerDay": 314.2673660885641,
+   "jamReliefMWh": 12.11797338312564
+  }
+ ],
+ "thermal": {
+  "nameplateMW": 90.89739089739089,
+  "transformer": {
+   "topOilRiseRatedC": 55,
+   "hotSpotRiseRatedC": 25,
+   "lossRatio": 4.5,
+   "n": 0.9,
+   "m": 0.8,
+   "tauTopOilH": 2.5,
+   "hotSpotLimitC": 110,
+   "refAmbientC": 30
+  },
+  "ambientC": {
+   "min": 4.1,
+   "mean": 16.877916666666653,
+   "max": 31.8
+  },
+  "ratingMW": {
+   "min": 89.537474218564,
+   "mean": 100.31454001672851,
+   "max": 109.00941767538585
+  },
+  "ratingAtTightestHourMW": {
+   "min": 89.7652113007009,
+   "mean": 96.80539667842157
+  },
+  "results": {
+   "fixed": {
+    "withoutStorageMW": 3.75,
+    "stationMW": 8.25,
+    "fiveLineRuleMW": 8,
+    "heatAtStationMax": {
+     "maxHotSpotC": 110.03080177544604,
+     "agingDays": 2.2530049177383846,
+     "calendarDays": 30
+    },
+    "heatWithoutStorageMax": {
+     "maxHotSpotC": 108.3875337552289,
+     "agingDays": 1.1739981768907342,
+     "calendarDays": 30
+    }
+   },
+   "temperature": {
+    "withoutStorageMW": 2.5,
+    "stationMW": 8.75,
+    "fiveLineRuleMW": 7,
+    "heatAtStationMax": {
+     "maxHotSpotC": 109.27816462553398,
+     "agingDays": 2.5198835703404785,
+     "calendarDays": 30
+    },
+    "heatWithoutStorageMax": {
+     "maxHotSpotC": 106.76994537982222,
+     "agingDays": 0.9917027556826775,
+     "calendarDays": 30
+    }
+   }
+  }
+ }
+}

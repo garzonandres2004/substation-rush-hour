@@ -1,0 +1,47 @@
+name: Lab second by second Station on real GPU power (deeper-model branch only)
+
+on:
+  push:
+    branches: [deeper-model]
+    paths:
+      - .github/workflows/lab-seconds.yml
+      - scripts/lab-gpu/gpu-traces.py
+      - scripts/lab-seconds.ts
+      - src/engine/seconds.ts
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  seconds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: deeper-model
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: pip install pandas numpy
+      - run: npm ci
+      - name: Real GPU training power at 1 s (temporary, never committed)
+        run: python scripts/lab-gpu/gpu-traces.py /tmp/gpu-1s 2>&1 | tee lab-data/seconds-traces-log.txt
+      - name: Lab tests
+        run: npx tsx --test src/engine/seconds.test.ts
+      - name: Station second by second over the year
+        run: npx tsx scripts/lab-seconds.ts /tmp/gpu-1s > /tmp/seconds.json 2> lab-data/seconds-log.txt
+      - name: Save aggregates to the branch
+        if: always()
+        run: |
+          rm -rf /tmp/gpu-1s
+          git config user.name "lab-data"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/data/lab-seconds.json lab-data/seconds-log.txt lab-data/seconds-traces-log.txt 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Lab second by second results $(date -u +%Y-%m-%dT%H:%M)"
+          git pull --rebase -X theirs origin deeper-model
+          git push origin HEAD:deeper-model

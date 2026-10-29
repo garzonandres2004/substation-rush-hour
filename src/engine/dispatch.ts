@@ -2,9 +2,11 @@ import type { Asset, Schedule } from './types.js';
 
 export interface Limit {
   load: number[];
-  cap: number;
+  // One limit for every hour, or one per hour (a temperature based rating).
+  cap: number | number[];
   penalty: number;
 }
+export const capAt = (cap: number | number[], t: number) => (Array.isArray(cap) ? cap[t] : cap);
 
 // startMWh / endMWh default to the asset's start of day charge. Replanning mid day passes the
 // current stored energy as startMWh and keeps the end of day target.
@@ -20,15 +22,23 @@ export function dispatch(
   const lo = Math.round((a.energyMWh * a.socMinFrac) / step);
   const hi = Math.round((a.energyMWh * a.socMaxFrac) / step);
   const i0 = Math.round((startMWh ?? a.energyMWh * a.startSocFrac) / step) - lo;
-  const iEnd = Math.round((endMWh ?? a.energyMWh * a.startSocFrac) / step) - lo;
   const n = hi - lo + 1;
   const T = v.length;
+  // End of day target, moved to the nearest charge the battery can physically reach in the hours
+  // left (after a long discharge late in the day, returning to the target may be impossible).
+  const up = Math.floor((a.powerMW * eta) / step + 1e-9),
+    down = Math.floor(a.powerMW / eta / step + 1e-9);
+  const iEnd = Math.min(
+    Math.max(Math.round((endMWh ?? a.energyMWh * a.startSocFrac) / step) - lo, i0 - down * T),
+    i0 + up * T,
+    n - 1,
+  );
   const V: Float64Array[] = Array.from({ length: T + 1 }, () => new Float64Array(n).fill(-Infinity));
   const choice: Int32Array[] = Array.from({ length: T }, () => new Int32Array(n).fill(-1));
   V[T][iEnd] = 0;
 
   const over = (t: number, c: number, d: number): number =>
-    limit ? limit.penalty * Math.max(0, limit.load[t] + c - d - limit.cap) : 0;
+    limit ? limit.penalty * Math.max(0, limit.load[t] + c - d - capAt(limit.cap, t)) : 0;
 
   const reward = (t: number, delta: number): number => {
     if (delta >= 0) {

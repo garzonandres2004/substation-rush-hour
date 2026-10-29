@@ -1,0 +1,1591 @@
+{
+ "generatedAt": "2026-10-28T08:41:36.804Z",
+ "method": "Year capacity case (rating = annual peak, 100 MW), planned every night on issued forecasts, graded on real demand. For each new load size, the plan runs, and whatever is still over the rating is paused by the data center (never more than its own load). Budget = paused MWh as a share of the new load times every hour of the study, as in Duke Rethinking Load Growth (2025).",
+ "days": 359,
+ "first": "2025-10-31",
+ "last": "2026-10-26",
+ "ratingMW": 100,
+ "stepMW": 0.5,
+ "gridKgPerMWhMean": 501.79070777079284,
+ "budgetsPct": [
+  0,
+  0.25,
+  0.5,
+  1
+ ],
+ "shares": [
+  1,
+  0.5,
+  0.3
+ ],
+ "result": [
+  {
+   "label": "No storage",
+   "byBudget": [
+    {
+     "budgetPct": 0,
+     "mw": 0,
+     "pausedHoursPerYear": 0,
+     "pausedMWhPerYear": 0,
+     "maxPauseShare": 0,
+     "pausedKgPerMWh": null,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 0
+      },
+      {
+       "share": 0.5,
+       "mw": 0
+      },
+      {
+       "share": 0.3,
+       "mw": 0
+      }
+     ]
+    },
+    {
+     "budgetPct": 0.25,
+     "mw": 9.5,
+     "pausedHoursPerYear": 79.30362116991644,
+     "pausedMWhPerYear": 180.29522273033072,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 497.66814660211105,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 9.5
+      },
+      {
+       "share": 0.5,
+       "mw": 0
+      },
+      {
+       "share": 0.3,
+       "mw": 0
+      }
+     ]
+    },
+    {
+     "budgetPct": 0.5,
+     "mw": 12,
+     "pausedHoursPerYear": 163.6908077994429,
+     "pausedMWhPerYear": 477.1481613216697,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 499.42615660848537,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 12
+      },
+      {
+       "share": 0.5,
+       "mw": 0
+      },
+      {
+       "share": 0.3,
+       "mw": 0
+      }
+     ]
+    },
+    {
+     "budgetPct": 1,
+     "mw": 15.5,
+     "pausedHoursPerYear": 294.8467966573816,
+     "pausedMWhPerYear": 1297.0047906592006,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 502.18300793451596,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 15.5
+      },
+      {
+       "share": 0.5,
+       "mw": 0
+      },
+      {
+       "share": 0.3,
+       "mw": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "label": "10 MW, 4 h Station",
+   "byBudget": [
+    {
+     "budgetPct": 0,
+     "mw": 7,
+     "pausedHoursPerYear": 0,
+     "pausedMWhPerYear": 0,
+     "maxPauseShare": 0,
+     "pausedKgPerMWh": null,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 7
+      },
+      {
+       "share": 0.5,
+       "mw": 7
+      },
+      {
+       "share": 0.3,
+       "mw": 7
+      }
+     ]
+    },
+    {
+     "budgetPct": 0.25,
+     "mw": 15.5,
+     "pausedHoursPerYear": 67.10306406685237,
+     "pausedMWhPerYear": 299.02669880448894,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 520.1074758775745,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 15.5
+      },
+      {
+       "share": 0.5,
+       "mw": 8
+      },
+      {
+       "share": 0.3,
+       "mw": 7
+      }
+     ]
+    },
+    {
+     "budgetPct": 0.5,
+     "mw": 17.5,
+     "pausedHoursPerYear": 123.02228412256268,
+     "pausedMWhPerYear": 702.2127426781119,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 523.4086502174187,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 17.5
+      },
+      {
+       "share": 0.5,
+       "mw": 8
+      },
+      {
+       "share": 0.3,
+       "mw": 7
+      }
+     ]
+    },
+    {
+     "budgetPct": 1,
+     "mw": 20.5,
+     "pausedHoursPerYear": 255.1949860724234,
+     "pausedMWhPerYear": 1787.1051294811828,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 522.4040243673908,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 20.5
+      },
+      {
+       "share": 0.5,
+       "mw": 8
+      },
+      {
+       "share": 0.3,
+       "mw": 7
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "label": "10 MW, 8 h Station",
+   "byBudget": [
+    {
+     "budgetPct": 0,
+     "mw": 9.5,
+     "pausedHoursPerYear": 0,
+     "pausedMWhPerYear": 0,
+     "maxPauseShare": 0,
+     "pausedKgPerMWh": null,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 9.5
+      },
+      {
+       "share": 0.5,
+       "mw": 9.5
+      },
+      {
+       "share": 0.3,
+       "mw": 9.5
+      }
+     ]
+    },
+    {
+     "budgetPct": 0.25,
+     "mw": 19,
+     "pausedHoursPerYear": 103.70473537604457,
+     "pausedMWhPerYear": 371.04876254958816,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 525.3407004137612,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 19
+      },
+      {
+       "share": 0.5,
+       "mw": 10.5
+      },
+      {
+       "share": 0.3,
+       "mw": 10
+      }
+     ]
+    },
+    {
+     "budgetPct": 0.5,
+     "mw": 21,
+     "pausedHoursPerYear": 190.12534818941504,
+     "pausedMWhPerYear": 845.6727057790139,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 531.9001492023937,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 21
+      },
+      {
+       "share": 0.5,
+       "mw": 10.5
+      },
+      {
+       "share": 0.3,
+       "mw": 10
+      }
+     ]
+    },
+    {
+     "budgetPct": 1,
+     "mw": 24,
+     "pausedHoursPerYear": 352.79944289693594,
+     "pausedMWhPerYear": 2100.1403940435034,
+     "maxPauseShare": 1,
+     "pausedKgPerMWh": 531.6034203510063,
+     "byShare": [
+      {
+       "share": 1,
+       "mw": 24
+      },
+      {
+       "share": 0.5,
+       "mw": 10.5
+      },
+      {
+       "share": 0.3,
+       "mw": 10
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "curves": {
+  "No storage": [
+   {
+    "x": 0,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 0.5,
+    "pausedMWh": 0.5,
+    "pausedHours": 1,
+    "maxPauseMW": 0.5,
+    "pausedKgCO2": 248.6418465729155
+   },
+   {
+    "x": 1,
+    "pausedMWh": 1,
+    "pausedHours": 1,
+    "maxPauseMW": 1,
+    "pausedKgCO2": 497.283693145831
+   },
+   {
+    "x": 1.5,
+    "pausedMWh": 1.6041482355254146,
+    "pausedHours": 2,
+    "maxPauseMW": 1.5,
+    "pausedKgCO2": 795.4851215168486
+   },
+   {
+    "x": 2,
+    "pausedMWh": 2.6971394868770346,
+    "pausedHours": 3,
+    "maxPauseMW": 2,
+    "pausedKgCO2": 1329.4969095749098
+   },
+   {
+    "x": 2.5,
+    "pausedMWh": 4.197139486877035,
+    "pausedHours": 3,
+    "maxPauseMW": 2.5,
+    "pausedKgCO2": 2071.1545542551135
+   },
+   {
+    "x": 3,
+    "pausedMWh": 6.162882138995386,
+    "pausedHours": 5,
+    "maxPauseMW": 3,
+    "pausedKgCO2": 3051.445309872777
+   },
+   {
+    "x": 3.5,
+    "pausedMWh": 9.135260001965989,
+    "pausedHours": 6,
+    "maxPauseMW": 3.5,
+    "pausedKgCO2": 4516.1482603142795
+   },
+   {
+    "x": 4,
+    "pausedMWh": 12.135260001965989,
+    "pausedHours": 6,
+    "maxPauseMW": 4,
+    "pausedKgCO2": 5993.998471777708
+   },
+   {
+    "x": 4.5,
+    "pausedMWh": 15.966578197188639,
+    "pausedHours": 8,
+    "maxPauseMW": 4.5,
+    "pausedKgCO2": 7875.848115791798
+   },
+   {
+    "x": 5,
+    "pausedMWh": 20.54605327828567,
+    "pausedHours": 11,
+    "maxPauseMW": 5,
+    "pausedKgCO2": 10154.774478047306
+   },
+   {
+    "x": 5.5,
+    "pausedMWh": 26.4985255086995,
+    "pausedHours": 13,
+    "maxPauseMW": 5.5,
+    "pausedKgCO2": 13121.609415106246
+   },
+   {
+    "x": 6,
+    "pausedMWh": 33.92155706281331,
+    "pausedHours": 18,
+    "maxPauseMW": 6,
+    "pausedKgCO2": 16793.79103410267
+   },
+   {
+    "x": 6.5,
+    "pausedMWh": 43.52840853238963,
+    "pausedHours": 21,
+    "maxPauseMW": 6.5,
+    "pausedKgCO2": 21532.800994841426
+   },
+   {
+    "x": 7,
+    "pausedMWh": 57.03735377961267,
+    "pausedHours": 31,
+    "maxPauseMW": 7,
+    "pausedKgCO2": 28155.012638940952
+   },
+   {
+    "x": 7.5,
+    "pausedMWh": 73.5783446377666,
+    "pausedHours": 35,
+    "maxPauseMW": 7.5,
+    "pausedKgCO2": 36328.14777599713
+   },
+   {
+    "x": 8,
+    "pausedMWh": 91.99764081391916,
+    "pausedHours": 38,
+    "maxPauseMW": 8,
+    "pausedKgCO2": 45452.19673101808
+   },
+   {
+    "x": 8.5,
+    "pausedMWh": 113.1578197188636,
+    "pausedHours": 49,
+    "maxPauseMW": 8.5,
+    "pausedKgCO2": 56058.678986704756
+   },
+   {
+    "x": 9,
+    "pausedMWh": 141.32979455421201,
+    "pausedHours": 64,
+    "maxPauseMW": 9,
+    "pausedKgCO2": 70212.25925145751
+   },
+   {
+    "x": 9.5,
+    "pausedMWh": 177.33146564435268,
+    "pausedHours": 78,
+    "maxPauseMW": 9.5,
+    "pausedKgCO2": 88252.22184146092
+   },
+   {
+    "x": 10,
+    "pausedMWh": 220.19954782266782,
+    "pausedHours": 93,
+    "maxPauseMW": 10,
+    "pausedKgCO2": 109769.43873451444
+   },
+   {
+    "x": 10.5,
+    "pausedMWh": 270.8049248009436,
+    "pausedHours": 109,
+    "maxPauseMW": 10.5,
+    "pausedKgCO2": 135109.45030942824
+   },
+   {
+    "x": 11,
+    "pausedMWh": 328.14931681903056,
+    "pausedHours": 121,
+    "maxPauseMW": 11,
+    "pausedKgCO2": 163692.02359696056
+   },
+   {
+    "x": 11.5,
+    "pausedMWh": 393.70662538091017,
+    "pausedHours": 145,
+    "maxPauseMW": 11.5,
+    "pausedKgCO2": 196437.8884272508
+   },
+   {
+    "x": 12,
+    "pausedMWh": 469.30462990268336,
+    "pausedHours": 161,
+    "maxPauseMW": 12,
+    "pausedKgCO2": 234383.0075908648
+   },
+   {
+    "x": 12.5,
+    "pausedMWh": 556.015924506045,
+    "pausedHours": 188,
+    "maxPauseMW": 12.5,
+    "pausedKgCO2": 278059.1399186835
+   },
+   {
+    "x": 13,
+    "pausedMWh": 655.7843310724464,
+    "pausedHours": 206,
+    "maxPauseMW": 13,
+    "pausedKgCO2": 328221.76042738906
+   },
+   {
+    "x": 13.5,
+    "pausedMWh": 762.8022707166022,
+    "pausedHours": 225,
+    "maxPauseMW": 13.5,
+    "pausedKgCO2": 382018.9287166487
+   },
+   {
+    "x": 14,
+    "pausedMWh": 878.7543497493361,
+    "pausedHours": 244,
+    "maxPauseMW": 14,
+    "pausedKgCO2": 440501.07859303744
+   },
+   {
+    "x": 14.5,
+    "pausedMWh": 1003.4462793669516,
+    "pausedHours": 254,
+    "maxPauseMW": 14.5,
+    "pausedKgCO2": 503442.25857859914
+   },
+   {
+    "x": 15,
+    "pausedMWh": 1135.3922146859331,
+    "pausedHours": 271,
+    "maxPauseMW": 15,
+    "pausedKgCO2": 569915.0028554585
+   },
+   {
+    "x": 15.5,
+    "pausedMWh": 1275.6841639634329,
+    "pausedHours": 290,
+    "maxPauseMW": 15.5,
+    "pausedKgCO2": 640626.910633585
+   },
+   {
+    "x": 16,
+    "pausedMWh": 1427.7157180772635,
+    "pausedHours": 314,
+    "maxPauseMW": 16,
+    "pausedKgCO2": 716943.4465100581
+   },
+   {
+    "x": 16.5,
+    "pausedMWh": 1589.2829548805657,
+    "pausedHours": 339,
+    "maxPauseMW": 16.5,
+    "pausedKgCO2": 798014.6546742246
+   },
+   {
+    "x": 17,
+    "pausedMWh": 1762.2879190012768,
+    "pausedHours": 355,
+    "maxPauseMW": 17,
+    "pausedKgCO2": 884607.9148418888
+   },
+   {
+    "x": 17.5,
+    "pausedMWh": 1948.3264523739297,
+    "pausedHours": 390,
+    "maxPauseMW": 17.5,
+    "pausedKgCO2": 977321.5402013401
+   },
+   {
+    "x": 18,
+    "pausedMWh": 2146.277794161014,
+    "pausedHours": 406,
+    "maxPauseMW": 18,
+    "pausedKgCO2": 1075818.8913393272
+   },
+   {
+    "x": 18.5,
+    "pausedMWh": 2353.8793866116184,
+    "pausedHours": 430,
+    "maxPauseMW": 18.5,
+    "pausedKgCO2": 1179011.6907666998
+   },
+   {
+    "x": 19,
+    "pausedMWh": 2574.6851469576322,
+    "pausedHours": 456,
+    "maxPauseMW": 19,
+    "pausedKgCO2": 1288319.1892432412
+   },
+   {
+    "x": 19.5,
+    "pausedMWh": 2809.8641010518027,
+    "pausedHours": 485,
+    "maxPauseMW": 19.5,
+    "pausedKgCO2": 1404729.541350412
+   },
+   {
+    "x": 20,
+    "pausedMWh": 3059.254890396145,
+    "pausedHours": 510,
+    "maxPauseMW": 20,
+    "pausedKgCO2": 1527341.8718760675
+   },
+   {
+    "x": 20.5,
+    "pausedMWh": 3322.4729185097794,
+    "pausedHours": 538,
+    "maxPauseMW": 20.5,
+    "pausedKgCO2": 1656318.3315544233
+   },
+   {
+    "x": 21,
+    "pausedMWh": 3596.7443232084934,
+    "pausedHours": 560,
+    "maxPauseMW": 21,
+    "pausedKgCO2": 1789932.7063808914
+   },
+   {
+    "x": 21.5,
+    "pausedMWh": 3882.9201317212237,
+    "pausedHours": 587,
+    "maxPauseMW": 21.5,
+    "pausedKgCO2": 1928969.534336705
+   },
+   {
+    "x": 22,
+    "pausedMWh": 4182.646810183817,
+    "pausedHours": 611,
+    "maxPauseMW": 22,
+    "pausedKgCO2": 2074258.4941640522
+   },
+   {
+    "x": 22.5,
+    "pausedMWh": 4493.899292244173,
+    "pausedHours": 635,
+    "maxPauseMW": 22.5,
+    "pausedKgCO2": 2225235.9337800476
+   },
+   {
+    "x": 23,
+    "pausedMWh": 4819.334807824633,
+    "pausedHours": 667,
+    "maxPauseMW": 23,
+    "pausedKgCO2": 2383346.7198774545
+   },
+   {
+    "x": 23.5,
+    "pausedMWh": 5158.241914872705,
+    "pausedHours": 690,
+    "maxPauseMW": 23.5,
+    "pausedKgCO2": 2547913.8715606234
+   },
+   {
+    "x": 24,
+    "pausedMWh": 5511.727120809992,
+    "pausedHours": 725,
+    "maxPauseMW": 24,
+    "pausedKgCO2": 2719265.8442803575
+   },
+   {
+    "x": 24.5,
+    "pausedMWh": 5879.596628329896,
+    "pausedHours": 749,
+    "maxPauseMW": 24.5,
+    "pausedKgCO2": 2897458.556829266
+   },
+   {
+    "x": 25,
+    "pausedMWh": 6263.25567679151,
+    "pausedHours": 784,
+    "maxPauseMW": 25,
+    "pausedKgCO2": 3083792.3980049947
+   },
+   {
+    "x": 25.5,
+    "pausedMWh": 6664.707018578591,
+    "pausedHours": 823,
+    "maxPauseMW": 25.5,
+    "pausedKgCO2": 3279005.2804906704
+   },
+   {
+    "x": 26,
+    "pausedMWh": 7084.781676988109,
+    "pausedHours": 858,
+    "maxPauseMW": 26,
+    "pausedKgCO2": 3482577.4536266723
+   },
+   {
+    "x": 26.5,
+    "pausedMWh": 7518.598053671487,
+    "pausedHours": 884,
+    "maxPauseMW": 26.5,
+    "pausedKgCO2": 3693010.83341845
+   },
+   {
+    "x": 27,
+    "pausedMWh": 7969.001179593042,
+    "pausedHours": 919,
+    "maxPauseMW": 27,
+    "pausedKgCO2": 3910702.846189538
+   },
+   {
+    "x": 27.5,
+    "pausedMWh": 8437.158409515385,
+    "pausedHours": 955,
+    "maxPauseMW": 27.5,
+    "pausedKgCO2": 4136327.9694848843
+   },
+   {
+    "x": 28,
+    "pausedMWh": 8923.50693010911,
+    "pausedHours": 994,
+    "maxPauseMW": 28,
+    "pausedKgCO2": 4370875.477836184
+   },
+   {
+    "x": 28.5,
+    "pausedMWh": 9431.088911825409,
+    "pausedHours": 1035,
+    "maxPauseMW": 28.5,
+    "pausedKgCO2": 4614892.322289776
+   },
+   {
+    "x": 29,
+    "pausedMWh": 9960.82689472132,
+    "pausedHours": 1076,
+    "maxPauseMW": 29,
+    "pausedKgCO2": 4869026.225169332
+   },
+   {
+    "x": 29.5,
+    "pausedMWh": 10508.415364199343,
+    "pausedHours": 1117,
+    "maxPauseMW": 29.5,
+    "pausedKgCO2": 5131064.272525273
+   },
+   {
+    "x": 30,
+    "pausedMWh": 11077.612307087378,
+    "pausedHours": 1165,
+    "maxPauseMW": 30,
+    "pausedKgCO2": 5403153.669954584
+   }
+  ],
+  "10 MW, 4 h Station": [
+   {
+    "x": 0,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 0.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 1,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 1.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 2,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 2.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 3,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 3.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 4,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 4.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 5.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 6,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 6.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 7,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 7.5,
+    "pausedMWh": 2.7759913566595316,
+    "pausedHours": 1,
+    "maxPauseMW": 2.7759913566595316,
+    "pausedKgCO2": 1339.7288990632956
+   },
+   {
+    "x": 8,
+    "pausedMWh": 6.137682127709596,
+    "pausedHours": 2,
+    "maxPauseMW": 3.9795537206330494,
+    "pausedKgCO2": 2947.784138083419
+   },
+   {
+    "x": 8.5,
+    "pausedMWh": 10.724018543367436,
+    "pausedHours": 3,
+    "maxPauseMW": 5.472377862970603,
+    "pausedKgCO2": 5133.970489711192
+   },
+   {
+    "x": 9,
+    "pausedMWh": 15.038267999261492,
+    "pausedHours": 3,
+    "maxPauseMW": 5.972377862970603,
+    "pausedKgCO2": 7190.367112729525
+   },
+   {
+    "x": 9.5,
+    "pausedMWh": 18.883475879173204,
+    "pausedHours": 3,
+    "maxPauseMW": 6.931544295569552,
+    "pausedKgCO2": 9023.567401846116
+   },
+   {
+    "x": 10,
+    "pausedMWh": 23.58237302742924,
+    "pausedHours": 4,
+    "maxPauseMW": 8.604148235525415,
+    "pausedKgCO2": 11306.419426228184
+   },
+   {
+    "x": 10.5,
+    "pausedMWh": 28.63114327131447,
+    "pausedHours": 4,
+    "maxPauseMW": 9.104148235525415,
+    "pausedKgCO2": 13788.383618841352
+   },
+   {
+    "x": 11,
+    "pausedMWh": 33.6799135151997,
+    "pausedHours": 4,
+    "maxPauseMW": 9.604148235525415,
+    "pausedKgCO2": 16270.347811454518
+   },
+   {
+    "x": 11.5,
+    "pausedMWh": 38.735146061076875,
+    "pausedHours": 7,
+    "maxPauseMW": 11.5,
+    "pausedKgCO2": 18796.948259851717
+   },
+   {
+    "x": 12,
+    "pausedMWh": 46.46809405834752,
+    "pausedHours": 8,
+    "maxPauseMW": 12,
+    "pausedKgCO2": 23006.146822975978
+   },
+   {
+    "x": 12.5,
+    "pausedMWh": 58.56757118486257,
+    "pausedHours": 13,
+    "maxPauseMW": 12.5,
+    "pausedKgCO2": 29544.594502409393
+   },
+   {
+    "x": 13,
+    "pausedMWh": 74.11542149101854,
+    "pausedHours": 16,
+    "maxPauseMW": 13,
+    "pausedKgCO2": 37749.2921408709
+   },
+   {
+    "x": 13.5,
+    "pausedMWh": 96.41601734436321,
+    "pausedHours": 22,
+    "maxPauseMW": 13.5,
+    "pausedKgCO2": 49312.31470831145
+   },
+   {
+    "x": 14,
+    "pausedMWh": 123.83908832337248,
+    "pausedHours": 28,
+    "maxPauseMW": 14,
+    "pausedKgCO2": 63614.064885090236
+   },
+   {
+    "x": 14.5,
+    "pausedMWh": 171.66566863840032,
+    "pausedHours": 39,
+    "maxPauseMW": 14.5,
+    "pausedKgCO2": 88552.81500063994
+   },
+   {
+    "x": 15,
+    "pausedMWh": 223.30068283341205,
+    "pausedHours": 46,
+    "maxPauseMW": 15,
+    "pausedKgCO2": 115483.41094932819
+   },
+   {
+    "x": 15.5,
+    "pausedMWh": 294.1111914268809,
+    "pausedHours": 66,
+    "maxPauseMW": 15.5,
+    "pausedKgCO2": 152969.42940038117
+   },
+   {
+    "x": 16,
+    "pausedMWh": 376.1653213429498,
+    "pausedHours": 80,
+    "maxPauseMW": 16,
+    "pausedKgCO2": 196339.78705738214
+   },
+   {
+    "x": 16.5,
+    "pausedMWh": 466.25872771221077,
+    "pausedHours": 93,
+    "maxPauseMW": 16.5,
+    "pausedKgCO2": 243470.0446344461
+   },
+   {
+    "x": 17,
+    "pausedMWh": 569.7678819289009,
+    "pausedHours": 109,
+    "maxPauseMW": 17,
+    "pausedKgCO2": 297991.48789304215
+   },
+   {
+    "x": 17.5,
+    "pausedMWh": 690.6695195108005,
+    "pausedHours": 121,
+    "maxPauseMW": 17.5,
+    "pausedKgCO2": 361502.4009534612
+   },
+   {
+    "x": 18,
+    "pausedMWh": 829.3387398422129,
+    "pausedHours": 132,
+    "maxPauseMW": 18,
+    "pausedKgCO2": 433775.7851952257
+   },
+   {
+    "x": 18.5,
+    "pausedMWh": 982.1778659959427,
+    "pausedHours": 161,
+    "maxPauseMW": 18.5,
+    "pausedKgCO2": 513967.0922446508
+   },
+   {
+    "x": 19,
+    "pausedMWh": 1151.7969696500743,
+    "pausedHours": 182,
+    "maxPauseMW": 19,
+    "pausedKgCO2": 602328.9291362165
+   },
+   {
+    "x": 19.5,
+    "pausedMWh": 1340.2773493077714,
+    "pausedHours": 204,
+    "maxPauseMW": 19.5,
+    "pausedKgCO2": 700989.8300877052
+   },
+   {
+    "x": 20,
+    "pausedMWh": 1542.1158991045088,
+    "pausedHours": 231,
+    "maxPauseMW": 20,
+    "pausedKgCO2": 806098.7671233045
+   },
+   {
+    "x": 20.5,
+    "pausedMWh": 1757.728058859574,
+    "pausedHours": 251,
+    "maxPauseMW": 20.5,
+    "pausedKgCO2": 918244.2116917234
+   },
+   {
+    "x": 21,
+    "pausedMWh": 1987.4727496892083,
+    "pausedHours": 266,
+    "maxPauseMW": 21,
+    "pausedKgCO2": 1037155.0397940582
+   },
+   {
+    "x": 21.5,
+    "pausedMWh": 2237.3284938709844,
+    "pausedHours": 294,
+    "maxPauseMW": 21.5,
+    "pausedKgCO2": 1165306.954607239
+   },
+   {
+    "x": 22,
+    "pausedMWh": 2492.2530788829986,
+    "pausedHours": 315,
+    "maxPauseMW": 22,
+    "pausedKgCO2": 1295376.4747367767
+   },
+   {
+    "x": 22.5,
+    "pausedMWh": 2759.066802182885,
+    "pausedHours": 344,
+    "maxPauseMW": 22.5,
+    "pausedKgCO2": 1431537.677861536
+   },
+   {
+    "x": 23,
+    "pausedMWh": 3047.7819952314453,
+    "pausedHours": 372,
+    "maxPauseMW": 23,
+    "pausedKgCO2": 1578665.6701432334
+   },
+   {
+    "x": 23.5,
+    "pausedMWh": 3345.8019952150917,
+    "pausedHours": 390,
+    "maxPauseMW": 23.5,
+    "pausedKgCO2": 1729920.737406705
+   },
+   {
+    "x": 24,
+    "pausedMWh": 3653.9644508584197,
+    "pausedHours": 414,
+    "maxPauseMW": 24,
+    "pausedKgCO2": 1885514.5551713987
+   },
+   {
+    "x": 24.5,
+    "pausedMWh": 3982.7921673348624,
+    "pausedHours": 438,
+    "maxPauseMW": 24.5,
+    "pausedKgCO2": 2051013.229733182
+   },
+   {
+    "x": 25,
+    "pausedMWh": 4327.595786838653,
+    "pausedHours": 473,
+    "maxPauseMW": 25,
+    "pausedKgCO2": 2223663.5944061074
+   },
+   {
+    "x": 25.5,
+    "pausedMWh": 4686.424604700783,
+    "pausedHours": 507,
+    "maxPauseMW": 25.5,
+    "pausedKgCO2": 2403046.168357664
+   },
+   {
+    "x": 26,
+    "pausedMWh": 5060.282436685147,
+    "pausedHours": 536,
+    "maxPauseMW": 26,
+    "pausedKgCO2": 2590366.587952279
+   },
+   {
+    "x": 26.5,
+    "pausedMWh": 5446.301025525987,
+    "pausedHours": 559,
+    "maxPauseMW": 26.5,
+    "pausedKgCO2": 2783369.589338257
+   },
+   {
+    "x": 27,
+    "pausedMWh": 5836.9268569139085,
+    "pausedHours": 581,
+    "maxPauseMW": 27,
+    "pausedKgCO2": 2979116.8530184724
+   },
+   {
+    "x": 27.5,
+    "pausedMWh": 6243.200536873274,
+    "pausedHours": 613,
+    "maxPauseMW": 27.5,
+    "pausedKgCO2": 3182405.084992406
+   },
+   {
+    "x": 28,
+    "pausedMWh": 6661.2926946413245,
+    "pausedHours": 639,
+    "maxPauseMW": 28,
+    "pausedKgCO2": 3391563.3777071075
+   },
+   {
+    "x": 28.5,
+    "pausedMWh": 7105.37659926483,
+    "pausedHours": 667,
+    "maxPauseMW": 28.5,
+    "pausedKgCO2": 3612547.247033041
+   },
+   {
+    "x": 29,
+    "pausedMWh": 7570.658048417879,
+    "pausedHours": 695,
+    "maxPauseMW": 29,
+    "pausedKgCO2": 3842300.755030301
+   },
+   {
+    "x": 29.5,
+    "pausedMWh": 8050.790397442817,
+    "pausedHours": 724,
+    "maxPauseMW": 29.5,
+    "pausedKgCO2": 4078261.267117939
+   },
+   {
+    "x": 30,
+    "pausedMWh": 8547.58759624808,
+    "pausedHours": 751,
+    "maxPauseMW": 30,
+    "pausedKgCO2": 4321443.246713269
+   }
+  ],
+  "10 MW, 8 h Station": [
+   {
+    "x": 0,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 0.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 1,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 1.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 2,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 2.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 3,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 3.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 4,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 4.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 5.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 6,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 6.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 7,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 7.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 8,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 8.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 9,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 9.5,
+    "pausedMWh": 0,
+    "pausedHours": 0,
+    "maxPauseMW": 0,
+    "pausedKgCO2": 0
+   },
+   {
+    "x": 10,
+    "pausedMWh": 0.7357025012069016,
+    "pausedHours": 2,
+    "maxPauseMW": 0.585575596836108,
+    "pausedKgCO2": 357.2619266945248
+   },
+   {
+    "x": 10.5,
+    "pausedMWh": 4.784472745092131,
+    "pausedHours": 2,
+    "maxPauseMW": 4.134345840721338,
+    "pausedKgCO2": 2318.585637518668
+   },
+   {
+    "x": 11,
+    "pausedMWh": 9.769997212212814,
+    "pausedHours": 3,
+    "maxPauseMW": 6.979553720633049,
+    "pausedKgCO2": 4721.099824588131
+   },
+   {
+    "x": 11.5,
+    "pausedMWh": 14.689969756124,
+    "pausedHours": 5,
+    "maxPauseMW": 7.479553720633049,
+    "pausedKgCO2": 7087.446063000491
+   },
+   {
+    "x": 12,
+    "pausedMWh": 19.543775003766953,
+    "pausedHours": 6,
+    "maxPauseMW": 7.979553720633049,
+    "pausedKgCO2": 9465.458855550885
+   },
+   {
+    "x": 12.5,
+    "pausedMWh": 24.857204649506443,
+    "pausedHours": 7,
+    "maxPauseMW": 9.472377862970603,
+    "pausedKgCO2": 12092.739943341232
+   },
+   {
+    "x": 13,
+    "pausedMWh": 31.468408990278093,
+    "pausedHours": 9,
+    "maxPauseMW": 9.972377862970603,
+    "pausedKgCO2": 15393.186495333957
+   },
+   {
+    "x": 13.5,
+    "pausedMWh": 38.079096082198646,
+    "pausedHours": 9,
+    "maxPauseMW": 10.472377862970603,
+    "pausedKgCO2": 18692.021218911246
+   },
+   {
+    "x": 14,
+    "pausedMWh": 44.92619534107075,
+    "pausedHours": 10,
+    "maxPauseMW": 10.972377862970603,
+    "pausedKgCO2": 22103.381939456616
+   },
+   {
+    "x": 14.5,
+    "pausedMWh": 51.567840857008946,
+    "pausedHours": 10,
+    "maxPauseMW": 12.63510665954307,
+    "pausedKgCO2": 25424.299048164026
+   },
+   {
+    "x": 15,
+    "pausedMWh": 59.47386295514774,
+    "pausedHours": 13,
+    "maxPauseMW": 13.604148235525415,
+    "pausedKgCO2": 29437.31911987732
+   },
+   {
+    "x": 15.5,
+    "pausedMWh": 67.66467214626783,
+    "pausedHours": 15,
+    "maxPauseMW": 14.104148235525415,
+    "pausedKgCO2": 33589.21148583176
+   },
+   {
+    "x": 16,
+    "pausedMWh": 79.84393156436296,
+    "pausedHours": 22,
+    "maxPauseMW": 14.604148235525415,
+    "pausedKgCO2": 39741.720301149195
+   },
+   {
+    "x": 16.5,
+    "pausedMWh": 97.77913532593611,
+    "pausedHours": 32,
+    "maxPauseMW": 15.104148235525415,
+    "pausedKgCO2": 48901.07925302234
+   },
+   {
+    "x": 17,
+    "pausedMWh": 127.74228358589603,
+    "pausedHours": 42,
+    "maxPauseMW": 15.604148235525415,
+    "pausedKgCO2": 64628.954940048694
+   },
+   {
+    "x": 17.5,
+    "pausedMWh": 166.35642936303353,
+    "pausedHours": 53,
+    "maxPauseMW": 16.104148235525415,
+    "pausedKgCO2": 85013.51140299739
+   },
+   {
+    "x": 18,
+    "pausedMWh": 223.8007997879546,
+    "pausedHours": 60,
+    "maxPauseMW": 16.604148235525415,
+    "pausedKgCO2": 116067.47743681696
+   },
+   {
+    "x": 18.5,
+    "pausedMWh": 284.0041235815619,
+    "pausedHours": 77,
+    "maxPauseMW": 18.5,
+    "pausedKgCO2": 147831.7890812524
+   },
+   {
+    "x": 19,
+    "pausedMWh": 364.94933083644423,
+    "pausedHours": 102,
+    "maxPauseMW": 19,
+    "pausedKgCO2": 191722.73707715108
+   },
+   {
+    "x": 19.5,
+    "pausedMWh": 455.2388160166737,
+    "pausedHours": 122,
+    "maxPauseMW": 19.5,
+    "pausedKgCO2": 240068.5743989681
+   },
+   {
+    "x": 20,
+    "pausedMWh": 562.590643062875,
+    "pausedHours": 151,
+    "maxPauseMW": 20,
+    "pausedKgCO2": 297963.061905925
+   },
+   {
+    "x": 20.5,
+    "pausedMWh": 686.2596364936985,
+    "pausedHours": 169,
+    "maxPauseMW": 20.5,
+    "pausedKgCO2": 364493.4905825827
+   },
+   {
+    "x": 21,
+    "pausedMWh": 831.7712366429205,
+    "pausedHours": 187,
+    "maxPauseMW": 21,
+    "pausedKgCO2": 442419.2448726289
+   },
+   {
+    "x": 21.5,
+    "pausedMWh": 995.26861148178,
+    "pausedHours": 216,
+    "maxPauseMW": 21.5,
+    "pausedKgCO2": 529038.6086773846
+   },
+   {
+    "x": 22,
+    "pausedMWh": 1175.0135629595968,
+    "pausedHours": 241,
+    "maxPauseMW": 22,
+    "pausedKgCO2": 624326.3088602456
+   },
+   {
+    "x": 22.5,
+    "pausedMWh": 1371.1790048726202,
+    "pausedHours": 277,
+    "maxPauseMW": 22.5,
+    "pausedKgCO2": 728395.320553985
+   },
+   {
+    "x": 23,
+    "pausedMWh": 1584.757971360779,
+    "pausedHours": 299,
+    "maxPauseMW": 23,
+    "pausedKgCO2": 841952.2539386324
+   },
+   {
+    "x": 23.5,
+    "pausedMWh": 1816.4805850050554,
+    "pausedHours": 325,
+    "maxPauseMW": 23.5,
+    "pausedKgCO2": 965247.4127462801
+   },
+   {
+    "x": 24,
+    "pausedMWh": 2065.6175382510073,
+    "pausedHours": 347,
+    "maxPauseMW": 24,
+    "pausedKgCO2": 1098089.348471261
+   },
+   {
+    "x": 24.5,
+    "pausedMWh": 2320.925709695434,
+    "pausedHours": 370,
+    "maxPauseMW": 24.5,
+    "pausedKgCO2": 1233009.230082718
+   },
+   {
+    "x": 25,
+    "pausedMWh": 2599.6459719918857,
+    "pausedHours": 407,
+    "maxPauseMW": 25,
+    "pausedKgCO2": 1381134.1144119173
+   },
+   {
+    "x": 25.5,
+    "pausedMWh": 2897.011131464987,
+    "pausedHours": 434,
+    "maxPauseMW": 25.5,
+    "pausedKgCO2": 1540013.902244396
+   },
+   {
+    "x": 26,
+    "pausedMWh": 3214.5395837794326,
+    "pausedHours": 460,
+    "maxPauseMW": 26,
+    "pausedKgCO2": 1708302.7690798352
+   },
+   {
+    "x": 26.5,
+    "pausedMWh": 3533.2480682925902,
+    "pausedHours": 487,
+    "maxPauseMW": 26.5,
+    "pausedKgCO2": 1877070.3231326765
+   },
+   {
+    "x": 27,
+    "pausedMWh": 3869.541996221138,
+    "pausedHours": 514,
+    "maxPauseMW": 27,
+    "pausedKgCO2": 2053843.3947795168
+   },
+   {
+    "x": 27.5,
+    "pausedMWh": 4215.801053782541,
+    "pausedHours": 542,
+    "maxPauseMW": 27.5,
+    "pausedKgCO2": 2234206.5669615497
+   },
+   {
+    "x": 28,
+    "pausedMWh": 4580.9504676568795,
+    "pausedHours": 569,
+    "maxPauseMW": 28,
+    "pausedKgCO2": 2424701.6856875783
+   },
+   {
+    "x": 28.5,
+    "pausedMWh": 4962.0306888147525,
+    "pausedHours": 596,
+    "maxPauseMW": 28.5,
+    "pausedKgCO2": 2623206.378885116
+   },
+   {
+    "x": 29,
+    "pausedMWh": 5354.16928014488,
+    "pausedHours": 627,
+    "maxPauseMW": 29,
+    "pausedKgCO2": 2827461.093634395
+   },
+   {
+    "x": 29.5,
+    "pausedMWh": 5781.270801274301,
+    "pausedHours": 662,
+    "maxPauseMW": 29.5,
+    "pausedKgCO2": 3047852.083927907
+   },
+   {
+    "x": 30,
+    "pausedMWh": 6232.537700810673,
+    "pausedHours": 692,
+    "maxPauseMW": 30,
+    "pausedKgCO2": 3279855.413577036
+   }
+  ]
+ }
+}

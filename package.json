@@ -13,7 +13,10 @@
     "summer": "tsx scripts/summer.ts",
     "test": "tsx --test src/engine/engine.test.ts",
     "lint": "biome check .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "lab": "tsx scripts/lab.ts",
+    "lab:year": "tsx scripts/lab-year.ts",
+    "lab:capacity-year": "tsx scripts/lab-capacity-year.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.3",
