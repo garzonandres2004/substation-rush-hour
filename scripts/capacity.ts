@@ -4,10 +4,14 @@
 // Two limits: "moving" (P95 of the trailing 30 days, recomputed daily, as elsewhere on the page)
 // and "fixed" (one rating for all days: P95 of the 30 days before the first backtest day).
 // Linear scan in 0.25 MW steps; the reported value is the last step before the first failure.
+// Four ways to run the Station: our everyday planner ("aware"); capacity mode, the same planner told to hold
+// enough charge for what the day ahead forecast (plus the recent miss margin) says will be over the limit
+// later that day; the five line rule as written (recharge at night to half); and the same rule recharging
+// to full, so the comparison is fair to a rule built for new load.
 import fs from 'node:fs';
 import { runReplan, peakShaver } from '../src/engine/execute.js';
 import type { Asset } from '../src/engine/types.js';
-import { p, all, backtestDates, days, actualLoad, awareSignal, misses } from './common.js';
+import { p, all, backtestDates, days, actualLoad, awareSignal, misses, marginFor } from './common.js';
 
 const TOL = 0.1; // MWh over the limit per day still counted as zero (planning grid rounding)
 const STEP = 0.25;
@@ -36,7 +40,15 @@ const FIXED = hist[Math.floor(0.95 * hist.length)];
 
 const over = (load: number[], cap: number, ch?: number[], di?: number[]) =>
   load.reduce((s, l, i) => s + Math.max(0, l + (ch ? ch[i] - di![i] : 0) - cap), 0);
-type Mode = 'none' | 'aware' | 'shaver';
+type Mode = 'none' | 'aware' | 'capacity' | 'shaver' | 'shaverFull';
+// Capacity mode's reserve: at the end of each hour, enough stored to cover what the day ahead forecast plus
+// the margin from the last 14 days of misses says will be over the limit in the hours after it.
+function reserveFor(c: (typeof cases)[number], x: number, cap: number, a: Asset): number[] {
+  const eta = Math.sqrt(a.roundTripEff);
+  const m = marginFor(c.d);
+  const need = c.day.loadMW.map(l => Math.max(0, l + x + m - cap));
+  return need.map((_, t) => a.energyMWh * a.socMinFrac + need.slice(t + 1).reduce((s, v) => s + v, 0) / eta);
+}
 function worstDay(x: number, mode: Mode, a: Asset, fixed: boolean): number {
   let worst = 0;
   for (const c of cases) {
@@ -44,8 +56,15 @@ function worstDay(x: number, mode: Mode, a: Asset, fixed: boolean): number {
     const act = c.act.map(l => l + x);
     let o: number;
     if (mode === 'none') o = over(act, cap);
-    else if (mode === 'shaver') {
-      const s = peakShaver(a, act, c.day.hourLocal, cap);
+    else if (mode === 'shaver' || mode === 'shaverFull') {
+      const s = peakShaver(
+        a,
+        act,
+        c.day.hourLocal,
+        cap,
+        undefined,
+        mode === 'shaverFull' ? a.energyMWh * a.socMaxFrac : undefined,
+      );
       o = over(act, cap, s.charge, s.discharge);
     } else {
       const s = runReplan(
@@ -60,6 +79,9 @@ function worstDay(x: number, mode: Mode, a: Asset, fixed: boolean): number {
         act,
         true,
         c.prevMiss,
+        undefined,
+        undefined,
+        mode === 'capacity' ? reserveFor(c, x, cap, a) : undefined,
       );
       o = over(act, cap, s.charge, s.discharge);
     }
@@ -109,18 +131,31 @@ for (const fixed of [false, true]) {
     const a = { ...p.asset, powerMW: mw, energyMWh: mwh };
     const t = Date.now();
     const aware = scan('aware', a, fixed),
-      shaver = scan('shaver', a, fixed);
+      capacity = scan('capacity', a, fixed),
+      shaver = scan('shaver', a, fixed),
+      shaverFull = scan('shaverFull', a, fixed);
     st.push({
       label,
       powerMW: mw,
       energyMWh: mwh,
       awareMW: aware.mw,
       awareResidualMWh: aware.worstDayResidualMWh,
+      capacityModeMW: capacity.mw,
+      capacityModeResidualMWh: capacity.worstDayResidualMWh,
       shaverMW: shaver.mw,
+      shaverFullMW: shaverFull.mw,
       // our planner at the simple rule's size: which days, if any, go over
       awareDaysOverAtShaverMW: shaver.mw > aware.mw ? failDays(shaver.mw, 'aware', a, fixed) : [],
     });
-    console.error(key, label, aware.mw, shaver.mw, `${((Date.now() - t) / 1000).toFixed(0)} s`);
+    console.error(
+      key,
+      label,
+      aware.mw,
+      capacity.mw,
+      shaver.mw,
+      shaverFull.mw,
+      `${((Date.now() - t) / 1000).toFixed(0)} s`,
+    );
   }
   out.limits[key] = { withoutStorageMW: none.mw, stations: st };
 }

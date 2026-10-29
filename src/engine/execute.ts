@@ -96,15 +96,17 @@ export function runReplan(
 
 // Simple reactive rule for comparison: discharge whatever is over the limit, recharge at night
 // (10 PM to 6 AM) back toward the starting charge when there is headroom. No forecast, no price.
+// targetMWh lets the rule recharge to another level instead (for example full, for new load).
 export function peakShaver(
   a: Asset,
   actualLoad: number[],
   hourLocal: number[],
   cap: number | number[],
   startMWh = a.energyMWh * a.startSocFrac,
+  targetMWh = a.energyMWh * a.startSocFrac,
 ): Schedule {
   const eta = Math.sqrt(a.roundTripEff);
-  const start = a.energyMWh * a.startSocFrac,
+  const start = targetMWh,
     min = a.energyMWh * a.socMinFrac;
   let soc = startMWh;
   const charge: number[] = [],
