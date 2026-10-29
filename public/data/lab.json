@@ -1,51 +1,51 @@
 {
- "generatedAt": "2026-10-27T15:46:58.026Z",
+ "generatedAt": "2026-10-29T06:41:44.436Z",
  "days": 30,
  "firstDay": "2026-09-26",
  "lastDay": "2026-10-25",
  "confidence": {
-  "days": 31,
+  "days": 30,
   "resamples": 10000,
   "jamReliefMWh": {
    "ours": {
-    "mean": 11.954026617209818,
-    "lo": 9.90936297293488,
-    "hi": 14.011069657918304
+    "mean": 9.422760993863466,
+    "lo": 6.943591997174974,
+    "hi": 11.979392917494492
    },
    "priceOnlyWithGuard": {
-    "mean": 4.607542578143266,
-    "lo": 1.839028114628718,
-    "hi": 7.429357220746715
+    "mean": 2.9617132847066885,
+    "lo": 0.3571111998956481,
+    "hi": 5.763881366673929
    },
    "difference": {
-    "mean": 7.34648403906655,
-    "lo": 5.215852364003063,
-    "hi": 9.504969356105528
+    "mean": 6.461047709156775,
+    "lo": 4.185130062060633,
+    "hi": 8.87128180755695
    },
    "shareOfResamplesOursAhead": 1
   },
   "valuePerDay": {
-   "mean": 319.0511768691812,
-   "lo": 237.49223092669462,
-   "hi": 407.1471905580458
+   "mean": 298.8297784294425,
+   "lo": 217.20971209561887,
+   "hi": 386.24233841938405
   },
   "costOfIndexPerDay": {
-   "mean": 12.435465398762949,
-   "lo": 1.2067576459060303,
-   "hi": 21.60748569531903
+   "mean": 26.62796760360143,
+   "lo": 18.12636586751827,
+   "hi": 36.417681000293676
   },
   "overloadDayRate": {
    "planOnce": {
-    "days": 8,
-    "lo": 0.1370154373686976,
-    "hi": 0.432464724277151
+    "days": 9,
+    "lo": 0.16664562643958936,
+    "hi": 0.47876121011660183
    },
    "priceOnly": {
-    "days": 11,
-    "lo": 0.21116447741565816,
-    "hi": 0.5305236195718509
+    "days": 15,
+    "lo": 0.3315385122717376,
+    "hi": 0.6684614877282624
    },
-   "oursUpper95": 0.09211405994732369,
+   "oursUpper95": 0.09503385285530408,
    "oursDays": 0
   }
  },
@@ -54,19 +54,19 @@
   "requestMWh": 20,
   "byStrategy": {
    "ours": {
-    "meanReadyPct": 100,
-    "fullDays": 30,
-    "worstPct": 100
+    "meanReadyPct": 87.8173595997057,
+    "fullDays": 24,
+    "worstPct": 0
    },
    "priceOnlyWithGuard": {
-    "meanReadyPct": 99.1572662351141,
-    "fullDays": 28,
-    "worstPct": 75.04665215717488
+    "meanReadyPct": 84.18850767346588,
+    "fullDays": 21,
+    "worstPct": 0
    },
    "priceOnly": {
-    "meanReadyPct": 98.336443477145,
-    "fullDays": 28,
-    "worstPct": 75.04665215717488
+    "meanReadyPct": 83.21133772350267,
+    "fullDays": 21,
+    "worstPct": 0
    },
    "fiveLineRule": {
     "meanReadyPct": 75.04665215717488,
@@ -97,17 +97,17 @@
    },
    {
     "date": "2026-09-28",
-    "hour": 18,
+    "hour": 7,
     "ready": {
-     "ours": 1,
-     "priceOnlyWithGuard": 1,
-     "priceOnly": 1,
+     "ours": 0.4924936547814601,
+     "priceOnlyWithGuard": 0.7504665215717488,
+     "priceOnly": 0.7504665215717488,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-09-29",
-    "hour": 18,
+    "hour": 16,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -177,7 +177,7 @@
    },
    {
     "date": "2026-10-06",
-    "hour": 18,
+    "hour": 19,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -187,7 +187,7 @@
    },
    {
     "date": "2026-10-07",
-    "hour": 18,
+    "hour": 17,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -197,7 +197,7 @@
    },
    {
     "date": "2026-10-08",
-    "hour": 18,
+    "hour": 17,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -207,11 +207,11 @@
    },
    {
     "date": "2026-10-09",
-    "hour": 17,
+    "hour": 15,
     "ready": {
      "ours": 1,
-     "priceOnlyWithGuard": 1,
-     "priceOnly": 1,
+     "priceOnlyWithGuard": 0.7270144427726316,
+     "priceOnly": 0.7270144427726316,
      "fiveLineRule": 0.7504665215717488
     }
    },
@@ -229,7 +229,7 @@
     "date": "2026-10-11",
     "hour": 17,
     "ready": {
-     "ours": 1,
+     "ours": 0.7504665215717488,
      "priceOnlyWithGuard": 0.7504665215717488,
      "priceOnly": 0.7504665215717488,
      "fiveLineRule": 0.7504665215717488
@@ -247,27 +247,27 @@
    },
    {
     "date": "2026-10-13",
-    "hour": 17,
+    "hour": 9,
     "ready": {
-     "ours": 1,
-     "priceOnlyWithGuard": 1,
-     "priceOnly": 1,
+     "ours": 0.6097540487770459,
+     "priceOnlyWithGuard": 0,
+     "priceOnly": 0,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-10-14",
-    "hour": 18,
+    "hour": 16,
     "ready": {
      "ours": 1,
-     "priceOnlyWithGuard": 1,
+     "priceOnlyWithGuard": 0.9967133489624788,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-10-15",
-    "hour": 18,
+    "hour": 19,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -277,7 +277,7 @@
    },
    {
     "date": "2026-10-16",
-    "hour": 18,
+    "hour": 19,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -297,7 +297,7 @@
    },
    {
     "date": "2026-10-18",
-    "hour": 18,
+    "hour": 17,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -307,27 +307,27 @@
    },
    {
     "date": "2026-10-19",
-    "hour": 18,
+    "hour": 12,
     "ready": {
      "ours": 1,
-     "priceOnlyWithGuard": 1,
-     "priceOnly": 1,
+     "priceOnlyWithGuard": 0.7739186003708659,
+     "priceOnly": 0.7270144427726316,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-10-20",
-    "hour": 17,
+    "hour": 9,
     "ready": {
-     "ours": 1,
-     "priceOnlyWithGuard": 1,
-     "priceOnly": 1,
+     "ours": 0,
+     "priceOnlyWithGuard": 0,
+     "priceOnly": 0,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-10-21",
-    "hour": 17,
+    "hour": 15,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -337,7 +337,7 @@
    },
    {
     "date": "2026-10-22",
-    "hour": 17,
+    "hour": 16,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -347,27 +347,27 @@
    },
    {
     "date": "2026-10-23",
-    "hour": 17,
+    "hour": 8,
     "ready": {
-     "ours": 1,
-     "priceOnlyWithGuard": 1,
-     "priceOnly": 1,
+     "ours": 0.4924936547814601,
+     "priceOnlyWithGuard": 0.25797286679028864,
+     "priceOnly": 0.25797286679028864,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-10-24",
-    "hour": 18,
+    "hour": 9,
     "ready": {
-     "ours": 1,
-     "priceOnlyWithGuard": 0.9967133489624788,
-     "priceOnly": 1,
+     "ours": 0,
+     "priceOnlyWithGuard": 0,
+     "priceOnly": 0,
      "fiveLineRule": 0.7504665215717488
     }
    },
    {
     "date": "2026-10-25",
-    "hour": 18,
+    "hour": 19,
     "ready": {
      "ours": 1,
      "priceOnlyWithGuard": 1,
@@ -381,47 +381,47 @@
   {
    "label": "margin at the 50th percentile of misses",
    "guard": false,
-   "meanMarginMW": 0.006278446132701039,
-   "daysOver": 9,
-   "totalOverMWh": 19.834362606599,
-   "valuePerDay": 315.5328588410069,
-   "jamReliefMWh": 12.352494171116813
+   "meanMarginMW": 0.00547098299254903,
+   "daysOver": 10,
+   "totalOverMWh": 29.200890212491515,
+   "valuePerDay": 303.1404095551207,
+   "jamReliefMWh": 9.609311620674621
   },
   {
    "label": "margin at the 75th percentile of misses",
    "guard": false,
-   "meanMarginMW": 1.1680998966187623,
+   "meanMarginMW": 1.1702579704516636,
    "daysOver": 7,
-   "totalOverMWh": 10.613348980944863,
-   "valuePerDay": 292.15906782819064,
-   "jamReliefMWh": 12.161324195451284
+   "totalOverMWh": 16.59725370696235,
+   "valuePerDay": 275.3244281551596,
+   "jamReliefMWh": 9.363064793283892
   },
   {
    "label": "margin at the 90th percentile of misses",
    "guard": false,
-   "meanMarginMW": 3.447295805916581,
+   "meanMarginMW": 3.443808644730391,
    "daysOver": 3,
-   "totalOverMWh": 3.4697386905812664,
-   "valuePerDay": 243.00372039078562,
-   "jamReliefMWh": 12.610467037907101
+   "totalOverMWh": 2.95752056794187,
+   "valuePerDay": 213.65177447604168,
+   "jamReliefMWh": 8.896865893519623
   },
   {
    "label": "margin at the 95th percentile of misses",
    "guard": false,
-   "meanMarginMW": 4.767338580768405,
+   "meanMarginMW": 4.83044910571928,
    "daysOver": 1,
    "totalOverMWh": 0.1807045833099039,
-   "valuePerDay": 210.32003538647285,
-   "jamReliefMWh": 12.429246429004836
+   "valuePerDay": 174.15338083250944,
+   "jamReliefMWh": 8.960115439371787
   },
   {
    "label": "margin at the 99th percentile of misses",
    "guard": false,
-   "meanMarginMW": 6.604190188896625,
+   "meanMarginMW": 6.778790584813083,
    "daysOver": 0,
    "totalOverMWh": 0,
-   "valuePerDay": 145.39540516674222,
-   "jamReliefMWh": 11.986499608039683
+   "valuePerDay": 115.55633013232165,
+   "jamReliefMWh": 8.918541299682447
   },
   {
    "label": "no margin, real time guard",
@@ -429,8 +429,8 @@
    "meanMarginMW": 0,
    "daysOver": 0,
    "totalOverMWh": 0,
-   "valuePerDay": 314.2673660885641,
-   "jamReliefMWh": 12.11797338312564
+   "valuePerDay": 298.8297784294425,
+   "jamReliefMWh": 9.422760993863466
   }
  ],
  "thermal": {
@@ -456,37 +456,37 @@
    "max": 109.00941767538585
   },
   "ratingAtTightestHourMW": {
-   "min": 89.7652113007009,
-   "mean": 96.80539667842157
+   "min": 89.537474218564,
+   "mean": 96.88406803601679
   },
   "results": {
    "fixed": {
     "withoutStorageMW": 3.75,
-    "stationMW": 8.25,
+    "stationMW": 6,
     "fiveLineRuleMW": 8,
     "heatAtStationMax": {
-     "maxHotSpotC": 110.03080177544604,
-     "agingDays": 2.2530049177383846,
+     "maxHotSpotC": 109.67443513204597,
+     "agingDays": 1.8277365071473064,
      "calendarDays": 30
     },
     "heatWithoutStorageMax": {
-     "maxHotSpotC": 108.3875337552289,
-     "agingDays": 1.1739981768907342,
+     "maxHotSpotC": 108.78358345395026,
+     "agingDays": 1.171248233733549,
      "calendarDays": 30
     }
    },
    "temperature": {
-    "withoutStorageMW": 2.5,
-    "stationMW": 8.75,
-    "fiveLineRuleMW": 7,
+    "withoutStorageMW": 2.75,
+    "stationMW": 6.75,
+    "fiveLineRuleMW": 7.25,
     "heatAtStationMax": {
-     "maxHotSpotC": 109.27816462553398,
-     "agingDays": 2.5198835703404785,
+     "maxHotSpotC": 109.0485887286211,
+     "agingDays": 2.0812198675250153,
      "calendarDays": 30
     },
     "heatWithoutStorageMax": {
-     "maxHotSpotC": 106.76994537982222,
-     "agingDays": 0.9917027556826775,
+     "maxHotSpotC": 107.48816594617335,
+     "agingDays": 1.0232607940698246,
      "calendarDays": 30
     }
    }

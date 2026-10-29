@@ -112,7 +112,7 @@ export default function LabOverview() {
       'I',
       'If the utility calls an event in the jam',
       `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days.`,
-      'Held',
+      ev.fullDays === lab.days ? 'Held' : 'Mostly held',
     ],
     [
       '#fr-h',
@@ -135,6 +135,12 @@ export default function LabOverview() {
     <section className="evidence" aria-labelledby="ov-h">
       <p className="eyebrow">At a glance</p>
       <h2 id="ov-h">Eleven tests on real open data. The safety held in every one, and three changed what we say.</h2>
+      <p className="sub">
+        Rerun on Oct 29, 2026 with EIA hours read as hour ending (they had been filed one hour late against prices and
+        weather). The safety held in every test; new load numbers fell (B: 7 to 5.5 MW with a 10 MW, 4 h Station), the
+        index's lead over price grew (E: 1.2 to 1.5 times), and section I fell from 30 to 24 days fully ready. Every
+        number on this page is the rerun.
+      </p>
       <div className="tablewrap">
         <table>
           <thead>

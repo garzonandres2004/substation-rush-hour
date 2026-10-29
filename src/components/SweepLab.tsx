@@ -1,3 +1,4 @@
+import labRaw from '../../public/data/lab.json';
 import sweepRaw from '../../public/data/lab-sweep.json';
 
 interface Row {
@@ -145,8 +146,9 @@ export default function SweepLab() {
           <b>Smaller than the main page shows.</b> Over the full year the index adds about{' '}
           {Math.round((d0.jamReliefPerDay.ours / d0.jamReliefPerDay.priceGuard - 1) * 100)} percent more jam relief than
           price plus the same guard ({f1(d0.jamReliefPerDay.ours)} vs {f1(d0.jamReliefPerDay.priceGuard)} MWh a day). On
-          the main page's 30 autumn days the gap is about 2.6 times. The direction holds; the size depends on the
-          season.
+          the main page's 30 autumn days the gap is about{' '}
+          {f1(labRaw.confidence.jamReliefMWh.ours.mean / labRaw.confidence.jamReliefMWh.priceOnlyWithGuard.mean)} times.
+          The direction holds; the size depends on the season.
         </li>
         <li>
           <b>What it costs.</b> The value column is market value minus wear; the gap to price plus guard is the price of
