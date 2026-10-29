@@ -5,6 +5,7 @@ import { directions, jamRanges, type Strategy } from '../lib/directions';
 import { LoadChart, BatteryChart } from './Charts';
 import { explanationFor, stepKey, explainedBy } from '../lib/explain';
 import { MinuteChart } from './MinuteChart';
+import { FleetView } from './FleetView';
 import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
@@ -78,6 +79,7 @@ const NAV: [string, string][] = [
   ['route-h', 'Tomorrow'],
   ['ev-h', 'Overloads'],
   ['cap-h', 'Capacity'],
+  ['fv-h', 'Customer batteries'],
   ['in-h', 'Inside the hour'],
   ['tor-h', 'Torus fit'],
   ['hn-h', 'Real vs modeled'],
@@ -784,6 +786,17 @@ export default function Dashboard() {
             </ul>
           </div>
         )}
+      </section>
+
+      <section className="fleetview" aria-labelledby="fv-h">
+        <p className="eyebrow">With DETOUR · customer batteries</p>
+        <h2 id="fv-h">Batteries in the businesses behind this substation: help or harm?</h2>
+        <p className="sub">
+          Businesses put in batteries to cut their own bills, and each one charges when its tariff says to. Behind one
+          substation, with the real demand of every hour since November 2025, that can push the substation over its
+          limit at night. Choose how many businesses and how they are coordinated.
+        </p>
+        <FleetView />
       </section>
 
       <section className="inside" aria-labelledby="in-h">
