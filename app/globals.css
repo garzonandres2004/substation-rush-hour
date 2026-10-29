@@ -249,6 +249,10 @@ h3 {
   margin-bottom: 18px;
   overflow: visible;
 }
+.chart .axis {
+  font-size: 13px;
+  fill: var(--slate);
+}
 .side {
   display: flex;
   flex-direction: column;
