@@ -11,7 +11,7 @@
     "capacity": "tsx scripts/capacity.ts",
     "station": "tsx scripts/station.ts",
     "summer": "tsx scripts/summer.ts",
-    "test": "tsx --test src/engine/engine.test.ts",
+    "test": "tsx --test src/engine/engine.test.ts src/merge/envelope.test.ts",
     "lint": "biome check .",
     "format": "biome format --write .",
     "lab": "tsx scripts/lab.ts",
@@ -29,6 +29,7 @@
   "dependencies": {
     "@fontsource/barlow": "^5.3.0",
     "@fontsource/barlow-condensed": "^5.3.0",
+    "highs": "1.15.4",
     "next": "^15.5.28",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
