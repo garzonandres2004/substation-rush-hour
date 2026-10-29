@@ -39,6 +39,12 @@ test('closed hours get no charging, and the plan still exists', () => {
 
 test('all hours closed late in the day: falls back instead of failing', () => {
   const closed = Array(24).fill(true);
-  const s = dispatch(Array(24).fill(50), A, { load: Array(24).fill(0), cap: 1e9, penalty: 0, noCharge: closed }, 0.25, 8);
+  const s = dispatch(
+    Array(24).fill(50),
+    A,
+    { load: Array(24).fill(0), cap: 1e9, penalty: 0, noCharge: closed },
+    0.25,
+    8,
+  );
   assert.ok(s.soc.every(x => Number.isFinite(x)));
 });
