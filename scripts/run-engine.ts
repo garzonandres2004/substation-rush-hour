@@ -44,6 +44,7 @@ const KEYS = [
   'awareReplanMargin',
   'priceLimit',
   'peakShaver',
+  'hindsight',
 ] as const;
 interface DayRow {
   date: string;
@@ -124,6 +125,9 @@ for (const d of backtestDates) {
     awareReplanMargin: runReplan(p.asset, { ...base, margin, signal: awareSignal(day) }, act, false, prevMiss),
     priceLimit: runReplan(p.asset, { ...base, margin: 0, signal: day.lmp }, act, true, prevMiss),
     peakShaver: peakShaver(p.asset, act, day.hourLocal, day.capMW),
+    // Perfect hindsight: the same objective planned once with the real load known in advance. Nothing can
+    // do better on this day, so it is the yardstick for how much of the possible value ours captures.
+    hindsight: dispatch(awareSignal(day), p.asset, { load: act, cap: day.capMW, penalty: p.overloadPenalty }),
   };
 
   const real = { ...day, loadMW: act };
@@ -227,6 +231,13 @@ const summary = {
     (r, k) => r.co2![k],
     rows.filter(r => r.co2),
   ),
+  // Share of the perfect hindsight plan's value and jam relief that ours gets, summed over the days.
+  captureVsHindsight: (() => {
+    const sum = (k: string, f: (r: DayRow) => Record<string, number>) => rows.reduce((a, r) => a + f(r)[k], 0);
+    const pct = (f: (r: DayRow) => Record<string, number>) =>
+      sum('hindsight', f) > 0 ? (100 * sum('stressAware', f)) / sum('hindsight', f) : null;
+    return { valuePct: pct(r => r.net), jamReliefPct: pct(r => r.relieved) };
+  })(),
   demandForecastMapePct: { ours: (100 * mapeOursSum) / mapeN, eiaDayAhead: (100 * mapeEiaSum) / mapeEiaN },
   robust: (() => {
     const agg = (xs: Sc[]) => ({

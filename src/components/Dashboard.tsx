@@ -565,6 +565,13 @@ export default function Dashboard() {
             {Math.abs(bt.meanCo2TPerDay.clean).toFixed(1)} t a day, but adds load in jam hours, because the cleanest
             hours to charge, late afternoon solar, run into the evening rush.
           </li>
+          {bt.captureVsHindsight?.valuePct != null && bt.captureVsHindsight.jamReliefPct != null && (
+            <li>
+              Against perfect hindsight: the same plan made knowing the real load in advance, which nothing can beat on
+              those days. Ours gets {Math.round(bt.captureVsHindsight.valuePct)}% of its value and{' '}
+              {Math.round(bt.captureVsHindsight.jamReliefPct)}% of its jam relief, planning only on forecasts.
+            </li>
+          )}
         </ul>
         {bt.robust && (
           <div className="robust">
