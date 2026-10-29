@@ -2,6 +2,7 @@ import raw from '../../public/data/lab.json';
 import LabOverview from './LabOverview';
 import SecondsLab from './SecondsLab';
 import SweepLab from './SweepLab';
+import FleetLab from './FleetLab';
 import FlexLab from './FlexLab';
 import ThermalLab from './ThermalLab';
 import YearLab from './YearLab';
@@ -89,8 +90,8 @@ export default function Lab() {
           <h1>The lab</h1>
           <p className="lede">
             We tried to break our own results with more real, open data: a full year planned on weather forecasts as
-            they were issued, 17 different settings, real GPU power second by second, a heat based transformer limit and
-            flexible data centers. Every number is labeled measured, modeled or assumed.
+            they were issued, 17 different settings, real GPU power second by second, a heat based transformer limit,
+            flexible data centers and a fleet of customer batteries built with DETOUR. Every number is labeled measured, modeled or assumed.
           </p>
         </div>
         <p className="meta">
@@ -104,6 +105,7 @@ export default function Lab() {
       <SweepLab />
       <FlexLab />
       <ThermalLab />
+      <FleetLab />
 
       <section className="evidence" aria-labelledby="conf-h">
         <p className="eyebrow">H · On the main page's 30 days: confidence</p>

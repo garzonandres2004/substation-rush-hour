@@ -1,6 +1,7 @@
 import gpuRaw from '../../lab-data/gpu-stats.json';
 import capRaw from '../../public/data/lab-capacity-year.json';
 import flexRaw from '../../public/data/lab-flex.json';
+import fleetRaw from '../../public/data/merge-fleet.json';
 import labRaw from '../../public/data/lab.json';
 import secRaw from '../../public/data/lab-seconds.json';
 import sweepRaw from '../../public/data/lab-sweep.json';
@@ -17,6 +18,7 @@ const sweep = sweepRaw as any;
 const flex = flexRaw as any;
 const th = thRaw as any;
 const lab = labRaw as any;
+const fleet = fleetRaw as any;
 
 const f1 = (x: number) => x.toFixed(1);
 const time = (s: number) => (s >= 3600 ? `${(s / 3600).toFixed(1)} h` : `${Math.round(s / 60)} min`);
@@ -40,6 +42,13 @@ export default function LabOverview() {
   const ev = lab.events.byStrategy.ours;
   const guardRow = lab.frontier.find((r: any) => r.guard);
   const zeroMargin = lab.frontier.find((r: any) => !r.guard && r.daysOver === 0);
+  const fm = Object.keys(fleet.months);
+  const fBig = fleet.months[fm[0]].fleets.length - 1;
+  const fSum = (pick: (r: any) => number) => fm.reduce((a, m) => a + pick(fleet.months[m].fleets[fBig]), 0);
+  const fSites = fleet.months[fm[0]].fleets[fBig].sites;
+  const fAlone = fSum(r => r.withFleet.hoursCreatedByFleet);
+  const fGuard = fSum(r => r.withSiteGuard.hoursCreatedByFleet);
+  const fKept = (100 * fSum(r => r.withSiteGuard.savedAfterUsd)) / fSum(r => r.withSiteGuard.savedBeforeUsd);
   const rows: [string, string, string, string, string][] = [
     [
       '#yr-h',
@@ -113,11 +122,18 @@ export default function LabOverview() {
         : 'No margin we tried reaches zero overload days.',
       'Held',
     ],
+    [
+      '#fl-h',
+      'K',
+      'Many customer batteries behind one substation (with DETOUR)',
+      `${fSites} businesses each cutting their own bill: ${fAlone} new hours over the limit. With the guard ${fGuard}, customers keep ${Math.min(100, fKept).toFixed(0)}% of savings.`,
+      'New, the guard held',
+    ],
   ];
   return (
     <section className="evidence" aria-labelledby="ov-h">
       <p className="eyebrow">At a glance</p>
-      <h2 id="ov-h">Ten tests on real open data. The safety held in every one, and three changed what we say.</h2>
+      <h2 id="ov-h">Eleven tests on real open data. The safety held in every one, and three changed what we say.</h2>
       <div className="tablewrap">
         <table>
           <thead>
