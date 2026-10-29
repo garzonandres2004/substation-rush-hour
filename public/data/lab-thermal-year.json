@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-28T18:43:11.218Z",
+ "generatedAt": "2026-10-29T05:59:23.321Z",
  "method": "Year capacity case (issued forecasts, graded on real demand). Fixed: 100 MW all year (the annual peak). Heat: hourly rating = nameplate x the per unit load that holds a 110 C hot spot at that hour (IEEE C57.91 steady state, typical ONAF parameters, Salt Lake City air temperature); nameplate set so the tightest hour of the year sits exactly at the limit. The plan sees the rating from the issued temperature forecast; the guard and the grading use the real temperature.",
  "days": 353,
  "first": "2025-10-31",
@@ -97,11 +97,11 @@
    "medianDayMW": 33.75
   },
   "ours": {
-   "yearMW": 7,
+   "yearMW": 5.5,
    "bindingDays": [
     {
      "date": "2026-07-20",
-     "mw": 7
+     "mw": 5.5
     },
     {
      "date": "2026-07-13",
@@ -112,12 +112,12 @@
      "mw": 12
     },
     {
-     "date": "2026-08-10",
+     "date": "2026-07-08",
      "mw": 12.25
     },
     {
-     "date": "2026-07-31",
-     "mw": 12.75
+     "date": "2026-08-10",
+     "mw": 12.25
     }
    ],
    "months": [
@@ -127,7 +127,7 @@
     },
     {
      "month": "2025-11",
-     "mw": 39.5
+     "mw": 39.25
     },
     {
      "month": "2025-12",
@@ -147,19 +147,19 @@
     },
     {
      "month": "2026-04",
-     "mw": 40.25
+     "mw": 40
     },
     {
      "month": "2026-05",
-     "mw": 27
+     "mw": 24.75
     },
     {
      "month": "2026-06",
-     "mw": 17.25
+     "mw": 14.75
     },
     {
      "month": "2026-07",
-     "mw": 7
+     "mw": 5.5
     },
     {
      "month": "2026-08",
@@ -167,11 +167,11 @@
     },
     {
      "month": "2026-09",
-     "mw": 22.25
+     "mw": 20.5
     },
     {
      "month": "2026-10",
-     "mw": 30.75
+     "mw": 29.75
     }
    ],
    "medianDayMW": 38.5
@@ -186,12 +186,12 @@
      "mw": 0
     },
     {
-     "date": "2026-07-31",
-     "mw": 3.25
+     "date": "2026-07-12",
+     "mw": 3
     },
     {
-     "date": "2026-07-12",
-     "mw": 3.75
+     "date": "2026-07-31",
+     "mw": 3
     },
     {
      "date": "2026-07-13",
@@ -199,7 +199,7 @@
     },
     {
      "date": "2026-07-11",
-     "mw": 5.5
+     "mw": 5.25
     }
    ],
    "months": [
@@ -225,19 +225,19 @@
     },
     {
      "month": "2026-03",
-     "mw": 43.5
+     "mw": 42.75
     },
     {
      "month": "2026-04",
-     "mw": 47
+     "mw": 46.5
     },
     {
      "month": "2026-05",
-     "mw": 26.5
+     "mw": 26.25
     },
     {
      "month": "2026-06",
-     "mw": 13.25
+     "mw": 12.75
     },
     {
      "month": "2026-07",
@@ -245,11 +245,11 @@
     },
     {
      "month": "2026-08",
-     "mw": 6
+     "mw": 5.25
     },
     {
      "month": "2026-09",
-     "mw": 25.25
+     "mw": 23.75
     },
     {
      "month": "2026-10",
@@ -259,27 +259,27 @@
    "medianDayMW": 47.75
   },
   "ours": {
-   "yearMW": 7.5,
+   "yearMW": 6.5,
    "bindingDays": [
     {
      "date": "2026-07-20",
-     "mw": 7.5
+     "mw": 6.5
     },
     {
      "date": "2026-07-12",
-     "mw": 11.25
-    },
-    {
-     "date": "2026-07-13",
-     "mw": 13
+     "mw": 10.75
     },
     {
      "date": "2026-07-31",
+     "mw": 12.75
+    },
+    {
+     "date": "2026-07-13",
      "mw": 13.25
     },
     {
      "date": "2026-07-11",
-     "mw": 14
+     "mw": 13.75
     }
    ],
    "months": [
@@ -305,7 +305,7 @@
     },
     {
      "month": "2026-03",
-     "mw": 47.25
+     "mw": 47
     },
     {
      "month": "2026-04",
@@ -313,27 +313,27 @@
     },
     {
      "month": "2026-05",
-     "mw": 33.75
+     "mw": 31.5
     },
     {
      "month": "2026-06",
-     "mw": 21.5
+     "mw": 18.5
     },
     {
      "month": "2026-07",
-     "mw": 7.5
+     "mw": 6.5
     },
     {
      "month": "2026-08",
-     "mw": 14
+     "mw": 13.75
     },
     {
      "month": "2026-09",
-     "mw": 29.75
+     "mw": 28
     },
     {
      "month": "2026-10",
-     "mw": 39.75
+     "mw": 39.25
     }
    ],
    "medianDayMW": 47.75
@@ -343,7 +343,7 @@
    "tightestHour": {
     "ratio": 108.19518508619632,
     "date": "2026-07-20",
-    "hour": 17,
+    "hour": 16,
     "tempC": 38.9,
     "loadMW": 100
    },
@@ -362,8 +362,8 @@
     "maxTooGenerous": 10.849948037953567,
     "maxTooStrict": 8.104870603568514
    },
-   "todayLoadMaxHotSpotC": 107.11601213350744,
-   "todayLoadAgingDays": 4.0402953497546585,
+   "todayLoadMaxHotSpotC": 107.01432657930812,
+   "todayLoadAgingDays": 4.156123748088073,
    "puAt": [
     {
      "tempC": -10,

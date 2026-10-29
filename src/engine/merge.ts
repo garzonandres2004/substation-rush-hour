@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { eiaHourStart } from './time.js';
 import type { Hour } from './types.js';
 
 const key = (s: string) => `${s.slice(0, 13)}:00:00Z`;
@@ -15,10 +16,10 @@ export function loadHours(dir = 'data/raw', lmpNode = 'TH_PACE_GEN-APND'): Hour[
   };
   const read = (f: string) => JSON.parse(fs.readFileSync(`${dir}/${f}`, 'utf8'));
 
-  for (const r of read('eia_demand.json')) get(key(r.period)).demand = Number(r.value);
-  for (const r of read('eia_demand_forecast.json')) get(key(r.period)).demandEiaFcst = Number(r.value);
+  for (const r of read('eia_demand.json')) get(eiaHourStart(r.period)).demand = Number(r.value);
+  for (const r of read('eia_demand_forecast.json')) get(eiaHourStart(r.period)).demandEiaFcst = Number(r.value);
   for (const r of read('eia_fuel.json')) {
-    const h = get(key(r.period));
+    const h = get(eiaHourStart(r.period));
     if (r.fueltype === 'SUN') h.solar = Number(r.value);
     if (r.fueltype === 'WND') h.wind = Number(r.value);
     if (r.fueltype === 'COL') h.coal = Number(r.value);

@@ -5,14 +5,13 @@
 // guard as the main page. Same MW scale as the autumn test. Writes public/data/summer.json.
 import fs from 'node:fs';
 import { runReplan, peakShaver } from '../src/engine/execute.js';
-import { localDate, localHour } from '../src/engine/time.js';
+import { eiaHourStart, localDate, localHour } from '../src/engine/time.js';
 import type { Asset } from '../src/engine/types.js';
 import { p, backtestDates, days } from './common.js';
 
 const read = (f: string) => JSON.parse(fs.readFileSync(`data/raw/${f}`, 'utf8')) as { period: string; value: string }[];
-const key = (s: string) => `${s.slice(0, 13)}:00:00Z`;
-const D = new Map(read('summer_demand.json').map(r => [key(r.period), Number(r.value)]));
-const F = new Map(read('summer_demand_forecast.json').map(r => [key(r.period), Number(r.value)]));
+const D = new Map(read('summer_demand.json').map(r => [eiaHourStart(r.period), Number(r.value)]));
+const F = new Map(read('summer_demand_forecast.json').map(r => [eiaHourStart(r.period), Number(r.value)]));
 const first = days.get(backtestDates[0])!;
 const k = first.loadMW[0] / first.demandHat[0]; // same MW scale as the autumn test
 

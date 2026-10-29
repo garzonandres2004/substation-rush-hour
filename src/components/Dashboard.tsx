@@ -719,8 +719,13 @@ export default function Dashboard() {
         <ul className="notes">
           <li>
             Most of the room comes from the Station itself. A five line rule that only discharges what is over the limit
-            gets {main.shaverMW} MW with the same {main.label} Station; our planner gets {main.awareMW} MW, and also
-            earns value and relieves the grid jam the rest of the day.
+            gets {main.shaverMW} MW with the same {main.label} Station; our planner gets {main.awareMW} MW
+            {main.shaverMW > main.awareMW
+              ? (() => {
+                  const d = main.awareDaysOverAtShaverMW ?? [];
+                  return `. For new load alone the simple rule does better here: at ${main.shaverMW} MW our planner goes over on ${d.length} of ${cap.days} days${d.length ? ` (${d.map(shortDate).join(', ')})` : ''}. Our planner is built to earn value and relieve the jam the rest of the day; when the only goal is new load, a rule that only shaves is the safer choice.`;
+                })()
+              : ', and also earns value and relieves the grid jam the rest of the day.'}
           </li>
           <li>
             Stored energy matters most here. Doubling from 40 to 80 MWh gets{' '}
@@ -766,8 +771,9 @@ export default function Dashboard() {
             </div>
             <ul className="notes">
               <li>
-                In summer the planner matters more: {summerMain.awareMW} MW against {summerMain.shaverMW} MW for the
-                simple rule with the same {main.label} Station.
+                {summerMain.awareMW >= summerMain.shaverMW
+                  ? `In summer the planner matters more: ${summerMain.awareMW} MW against ${summerMain.shaverMW} MW for the simple rule with the same ${main.label} Station.`
+                  : `In summer the simple rule gets ${summerMain.shaverMW} MW against ${summerMain.awareMW} MW for our planner with the same ${main.label} Station.`}
               </li>
               <li>
                 A substation rated only for autumn load ({f1(summer.autumnRating.capMW)} MW) would go over on{' '}

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-27T16:36:57.411Z",
+ "generatedAt": "2026-10-29T05:48:06.974Z",
  "days": 359,
  "first": "2025-10-31",
  "last": "2026-10-26",
@@ -40,11 +40,11 @@
   {
    "label": "10 MW, 2 h",
    "ours": {
-    "mw": 4.75,
+    "mw": 4.5,
     "bindingDays": [
      {
       "date": "2026-07-20",
-      "mw": 4.75
+      "mw": 4.5
      },
      {
       "date": "2026-07-13",
@@ -59,14 +59,14 @@
       "mw": 9.75
      },
      {
-      "date": "2026-07-06",
-      "mw": 10.5
+      "date": "2026-07-12",
+      "mw": 10.25
      }
     ],
     "winterMW": 23.75,
     "springMW": 23.75,
-    "summerMW": 4.75,
-    "autumnMW": 21.5,
+    "summerMW": 4.5,
+    "autumnMW": 20.5,
     "medianDayMW": 23.75
    },
    "rule": {
@@ -103,11 +103,11 @@
   {
    "label": "10 MW, 4 h",
    "ours": {
-    "mw": 7,
+    "mw": 5.5,
     "bindingDays": [
      {
       "date": "2026-07-20",
-      "mw": 7
+      "mw": 5.5
      },
      {
       "date": "2026-07-13",
@@ -118,18 +118,18 @@
       "mw": 12
      },
      {
-      "date": "2026-08-10",
+      "date": "2026-07-08",
       "mw": 12.25
      },
      {
-      "date": "2026-07-31",
-      "mw": 12.75
+      "date": "2026-08-10",
+      "mw": 12.25
      }
     ],
     "winterMW": 23.75,
     "springMW": 23.75,
-    "summerMW": 7,
-    "autumnMW": 22.25,
+    "summerMW": 5.5,
+    "autumnMW": 20.5,
     "medianDayMW": 23.75
    },
    "rule": {
@@ -192,7 +192,7 @@
     "winterMW": 23.75,
     "springMW": 23.75,
     "summerMW": 9.75,
-    "autumnMW": 23.75,
+    "autumnMW": 23.25,
     "medianDayMW": 23.75
    },
    "rule": {

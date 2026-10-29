@@ -96,6 +96,7 @@ export interface CapacityLimit {
     awareMW: number;
     awareResidualMWh: number;
     shaverMW: number;
+    awareDaysOverAtShaverMW?: string[]; // our planner at the simple rule's size: days over the limit
   }[];
 }
 export interface Robust {
