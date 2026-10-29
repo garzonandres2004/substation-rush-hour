@@ -12,12 +12,13 @@ import { StackedValue } from './StackedValue';
 import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
-type Mode = 'hourly' | 'battery' | 'station';
+type Mode = 'hourly' | 'quarter' | 'battery' | 'station';
 interface MinuteTotals {
   overloadMinutes: number;
   overloadMWh: number;
   maxExcessMW: number;
   max15ExcessMW: number;
+  over15Intervals?: number;
   maxRampMWPerMin: number;
   batteryChanges: number;
   batteryExtraMWh: number;
@@ -38,8 +39,10 @@ interface StationData {
     batteryChasingPerDay: number;
     stationPerDay: number;
   };
-  totals: Record<Mode, MinuteTotals>;
-  perDay: Record<Mode, { batteryChanges: number; flywheelCycles: number }>;
+  totals: Record<Exclude<Mode, 'quarter'>, MinuteTotals> & { quarter?: MinuteTotals };
+  perDay: Record<Exclude<Mode, 'quarter'>, { batteryChanges: number; flywheelCycles: number }> & {
+    quarter?: { batteryChanges: number; flywheelCycles: number };
+  };
   sweep: {
     spinMW: number;
     overloadMinutesFlywheelAlone: number;
@@ -922,6 +925,7 @@ export default function Dashboard() {
                 <th>Battery power changes a day</th>
                 <th>Minutes above the limit</th>
                 <th>Highest 15 minute average above the limit</th>
+                {station.totals.hourly.over15Intervals !== undefined && <th>15 minute blocks above the limit</th>}
                 <th>Extra battery throughput</th>
               </tr>
             </thead>
@@ -929,24 +933,28 @@ export default function Dashboard() {
               {(
                 [
                   ['hourly', 'Nobody: hourly plan only'],
+                  ['quarter', 'The battery adjusts every 15 minutes'],
                   ['battery', 'The battery chases every spike'],
                   [
                     'station',
                     `Station: ${station.mainSpinMW} MW, ${station.spinMinutes} minute flywheel plus the battery`,
                   ],
                 ] as [Mode, string][]
-              ).map(([k, name]) => {
-                const t = station.totals[k];
-                return (
-                  <tr key={k} className={k === 'station' ? 'best' : ''}>
-                    <th scope="row">{name}</th>
-                    <td>{int(station.perDay[k].batteryChanges)}</td>
-                    <td>{int(t.overloadMinutes)}</td>
-                    <td>{t.max15ExcessMW > 0.005 ? `${t.max15ExcessMW.toFixed(2)} MW` : 'none'}</td>
-                    <td>{t.batteryExtraMWh > 0.05 ? `${f1(t.batteryExtraMWh / station.days)} MWh a day` : 'none'}</td>
-                  </tr>
-                );
-              })}
+              )
+                .filter(([k]) => station.totals[k] !== undefined)
+                .map(([k, name]) => {
+                  const t = station.totals[k]!;
+                  return (
+                    <tr key={k} className={k === 'station' ? 'best' : ''}>
+                      <th scope="row">{name}</th>
+                      <td>{int(station.perDay[k]?.batteryChanges ?? 0)}</td>
+                      <td>{int(t.overloadMinutes)}</td>
+                      <td>{t.max15ExcessMW > 0.005 ? `${t.max15ExcessMW.toFixed(2)} MW` : 'none'}</td>
+                      {t.over15Intervals !== undefined && <td>{int(t.over15Intervals)}</td>}
+                      <td>{t.batteryExtraMWh > 0.05 ? `${f1(t.batteryExtraMWh / station.days)} MWh a day` : 'none'}</td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
@@ -970,6 +978,17 @@ export default function Dashboard() {
             The case is the split of jobs: a {station.spinMinutes} minute flywheel for fast power, the battery for
             hours, which is how a Torus Station is built.
           </li>
+          {station.totals.quarter?.over15Intervals !== undefined &&
+            station.totals.hourly.over15Intervals !== undefined && (
+              <li>
+                Acting in 15 minute steps, the interval demand is metered in, does not fix it: the battery adjusting
+                every quarter hour leaves {int(station.totals.quarter.over15Intervals)} quarter hours above the limit in{' '}
+                {station.days} days against {int(station.totals.hourly.over15Intervals)} for the hourly plan. The swings
+                repeat within minutes, so a quarter hour average reacts after they are gone. Only minute level response,
+                the flywheel's job, removes them. The substation's own load is hourly public data, so the plan itself
+                stays hourly.
+              </li>
+            )}
           <li>
             Sizing the flywheel on its own:{' '}
             {station.sweep

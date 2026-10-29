@@ -26,6 +26,7 @@ type Agg = {
   flywheelThroughputMWh: number;
   maxExcessMW: number;
   max15ExcessMW: number;
+  over15Intervals: number;
   maxRampMWPerMin: number;
 };
 const zero = (): Agg => ({
@@ -36,13 +37,14 @@ const zero = (): Agg => ({
   flywheelThroughputMWh: 0,
   maxExcessMW: 0,
   max15ExcessMW: -1e9,
+  over15Intervals: 0,
   maxRampMWPerMin: 0,
 });
 const MAXK = new Set(['maxExcessMW', 'max15ExcessMW', 'maxRampMWPerMin']);
 const add = (a: Agg, r: Agg) => {
   for (const k of Object.keys(a) as (keyof Agg)[]) a[k] = MAXK.has(k) ? Math.max(a[k], r[k]) : a[k] + r[k];
 };
-const agg = { hourly: zero(), battery: zero(), station: zero() };
+const agg = { hourly: zero(), quarter: zero(), battery: zero(), station: zero() };
 let stationAlone = 0;
 const sweep = Object.fromEntries(SIZES.map(s => [s, zero()]));
 const sweepAlone = Object.fromEntries(SIZES.map(s => [s, zero()]));
@@ -93,6 +95,7 @@ for (const c of cases) {
   for (let m = 1; m < dc.length; m++) maxRamp = Math.max(maxRamp, Math.abs(dc[m] - dc[m - 1]));
   const h = runMinutes(base, dc, sp, c.day.capMW, bat, 'hourly');
   add(agg.hourly, h);
+  add(agg.quarter, runMinutes(base, dc, sp, c.day.capMW, bat, 'quarter'));
   add(agg.battery, runMinutes(base, dc, sp, c.day.capMW, bat, 'battery'));
   add(agg.station, runMinutes(base, dc, sp, c.day.capMW, bat, 'station', spinOf(MAIN_SPIN)));
   stationAlone += runMinutes(base, dc, sp, c.day.capMW, bat, 'station', spinOf(MAIN_SPIN), false).overloadMinutes;
