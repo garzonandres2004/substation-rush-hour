@@ -181,7 +181,7 @@ export default function SecondsLab() {
           {sCalm
             ? ` With a ${sCalm.spinMW} MW flywheel in front, it is back to its plan: about ${n0(sCalm.batteryChangesPerBusyDay)} changes a day.`
             : ''}{' '}
-          That is the split Torus sells: Spin for fast power, Pulse for hours.
+          That is the split Torus sells: Nova Spin for fast power, Nova Pulse for hours.
         </li>
         <li>
           <b>Many jobs smooth out, one big run does not.</b> {sec.fleetJobs} independent jobs leave{' '}

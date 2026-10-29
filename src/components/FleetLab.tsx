@@ -200,9 +200,9 @@ export default function FleetLab() {
         A Torus Station behind a business answers to two bosses: the customer's bill and the substation's limit.{' '}
         <a href="https://detourgrid.com">DETOUR</a>, by Juan Lizarazo for the same bounty, plans for the bill: Rocky
         Mountain Power's real Schedule 8 and 6 rates, simulated businesses (a regional airport, a cement plant and a ski
-        resort, each with its own Spin and Pulse), and a day ahead plan solved as a linear program. We put copies of his
-        businesses, each running his planner on its own bill, behind this project's substation (PacifiCorp East demand
-        scaled to 100 MW, limit at the 95th percentile of the last 30 days), from {monthName(months[0])} to{' '}
+        resort, each with its own Nova Spin and Nova Pulse), and a day ahead plan solved as a linear program. We put
+        copies of his businesses, each running his planner on its own bill, behind this project's substation (PacifiCorp
+        East demand scaled to 100 MW, limit at the 95th percentile of the last 30 days), from {monthName(months[0])} to{' '}
         {monthName(months[months.length - 1])}. Only what the batteries change is added to the substation load. Used
         with Juan's permission under the MIT license.
       </p>

@@ -6,6 +6,7 @@ import { LoadChart, BatteryChart } from './Charts';
 import { explanationFor, stepKey, explainedBy } from '../lib/explain';
 import { MinuteChart } from './MinuteChart';
 import { FleetView } from './FleetView';
+import { DispatchOrders } from './DispatchOrders';
 import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
@@ -42,16 +43,16 @@ interface StationData {
 const station = stationRaw as unknown as StationData;
 const SOURCES: [string, string][] = [
   [
-    'Torus Spin flywheel: 10C, 6 minute full discharge, 25,000 cycles (company claims), torus.co',
+    'Torus Nova Spin flywheel: 10C, 6 minute full discharge, 25,000 cycles (company claims), torus.co',
     'https://torus.co/torus-flywheel',
   ],
-  ['Torus Pulse battery: LFP, 0.5C, 7,500 cycles (company claims), torus.co', 'https://torus.co/torus-nova-pulse'],
+  ['Torus Nova Pulse battery: LFP, 0.5C, 7,500 cycles (company claims), torus.co', 'https://torus.co/torus-nova-pulse'],
   [
     'Torus approved for Rocky Mountain Power Wattsmart commercial batteries (Torus release, March 2025)',
     'https://torus.co/news/torus-receives-commercial-energy-storage-approval-for-rocky-mountain-power-s-watt',
   ],
   [
-    '4 to 8 hour Pulse duration, from Torus 2024 launch coverage, ESS News',
+    '4 to 8 hour Nova Pulse duration, from Torus 2024 launch coverage, ESS News',
     'https://www.ess-news.com/2024/11/26/torus-unveils-flywheel-battery-energy-storage-ai-driven-cybersecurity-solutions',
   ],
   [
@@ -132,11 +133,13 @@ export default function Dashboard() {
   const mainFx = fx.stations.find(x => x.label === main.label)!;
   const summer = report.summer;
   const summerMain = summer?.ratedForSummerPeak.stations.find(x => x.label === main.label);
-  const capMax = Math.max(mv.withoutStorageMW, ...mv.stations.map(x => x.awareMW));
+  // New load is planned in capacity mode when the data has it (the planner holding a reserve for forecast
+  // overload); older reports only have the everyday planner.
+  const cm = (x: { awareMW: number; capacityModeMW?: number }) => x.capacityModeMW ?? x.awareMW;
+  const hasCm = main.capacityModeMW !== undefined;
+  const capMax = Math.max(mv.withoutStorageMW, ...mv.stations.map(cm));
   const smallest = (lim: typeof mv) =>
-    [...lim.stations]
-      .sort((a, b) => a.energyMWh - b.energyMWh || a.powerMW - b.powerMW)
-      .find(x => x.awareMW >= newLoad);
+    [...lim.stations].sort((a, b) => a.energyMWh - b.energyMWh || a.powerMW - b.powerMW).find(x => cm(x) >= newLoad);
 
   // On phones the charts scroll sideways; start them near midday where the action is.
   useEffect(() => {
@@ -229,11 +232,11 @@ export default function Dashboard() {
               →
             </span>
             <span className="sr"> to </span>
-            <span className="now">{main.awareMW}</span> MW
+            <span className="now">{cm(main)}</span> MW
           </b>
           <span>
             of new always on load this substation can take: without storage, then with a {main.label} Station. Tested on{' '}
-            {cap.days} real days{summerMain ? `; ${summerMain.awareMW} MW in July and August` : ''}.
+            {cap.days} real days{summerMain ? `; ${cm(summerMain)} MW in July and August` : ''}.
           </span>
         </a>
         <a href="#ev-h">
@@ -686,19 +689,22 @@ export default function Dashboard() {
       <section className="capacity" aria-labelledby="cap-h">
         <p className="eyebrow">Finding 2 · capacity unlocked</p>
         <h2 id="cap-h">
-          With a {main.label} Station, this substation can take {main.awareMW} MW of new load. Without it,{' '}
+          With a {main.label} Station, this substation can take {cm(main)} MW of new load. Without it,{' '}
           {mv.withoutStorageMW} MW.
         </h2>
         <p className="sub">
           The question before a new data center connects: how much always on load can this substation add before it
           needs new wires? We added a constant block of load to every hour of {cap.days} real days and raised it in{' '}
-          {cap.stepMW} MW steps until the first overload, with the battery replanning hourly and the guard on. Station
-          sizes are modeled, not Torus specs.
+          {cap.stepMW} MW steps until the first overload, with the battery replanning hourly and the guard on
+          {hasCm
+            ? ', in capacity mode: the planner holds enough charge for what the forecast, plus the recent miss margin, says will be over the limit later that day'
+            : ''}
+          . Station sizes are modeled, not Torus specs.
         </p>
         <div className="bars">
           {[
             { label: 'No storage', mw: mv.withoutStorageMW },
-            ...mv.stations.map(x => ({ label: x.label, mw: x.awareMW })),
+            ...mv.stations.map(x => ({ label: x.label, mw: cm(x) })),
           ].map(x => (
             <div key={x.label} className={x.label === main.label ? 'bar main' : 'bar'}>
               <span className="bl">{x.label}</span>
@@ -735,29 +741,65 @@ export default function Dashboard() {
           </p>
         </div>
         <ul className="notes">
-          <li>
-            Most of the room comes from the Station itself. A five line rule that only discharges what is over the limit
-            gets {main.shaverMW} MW with the same {main.label} Station; our planner gets {main.awareMW} MW
-            {main.shaverMW > main.awareMW
-              ? (() => {
-                  const d = main.awareDaysOverAtShaverMW ?? [];
-                  return `. For new load alone the simple rule does better here: at ${main.shaverMW} MW our planner goes over on ${d.length} of ${cap.days} days${d.length ? ` (${d.map(shortDate).join(', ')})` : ''}. Our planner is built to earn value and relieve the jam the rest of the day; when the only goal is new load, a rule that only shaves is the safer choice.`;
-                })()
-              : ', and also earns value and relieves the grid jam the rest of the day.'}
-          </li>
+          {hasCm ? (
+            <li>
+              Why a capacity mode: the everyday planner, built to earn value and relieve the jam, gets {main.awareMW}{' '}
+              MW. It spends charge during the day and is short when a forecast miss comes late. Holding a reserve for
+              the forecast overload gets {cm(main)} MW. A five line rule that only discharges what is over the limit
+              gets {main.shaverMW} MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night. The
+              table below has every size.
+            </li>
+          ) : (
+            <li>
+              Most of the room comes from the Station itself. A five line rule that only discharges what is over the
+              limit gets {main.shaverMW} MW with the same {main.label} Station; our planner gets {main.awareMW} MW
+              {main.shaverMW > main.awareMW
+                ? (() => {
+                    const d = main.awareDaysOverAtShaverMW ?? [];
+                    return `. For new load alone the simple rule does better here: at ${main.shaverMW} MW our planner goes over on ${d.length} of ${cap.days} days${d.length ? ` (${d.map(shortDate).join(', ')})` : ''}. Our planner is built to earn value and relieve the jam the rest of the day; when the only goal is new load, a rule that only shaves is the safer choice.`;
+                  })()
+                : ', and also earns value and relieves the grid jam the rest of the day.'}
+            </li>
+          )}
           <li>
             Stored energy matters most here. Doubling from 40 to 80 MWh gets{' '}
-            {mv.stations.find(x => x.label === '10 MW, 8 h')!.awareMW} MW by adding hours, or{' '}
-            {mv.stations.find(x => x.label === '20 MW, 4 h')!.awareMW} MW by adding power. This substation's crunch is a
+            {cm(mv.stations.find(x => x.label === '10 MW, 8 h')!)} MW by adding hours, or{' '}
+            {cm(mv.stations.find(x => x.label === '20 MW, 4 h')!)} MW by adding power. This substation's crunch is a
             long afternoon plateau, not a short spike.
           </li>
           <li>
             The limit here moves with the last 30 days of load, so the substation starts nearly full by design. With one
             fixed rating ({f1(cap.fixedLimitMW)} MW, the 95th percentile of the month before the test):{' '}
-            {fx.withoutStorageMW} MW without storage, {mainFx.awareMW} MW with the {main.label} Station. Real feeder
-            ratings are not public. Zero overload here means within {cap.toleranceMWh} MWh a day.
+            {fx.withoutStorageMW} MW without storage, {cm(mainFx)} MW with the {main.label} Station. Real feeder ratings
+            are not public. Zero overload here means within {cap.toleranceMWh} MWh a day.
           </li>
         </ul>
+        {hasCm && (
+          <div className="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Station</th>
+                  <th>Capacity mode</th>
+                  <th>Everyday planner</th>
+                  <th>Five line rule</th>
+                  <th>Rule, recharging to full</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mv.stations.map(x => (
+                  <tr key={x.label} className={x.label === main.label ? 'best' : ''}>
+                    <th scope="row">{x.label}</th>
+                    <td>{cm(x)} MW</td>
+                    <td>{x.awareMW} MW</td>
+                    <td>{x.shaverMW} MW</td>
+                    <td>{x.shaverFullMW ?? x.shaverMW} MW</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         {summer && summerMain && (
           <div className="season">
             <h3>Summer, the season that sets ratings</h3>
@@ -772,16 +814,20 @@ export default function Dashboard() {
                 <thead>
                   <tr>
                     <th>Station</th>
-                    <th>New load, our planner</th>
-                    <th>New load, five line rule</th>
+                    {summerMain.capacityModeMW !== undefined && <th>Capacity mode</th>}
+                    <th>Everyday planner</th>
+                    <th>Five line rule</th>
+                    {summerMain.shaverFullMW !== undefined && <th>Rule, recharging to full</th>}
                   </tr>
                 </thead>
                 <tbody>
                   {summer.ratedForSummerPeak.stations.map(x => (
                     <tr key={x.label} className={x.label === main.label ? 'best' : ''}>
                       <th scope="row">{x.label}</th>
+                      {summerMain.capacityModeMW !== undefined && <td>{cm(x)} MW</td>}
                       <td>{x.awareMW} MW</td>
                       <td>{x.shaverMW} MW</td>
+                      {summerMain.shaverFullMW !== undefined && <td>{x.shaverFullMW ?? x.shaverMW} MW</td>}
                     </tr>
                   ))}
                 </tbody>
@@ -789,9 +835,13 @@ export default function Dashboard() {
             </div>
             <ul className="notes">
               <li>
-                {summerMain.awareMW >= summerMain.shaverMW
-                  ? `In summer the planner matters more: ${summerMain.awareMW} MW against ${summerMain.shaverMW} MW for the simple rule with the same ${main.label} Station.`
-                  : `In summer the simple rule gets ${summerMain.shaverMW} MW against ${summerMain.awareMW} MW for our planner with the same ${main.label} Station.`}
+                {(() => {
+                  const ours = cm(summerMain);
+                  const rule = Math.max(summerMain.shaverMW, summerMain.shaverFullMW ?? 0);
+                  return ours >= rule
+                    ? `In summer the planner matters more: ${ours} MW against ${rule} MW for the best simple rule with the same ${main.label} Station.`
+                    : `In summer the best simple rule gets ${rule} MW against ${ours} MW for our planner with the same ${main.label} Station.`;
+                })()}
               </li>
               <li>
                 A substation rated only for autumn load ({f1(summer.autumnRating.capMW)} MW) would go over on{' '}
@@ -919,15 +969,16 @@ export default function Dashboard() {
             new load. Value in capacity added without new wires, not in hardware price.
           </li>
           <li>
-            <b>The night before</b> Tomorrow's hourly plan: charge in free flowing hours, keep energy for the jam. A
-            schedule a dispatch layer like Lasso could take in.
+            <b>The night before</b> Tomorrow's hourly plan: charge in free flowing hours, keep energy for the jam.
+            Orders that Torus Lasso, its energy asset software, could take in (below).
           </li>
           <li>
             <b>Every hour</b> Replan from the latest meter reading. The guard holds the limit when the forecast is
             wrong.
           </li>
           <li>
-            <b>Inside the hour</b> Spin takes the fast swings, Pulse holds the plan and steps in when Spin runs out.
+            <b>Inside the hour</b> Nova Spin takes the fast swings, Nova Pulse holds the plan and steps in when Nova
+            Spin runs out.
           </li>
           <li>
             <b>In a utility program</b> Under Wattsmart the utility dispatches the fleet. Jam hours in this report are
@@ -938,6 +989,8 @@ export default function Dashboard() {
             schedules to.
           </li>
         </ol>
+        <h3 style={{ marginTop: 28 }}>Tomorrow's orders, as the Station would get them</h3>
+        <DispatchOrders />
       </section>
 
       <section className="honest" aria-labelledby="hn-h">
