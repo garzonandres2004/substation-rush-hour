@@ -78,6 +78,7 @@ export interface Report {
       carbonDays: number;
       meanCo2TPerDay: Record<string, number>;
       demandForecastMapePct: { ours: number; eiaDayAhead: number };
+      meanCo2MarginalTPerDay?: Record<string, number>;
       captureVsHindsight?: { valuePct: number | null; jamReliefPct: number | null };
       robust?: {
         eiaForecast: Record<'v1' | 'replan' | 'guard', Robust>;

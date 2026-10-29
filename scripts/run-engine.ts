@@ -4,6 +4,7 @@ import { dispatch, naiveSchedule, zeroSchedule } from '../src/engine/dispatch.js
 import { score, loadAfter } from '../src/engine/score.js';
 import { fitSolar } from '../src/engine/forecast.js';
 import { intensity, co2DeltaT } from '../src/engine/carbon.js';
+import { marginalFit } from '../src/engine/marginal.js';
 import { planAhead, runReplan, peakShaver } from '../src/engine/execute.js';
 import type { DayInputs, Schedule } from '../src/engine/types.js';
 import {
@@ -55,6 +56,7 @@ interface DayRow {
   relieved: Record<string, number>;
   peakRed: Record<string, number>;
   co2?: Record<string, number>;
+  co2Marginal: Record<string, number>;
   congestedHours: number;
   checksOk: boolean;
   guardHours: number;
@@ -187,10 +189,15 @@ for (const d of backtestDates) {
   const co2 = actInt.every(x => x !== undefined)
     ? Object.fromEntries(KEYS.map(k => [k, co2DeltaT(actInt as number[], run[k].charge, run[k].discharge)]))
     : undefined;
+  // Marginal CO2 (method from DETOUR), fitted on the 60 days before this one.
+  const mfit = marginalFit(all.filter(h => h.t < day.t[0])).kgPerMWh;
+  const mHat = day.hourLocal.map(hr => mfit[hr]);
+  const co2Marginal = Object.fromEntries(KEYS.map(k => [k, co2DeltaT(mHat, run[k].charge, run[k].discharge)]));
   rows.push({
     date: d,
     margin,
     co2,
+    co2Marginal,
     overB: sc.none.overloadBeforeMWh,
     overA: Object.fromEntries(KEYS.map(k => [k, sc[k].overloadAfterMWh])),
     net: Object.fromEntries(KEYS.map(k => [k, sc[k].netValue])),
@@ -231,6 +238,7 @@ const summary = {
     (r, k) => r.co2![k],
     rows.filter(r => r.co2),
   ),
+  meanCo2MarginalTPerDay: per((r, k) => r.co2Marginal[k]),
   // Share of the perfect hindsight plan's value and jam relief that ours gets, summed over the days.
   captureVsHindsight: (() => {
     const sum = (k: string, f: (r: DayRow) => Record<string, number>) => rows.reduce((a, r) => a + f(r)[k], 0);

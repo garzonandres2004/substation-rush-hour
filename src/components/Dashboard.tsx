@@ -565,6 +565,15 @@ export default function Dashboard() {
             {Math.abs(bt.meanCo2TPerDay.clean).toFixed(1)} t a day, but adds load in jam hours, because the cleanest
             hours to charge, late afternoon solar, run into the evening rush.
           </li>
+          {bt.meanCo2MarginalTPerDay && (
+            <li>
+              Counted on marginal CO2 instead (the plants that actually ramp when load moves; method from DETOUR), every
+              plan adds CO2: ours {bt.meanCo2MarginalTPerDay.stressAware.toFixed(1)} t a day, Stays clean{' '}
+              {bt.meanCo2MarginalTPerDay.clean.toFixed(1)} t. In PACE, coal follows most changes in fossil output, so
+              the energy lost in each round trip is made up mostly by coal. The average mix makes storage look cleaner
+              than it is.
+            </li>
+          )}
           {bt.captureVsHindsight?.valuePct != null && bt.captureVsHindsight.jamReliefPct != null && (
             <li>
               Against perfect hindsight: the same plan made knowing the real load in advance, which nothing can beat on

@@ -11,7 +11,7 @@
     "capacity": "tsx scripts/capacity.ts",
     "station": "tsx scripts/station.ts",
     "summer": "tsx scripts/summer.ts",
-    "test": "tsx --test src/engine/engine.test.ts src/engine/seconds.test.ts src/engine/dispatch-floor.test.ts src/lib/refresh.test.ts src/merge/envelope.test.ts src/merge/site-guard.test.ts src/merge/two-bosses.test.ts",
+    "test": "tsx --test src/engine/engine.test.ts src/engine/seconds.test.ts src/engine/dispatch-floor.test.ts src/engine/marginal.test.ts src/lib/refresh.test.ts src/merge/envelope.test.ts src/merge/site-guard.test.ts src/merge/two-bosses.test.ts",
     "lint": "biome check .",
     "format": "biome format --write .",
     "lab": "tsx scripts/lab.ts",
