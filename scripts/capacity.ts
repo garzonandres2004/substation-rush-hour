@@ -68,6 +68,19 @@ function worstDay(x: number, mode: Mode, a: Asset, fixed: boolean): number {
   }
   return worst;
 }
+// Days over the limit (beyond the tolerance) at one size: shows when a single day sets the result.
+function failDays(x: number, mode: Mode, a: Asset, fixed: boolean): string[] {
+  const out: string[] = [];
+  for (const c of cases) {
+    const save = cases.slice();
+    cases.length = 0;
+    cases.push(c);
+    if (worstDay(x, mode, a, fixed) > TOL) out.push(c.d);
+    cases.length = 0;
+    cases.push(...save);
+  }
+  return out;
+}
 function scan(mode: Mode, a: Asset, fixed: boolean) {
   let x = 0,
     last = -1,
@@ -104,6 +117,8 @@ for (const fixed of [false, true]) {
       awareMW: aware.mw,
       awareResidualMWh: aware.worstDayResidualMWh,
       shaverMW: shaver.mw,
+      // our planner at the simple rule's size: which days, if any, go over
+      awareDaysOverAtShaverMW: shaver.mw > aware.mw ? failDays(shaver.mw, 'aware', a, fixed) : [],
     });
     console.error(key, label, aware.mw, shaver.mw, `${((Date.now() - t) / 1000).toFixed(0)} s`);
   }

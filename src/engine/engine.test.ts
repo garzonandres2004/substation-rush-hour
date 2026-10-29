@@ -182,3 +182,9 @@ test('station: simulated data center keeps each hourly average, flywheel never e
   assert.ok(r.grid.every((g, m) => Math.abs(g - plain.grid[m]) <= 3 + 1e-9));
   assert.ok(r.overloadMinutes <= plain.overloadMinutes);
 });
+
+test('EIA-930 hours are hour ending: each value is filed under the hour it started', async () => {
+  const { eiaHourStart } = await import('./time.js');
+  assert.equal(eiaHourStart('2026-07-02T18'), '2026-07-02T17:00:00Z');
+  assert.equal(eiaHourStart('2026-01-01T00'), '2025-12-31T23:00:00Z');
+});
