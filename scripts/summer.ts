@@ -38,15 +38,18 @@ const TOL = 0.1,
   STEP = 0.25;
 
 type Mode = 'none' | 'aware' | 'capacity' | 'shaver' | 'shaverFull';
-// Capacity mode (see capacity.ts): on days the forecast plus the margin from the last 14 days of misses
-// puts at risk, hold enough charge for what will be over the limit later in the day and shave exactly.
+// Capacity mode (see capacity.ts): on days the forecast plus the largest miss of the last 14 days puts
+// at risk, stay full until the last hour at risk and shave exactly.
 function reserveFor(i: number, x: number, cap: number, a: Asset): [number[] | undefined, boolean] {
   const c = cases[i];
-  const m = marginFromMisses(cases.slice(Math.max(0, i - 14), i).flatMap(d => d.act.map((v, h) => v - d.fc[h])));
-  const eta = Math.sqrt(a.roundTripEff);
+  const m = marginFromMisses(
+    cases.slice(Math.max(0, i - 14), i).flatMap(d => d.act.map((v, h) => v - d.fc[h])),
+    1,
+  );
   const need = c.fc.map(l => Math.max(0, l + x + m - cap));
-  if (!need.some(v => v > 0)) return [undefined, false];
-  return [need.map((_, t) => a.energyMWh * a.socMinFrac + need.slice(t + 1).reduce((s, v) => s + v, 0) / eta), true];
+  const last = need.reduce((acc, v, t) => (v > 0 ? t : acc), -1);
+  if (last < 0) return [undefined, false];
+  return [need.map((_, t) => (t < last ? a.energyMWh * a.socMaxFrac : a.energyMWh * a.socMinFrac)), true];
 }
 const over = (load: number[], cap: number, ch?: number[], di?: number[]) =>
   load.reduce((s, l, i) => s + Math.max(0, l + (ch ? ch[i] - di![i] : 0) - cap), 0);

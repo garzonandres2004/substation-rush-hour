@@ -46,7 +46,7 @@ interface Case {
   noCharge: boolean[]; // forecast jam hours: the everyday planner never charges in them
   hourLocal: number[];
   prevMiss: number;
-  margin: number; // 90th percentile of the last 14 days' forecast misses, for capacity mode
+  margin: number; // largest forecast miss of the last 14 days, for capacity mode
 }
 const cases: Case[] = [];
 let prevMiss = 0;
@@ -74,7 +74,10 @@ for (const d of dates) {
     noCharge: day.stress.map(s => s >= p.congestedThreshold),
     hourLocal: day.hourLocal,
     prevMiss,
-    margin: marginFromMisses(cases.slice(-14).flatMap(c => c.act.map((v, h) => v - c.fc[h]))),
+    margin: marginFromMisses(
+      cases.slice(-14).flatMap(c => c.act.map((v, h) => v - c.fc[h])),
+      1,
+    ),
   });
   prevMiss = act[23] - fc[23];
 }
@@ -98,14 +101,13 @@ function ok(c: Case, x: number, mode: Mode, a: Asset) {
     );
     return over(act, s.charge, s.discharge) <= TOL;
   }
-  // Capacity mode (see capacity.ts): on days the forecast plus margin shows risk, hold that reserve and
-  // shave exactly; other days run the everyday planner.
+  // Capacity mode (see capacity.ts): on days the forecast plus the largest recent miss shows risk, stay
+  // full until the risk has passed and shave exactly; other days run the everyday planner.
   let floor: number[] | undefined;
   if (mode === 'capacity') {
-    const eta = Math.sqrt(a.roundTripEff);
     const need = c.fc.map(l => Math.max(0, l + x + c.margin - RATING));
-    if (need.some(v => v > 0))
-      floor = need.map((_, t) => a.energyMWh * a.socMinFrac + need.slice(t + 1).reduce((u, v) => u + v, 0) / eta);
+    const last = need.reduce((acc, v, t) => (v > 0 ? t : acc), -1);
+    if (last >= 0) floor = need.map((_, t) => (t < last ? a.energyMWh * a.socMaxFrac : a.energyMWh * a.socMinFrac));
   }
   const s = runReplan(
     a,

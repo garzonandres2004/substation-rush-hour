@@ -241,7 +241,7 @@ export default function YearLab() {
           100 MW. We add a constant block of new load to every hour and find the largest one that never goes over on any
           day, planned on issued weather forecasts
           {main.capacityMode
-            ? ', with the Station in capacity mode (on days at risk it holds a reserve and shaves exactly what is over)'
+            ? ', with the Station in capacity mode (on days at risk it stays full and shaves exactly what is over)'
             : ''}
           .
         </p>

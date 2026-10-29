@@ -719,7 +719,7 @@ export default function Dashboard() {
           needs new wires? We added a constant block of load to every hour of {cap.days} real days and raised it in{' '}
           {cap.stepMW} MW steps until the first overload, with the battery replanning hourly and the guard on
           {hasCm
-            ? ', in capacity mode: on days the forecast, plus the recent miss margin, shows risk, the planner holds enough charge for that overload and discharges only what the meter shows over the limit'
+            ? ', in capacity mode: on days the forecast, plus the largest miss of the last two weeks, shows risk, the battery fills, stays full until the risk has passed, and discharges only what the meter shows over the limit'
             : ''}
           . Station sizes are modeled, not Torus specs.
         </p>
@@ -766,9 +766,9 @@ export default function Dashboard() {
           {hasCm ? (
             <li>
               Why a capacity mode: the everyday planner, built to earn value and relieve the jam, gets {main.awareMW}{' '}
-              MW. It spends charge during the day and is short when a forecast miss comes late. Holding a reserve for
-              the forecast overload gets {cm(main)} MW. A five line rule that only discharges what is over the limit
-              gets {main.shaverMW} MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night.{' '}
+              MW. It spends charge during the day and is short when a forecast miss comes late. Staying full on days at
+              risk gets {cm(main)} MW. A five line rule that only discharges what is over the limit gets {main.shaverMW}{' '}
+              MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night.{' '}
               {main.shaverFullMW !== undefined && main.shaverFullMW === cm(main)
                 ? 'For new load alone, being full before the overload is what matters, and a simple rule that does that ties. On the other days capacity mode runs the everyday planner, which earns value and relieves the jam. '
                 : ''}
