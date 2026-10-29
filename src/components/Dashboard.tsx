@@ -709,7 +709,7 @@ export default function Dashboard() {
           needs new wires? We added a constant block of load to every hour of {cap.days} real days and raised it in{' '}
           {cap.stepMW} MW steps until the first overload, with the battery replanning hourly and the guard on
           {hasCm
-            ? ', in capacity mode: the planner holds enough charge for what the forecast, plus the recent miss margin, says will be over the limit later that day'
+            ? ', in capacity mode: on days the forecast, plus the recent miss margin, shows risk, the planner holds enough charge for that overload and discharges only what the meter shows over the limit'
             : ''}
           . Station sizes are modeled, not Torus specs.
         </p>
@@ -758,8 +758,11 @@ export default function Dashboard() {
               Why a capacity mode: the everyday planner, built to earn value and relieve the jam, gets {main.awareMW}{' '}
               MW. It spends charge during the day and is short when a forecast miss comes late. Holding a reserve for
               the forecast overload gets {cm(main)} MW. A five line rule that only discharges what is over the limit
-              gets {main.shaverMW} MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night. The
-              table below has every size.
+              gets {main.shaverMW} MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night.{' '}
+              {main.shaverFullMW !== undefined && main.shaverFullMW === cm(main)
+                ? 'For new load alone, being full before the overload is what matters, and a simple rule that does that ties. On the other days capacity mode runs the everyday planner, which earns value and relieves the jam. '
+                : ''}
+              The table below has every size.
             </li>
           ) : (
             <li>
@@ -850,9 +853,11 @@ export default function Dashboard() {
                 {(() => {
                   const ours = cm(summerMain);
                   const rule = Math.max(summerMain.shaverMW, summerMain.shaverFullMW ?? 0);
-                  return ours >= rule
+                  return ours > rule
                     ? `In summer the planner matters more: ${ours} MW against ${rule} MW for the best simple rule with the same ${main.label} Station.`
-                    : `In summer the best simple rule gets ${rule} MW against ${ours} MW for our planner with the same ${main.label} Station.`;
+                    : ours === rule
+                      ? `In summer capacity mode and the best simple rule tie at ${ours} MW with the same ${main.label} Station; the everyday planner gets ${summerMain.awareMW} MW.`
+                      : `In summer the best simple rule gets ${rule} MW against ${ours} MW for our planner with the same ${main.label} Station.`;
                 })()}
               </li>
               <li>
