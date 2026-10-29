@@ -28,9 +28,9 @@ If you send your trucks across at the cheapest hour without checking traffic, yo
 
 1. When is the grid jammed tomorrow? So I built a traffic index from real demand, net load, ramp and price.
 2. Can a battery stay out of the jam and still be useful? So I built an exact planner that charges in free flowing hours and discharges into the jam, never above the limit.
-3. Does it hold up on real days, not on my own forecast? I graded every day on the demand that really showed up. My first version failed: its own charging pushed the substation over the limit on 8 of 30 days, because the forecast missed by up to 9.5 MW.
-4. How do I fix it? Replanning every hour still failed on 9 days. A safety margin cost about $85 a day more and still failed on 3. A guard that reacts to the meter fixed all of them for about $10 a day.
-5. What does a utility actually want to know? Not dollars. How much new load, like a data center, fits on the same wires. 1 MW without storage, 5.75 MW with a 10 MW, 4 hour Station.
+3. Does it hold up on real days, not on my own forecast? I graded every day on the demand that really showed up. My first version failed: its own charging pushed the substation over the limit on 12 of 31 days, because the forecast missed by up to 9.4 MW.
+4. How do I fix it? Replanning every hour still failed on 13 days. A safety margin cost about $122 a day more and still failed on 4. A guard that reacts to the meter fixed all of them for about $25 a day.
+5. What does a utility actually want to know? Not dollars. How much new load, like a data center, fits on the same wires. 1 MW without storage, 7.75 MW with a 10 MW, 4 hour Station in capacity mode.
 6. What happens inside the hour? AI load swings every few seconds. The flywheel takes the swings so the battery keeps its plan.
 7. Was the month just lucky? I walked the same plan over a full year of real days, planned each night on the weather forecast as it was issued. It never pushed the substation over its limit, 0 of 359 days.
 
@@ -69,19 +69,19 @@ flowchart LR
 
 ## Results
 
-The live page recomputes these every day over the trailing 30 days, so it is the source of truth. Numbers below are from the Oct 28, 2026 refresh (Sep 27 to Oct 26).
+The live page recomputes these every day over the trailing 30 days, so it is the source of truth. Numbers below are from the Oct 29, 2026 refresh (31 days, Sep 28 to Oct 28), the first with the jam rule and capacity mode.
 
 | Question | Result |
 | --- | --- |
-| Days our own charging pushed the substation over its limit | Plan once: 8 of 30. Replan every hour: 9. With the guard: **0** |
-| Same test on EIA's published day ahead forecast | Plan once: 12. With the guard: **0** |
-| Battery that follows price only | Over the limit on 11 of 30 days |
-| Jam relief, ours vs price plus the same guard | 11.8 vs 4.5 MWh a day, for about $12 a day |
-| New load the substation can take, moving limit | 1 MW without storage, **5.75 MW** with a 10 MW, 4 h Station (a five line peak shaving rule gets 5.25) |
-| Same, fixed rating of 92.1 MW | 2.75 MW without storage, 7.5 MW with the Station |
-| Same, rated for the summer peak (July and August) | 7.25 MW with the Station |
-| Inside the hour, simulated AI load | Hourly plan alone: 2,362 minutes over in 30 days. Battery chasing every spike: 0 minutes but about 61 power changes a day. Flywheel plus battery: 0 minutes, battery at about 12 changes a day |
-| Demand forecast error | Ours 5.0 percent vs 8.6 percent for the day ahead forecast reported to EIA. Ours used observed weather here, so read it as an upper bound |
+| Days our own charging pushed the substation over its limit | Plan once: 12 of 31. Replan every hour: 13. With the guard: **0** |
+| Same test on EIA's published day ahead forecast | Plan once: 14. With the guard: **0** |
+| Battery that follows price only | Over the limit on 17 of 31 days |
+| Jam relief, ours vs price plus the same guard | 10.9 vs 2.8 MWh a day, for about $42 a day, never charging in a jam hour |
+| New load the substation can take, moving limit | 1 MW without storage, **7.75 MW** with a 10 MW, 4 h Station in capacity mode (everyday planner 5.5, five line rule 5.25, the rule recharging to full 7.75) |
+| Same, fixed rating of 92.1 MW | 2.75 MW without storage, 9.5 MW with the Station in capacity mode |
+| Same, rated for the summer peak (July and August) | 7.75 MW with the Station in capacity mode |
+| Inside the hour, simulated AI load | Hourly plan alone: 2,513 minutes over in 31 days. Battery chasing every spike: 85 minutes and about 60 power changes a day. Flywheel plus battery: 0 minutes, battery at about 12 changes a day |
+| Demand forecast error | Ours 5.0 percent vs 8.7 percent for the day ahead forecast reported to EIA. Ours used observed weather here, so read it as an upper bound |
 
 ## After the hackathon
 
@@ -91,8 +91,8 @@ The event is over; the project keeps going. What changed, with the numbers from 
 | --- | --- |
 | Capacity mode | On days the forecast plus the largest miss of the last two weeks shows risk, the battery fills, stays full until the risk has passed, and discharges exactly what the meter shows over the limit; other days run the everyday planner. 10 MW, 4 h Station: **7.75 MW** of new load on 30 autumn days, 7.25 MW over a full year. A rule that recharges to full ties in every test: for new load alone, being full before the overload is what matters |
 | Never charge in a jam | The everyday planner may not charge in a forecast jam hour (a rule, not a price). 30 days: jam relief 9.4 to 10.8 MWh a day, value $299 to $279, 0 days over. Year walk: still 0 of 359 days made worse |
-| Graded against perfect hindsight | Ours gets 90% of the value and 97% of the jam relief of the same plan made knowing the real load |
-| Marginal CO2 (method from DETOUR) | On the average mix the plans seem to avoid 2.5 to 5.5 t a day; at the margin every plan adds 4 to 5 t, because coal makes up the round trip losses |
+| Graded against perfect hindsight | Ours gets 88% of the value and 95% of the jam relief of the same plan made knowing the real load (Oct 29 refresh) |
+| Marginal CO2 (method from DETOUR) | On the average mix the plans seem to avoid 2.4 to 5.8 t a day; at the margin every plan adds about 4 t, because coal makes up the round trip losses |
 | Reserve for utility events | Ready for a 2 hour full power call on 30 of 30 days instead of 23, for about $23 a day |
 | Battery wear (lab L) | At $3 of wear per MWh moved the Station earns $279 a day; at about $35 (DETOUR's Nova Pulse assumption) about nothing. The limit holds at every cost. Inside the hour the flywheel's wear is about $7 a day against $20 for the battery chasing spikes |
 | 15 minute steps | Adjusting the battery every 15 minutes leaves 19 quarter hours over the limit in 30 days against 17 for the hourly plan: the AI swings are faster. The flywheel removes them |
