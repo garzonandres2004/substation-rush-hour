@@ -27,7 +27,8 @@ const time = (s: number) => (s >= 3600 ? `${(s / 3600).toFixed(1)} h` : `${Math.
 export default function LabOverview() {
   const days = year.priced.days + year.trafficOnly.days;
   const worse = year.priced.byStrategy.ours.daysMadeWorse + year.trafficOnly.byStrategy.ours.daysMadeWorse;
-  const station4 = cap.stations.find((s: any) => s.label === '10 MW, 4 h').ours.mw;
+  const s4 = cap.stations.find((s: any) => s.label === '10 MW, 4 h');
+  const station4 = (s4.capacityMode ?? s4.ours).mw;
   const S = sec.sync;
   const sAlone = S.sweep.find((r: any) => r.flywheelAlone.overSeconds === 0);
   const fAlone = sec.fleet.sweep.find((r: any) => r.flywheelAlone.overSeconds === 0);

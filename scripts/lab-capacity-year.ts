@@ -7,7 +7,7 @@
 // Writes public/data/lab-capacity-year.json.
 import fs from 'node:fs';
 import { gunzipSync } from 'node:zlib';
-import { peakShaver, runReplan } from '../src/engine/execute.js';
+import { marginFromMisses, peakShaver, runReplan } from '../src/engine/execute.js';
 import { loadHours } from '../src/engine/merge.js';
 import { PARAMS as p } from '../src/engine/params.js';
 import { buildDay } from '../src/engine/stress.js';
@@ -43,8 +43,10 @@ interface Case {
   fc: number[];
   act: number[];
   signal: number[];
+  noCharge: boolean[]; // forecast jam hours: the everyday planner never charges in them
   hourLocal: number[];
   prevMiss: number;
+  margin: number; // 90th percentile of the last 14 days' forecast misses, for capacity mode
 }
 const cases: Case[] = [];
 let prevMiss = 0;
@@ -69,8 +71,10 @@ for (const d of dates) {
     fc,
     act,
     signal: day.lmp.map((x, i) => x + prem * day.stress[i]),
+    noCharge: day.stress.map(s => s >= p.congestedThreshold),
     hourLocal: day.hourLocal,
     prevMiss,
+    margin: marginFromMisses(cases.slice(-14).flatMap(c => c.act.map((v, h) => v - c.fc[h]))),
   });
   prevMiss = act[23] - fc[23];
 }
@@ -79,20 +83,47 @@ console.error(`${cases.length} days`);
 const TOL = 0.1;
 const over = (load: number[], ch?: number[], di?: number[]) =>
   load.reduce((s, l, i) => s + Math.max(0, l + (ch ? ch[i] - di![i] : 0) - RATING), 0);
-type Mode = 'none' | 'ours' | 'rule';
+type Mode = 'none' | 'ours' | 'capacity' | 'rule' | 'ruleFull';
 function ok(c: Case, x: number, mode: Mode, a: Asset) {
   const act = c.act.map(l => l + x);
   if (mode === 'none') return over(act) <= TOL;
-  if (mode === 'rule') {
-    const s = peakShaver(a, act, c.hourLocal, RATING);
+  if (mode === 'rule' || mode === 'ruleFull') {
+    const s = peakShaver(
+      a,
+      act,
+      c.hourLocal,
+      RATING,
+      undefined,
+      mode === 'ruleFull' ? a.energyMWh * a.socMaxFrac : undefined,
+    );
     return over(act, s.charge, s.discharge) <= TOL;
+  }
+  // Capacity mode (see capacity.ts): on days the forecast plus margin shows risk, hold that reserve and
+  // shave exactly; other days run the everyday planner.
+  let floor: number[] | undefined;
+  if (mode === 'capacity') {
+    const eta = Math.sqrt(a.roundTripEff);
+    const need = c.fc.map(l => Math.max(0, l + x + c.margin - RATING));
+    if (need.some(v => v > 0))
+      floor = need.map((_, t) => a.energyMWh * a.socMinFrac + need.slice(t + 1).reduce((u, v) => u + v, 0) / eta);
   }
   const s = runReplan(
     a,
-    { forecastLoad: c.fc.map(l => l + x), cap: RATING, margin: 0, signal: c.signal, penalty: p.overloadPenalty },
+    {
+      forecastLoad: c.fc.map(l => l + x),
+      cap: RATING,
+      margin: 0,
+      signal: c.signal,
+      noCharge: c.noCharge,
+      penalty: p.overloadPenalty,
+    },
     act,
     true,
     c.prevMiss,
+    undefined,
+    undefined,
+    floor,
+    floor !== undefined,
   );
   return over(act, s.charge, s.discharge) <= TOL;
 }
@@ -143,8 +174,21 @@ const sizes: [string, number, number][] = [
 ];
 out.stations = sizes.map(([label, mw, mwh]) => {
   const a = { ...p.asset, powerMW: mw, energyMWh: mwh };
-  const r = { label, ours: yearCapacity('ours', a), rule: yearCapacity('rule', a) };
-  console.error(label, r.ours.mw, r.rule.mw, `${((Date.now() - t0) / 1000).toFixed(0)} s`);
+  const r = {
+    label,
+    ours: yearCapacity('ours', a),
+    capacityMode: yearCapacity('capacity', a),
+    rule: yearCapacity('rule', a),
+    ruleFull: yearCapacity('ruleFull', a),
+  };
+  console.error(
+    label,
+    r.ours.mw,
+    r.capacityMode.mw,
+    r.rule.mw,
+    r.ruleFull.mw,
+    `${((Date.now() - t0) / 1000).toFixed(0)} s`,
+  );
   return r;
 });
 fs.writeFileSync('public/data/lab-capacity-year.json', `${JSON.stringify(out, null, 1)}\n`);
