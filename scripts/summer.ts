@@ -38,14 +38,15 @@ const TOL = 0.1,
   STEP = 0.25;
 
 type Mode = 'none' | 'aware' | 'capacity' | 'shaver' | 'shaverFull';
-// Capacity mode (see capacity.ts): hold enough charge for what the forecast plus the margin from the
-// last 14 days of misses says will be over the limit later in the day.
-function reserveFor(i: number, x: number, cap: number, a: Asset): number[] {
+// Capacity mode (see capacity.ts): on days the forecast plus the margin from the last 14 days of misses
+// puts at risk, hold enough charge for what will be over the limit later in the day and shave exactly.
+function reserveFor(i: number, x: number, cap: number, a: Asset): [number[] | undefined, boolean] {
   const c = cases[i];
   const m = marginFromMisses(cases.slice(Math.max(0, i - 14), i).flatMap(d => d.act.map((v, h) => v - d.fc[h])));
   const eta = Math.sqrt(a.roundTripEff);
   const need = c.fc.map(l => Math.max(0, l + x + m - cap));
-  return need.map((_, t) => a.energyMWh * a.socMinFrac + need.slice(t + 1).reduce((s, v) => s + v, 0) / eta);
+  if (!need.some(v => v > 0)) return [undefined, false];
+  return [need.map((_, t) => a.energyMWh * a.socMinFrac + need.slice(t + 1).reduce((s, v) => s + v, 0) / eta), true];
 }
 const over = (load: number[], cap: number, ch?: number[], di?: number[]) =>
   load.reduce((s, l, i) => s + Math.max(0, l + (ch ? ch[i] - di![i] : 0) - cap), 0);
@@ -53,6 +54,7 @@ function runDay(i: number, x: number, a: Asset, cap: number, mode: Mode, prevMis
   const c = cases[i];
   const act = c.act.map(l => l + x);
   if (mode === 'none') return { o: over(act, cap), h: act.filter(l => l > cap + 1e-6).length };
+  const [floor, exact] = mode === 'capacity' ? reserveFor(i, x, cap, a) : [undefined, false];
   const s =
     mode === 'shaver' || mode === 'shaverFull'
       ? peakShaver(a, act, c.hour, cap, undefined, mode === 'shaverFull' ? a.energyMWh * a.socMaxFrac : undefined)
@@ -64,7 +66,8 @@ function runDay(i: number, x: number, a: Asset, cap: number, mode: Mode, prevMis
           prevMiss,
           undefined,
           undefined,
-          mode === 'capacity' ? reserveFor(i, x, cap, a) : undefined,
+          floor,
+          exact,
         );
   return {
     o: over(act, cap, s.charge, s.discharge),
