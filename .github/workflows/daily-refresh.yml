@@ -1,12 +1,13 @@
 # Daily refresh: pulls fresh public data, reruns the engine and redeploys the live page.
-# Tries at 21:41, 22:13, 22:47 and 00:19 UTC (3:41 to 6:19 PM Utah in summer time), after CAISO
-# publishes next day prices, so the page shows tomorrow. Can also be run by hand from the Actions tab.
+# Main trigger: Vercel Cron calls /api/refresh four times each afternoon (vercel.json), which starts
+# this workflow if the page does not show tomorrow yet. Backup: the GitHub schedule below.
+# Can also be run by hand from the Actions tab.
 # Needs repository secrets: EIA_API_KEY, VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
 name: Daily refresh
 on:
-  # GitHub runs scheduled jobs on a best effort basis: at busy minutes (on the hour, half hour) they
-  # can start hours late or be dropped. So: four tries each afternoon at quiet minutes, and each run
-  # skips itself if the page already shows tomorrow. The first that succeeds wins.
+  # Backup only. GitHub runs scheduled jobs on a best effort basis: they can start hours late or be
+  # dropped. Each run skips itself if the page already shows tomorrow, so whichever trigger fires
+  # first wins and the others do nothing.
   schedule:
     - cron: '41 21 * * *'
     - cron: '13 22 * * *'
