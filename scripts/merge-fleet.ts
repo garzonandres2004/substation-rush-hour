@@ -262,9 +262,24 @@ async function main(): Promise<void> {
       if (!subMemo.has(h)) subMemo.set(h, sub.get(h) ?? substation(h));
       return subMemo.get(h)!;
     };
-    for (const n of FLEETS) {
+    // Room for each business: by battery size (fixed slices), or traded by need: in each 15 minutes the
+    // room goes first to the businesses that want to charge then (from their plans made alone), in
+    // proportion to how much, and only what is left is shared by battery size.
+    const planWithRoom = async (n: number, mode: 'size' | 'traded') => {
       const subset = runs.filter(r => r.k < n);
       const fleetPulseKw = subset.reduce((a, r) => a + r.input.assets.pulse.powerKw, 0);
+      const desire = new Map<string, Map<number, number>>(); // site -> interval start -> kW it wants to charge
+      const totalDesire = new Map<number, number>();
+      for (const r of subset) {
+        const m = new Map<number, number>();
+        r.lead.intervals.forEach((iv, i) => {
+          const ms = Date.parse(r.input.intervals[i].startUtc);
+          const want = Math.max(0, iv.gridKw - r.input.loadKw[i]);
+          m.set(ms, want);
+          totalDesire.set(ms, (totalDesire.get(ms) ?? 0) + want);
+        });
+        desire.set(r.input.site.id, m);
+      }
       const delta = new Map<number, number>();
       let savedBefore = 0;
       let savedAfter = 0;
@@ -272,14 +287,20 @@ async function main(): Promise<void> {
       let worstChange = 0;
       const planned: Run[] = [];
       for (const r of subset) {
-        const share = r.input.assets.pulse.powerKw / fleetPulseKw;
+        const sizeShare = r.input.assets.pulse.powerKw / fleetPulseKw;
+        const mine = desire.get(r.input.site.id)!;
         const solver: ILpSolver = {
           solve: async (lp: ILpInput) => {
             const env = lp.intervals.map((iv, t) => {
               const ms = Date.parse(iv.startUtc);
               const s = subAt(ms - (ms % HOUR_MS));
               const roomKw = s ? Math.max(0, (s.capMW - s.forecastMW) * 1000) : Number.POSITIVE_INFINITY;
-              return lp.loadKw[t] + share * Math.min(roomKw, 1e7);
+              if (!Number.isFinite(roomKw)) return lp.loadKw[t] + 1e7;
+              if (mode === 'size') return lp.loadKw[t] + sizeShare * roomKw;
+              const want = mine.get(ms) ?? 0;
+              const all = totalDesire.get(ms) ?? 0;
+              const share = all <= roomKw ? want + (roomKw - all) * sizeShare : (roomKw * want) / all;
+              return lp.loadKw[t] + share;
             });
             return PlanEngineHelper.solve(envelopeHighs(highs, env, lp.intervals[0]?.hours ?? 0.25) as any, lp);
           },
@@ -301,7 +322,7 @@ async function main(): Promise<void> {
         worstChange = Math.min(worstChange, after - before);
         planned.push({ ...r, lead: res.lead, baselineBill: res.baseline.bill.total });
       }
-      twoBosses.set(n, {
+      return {
         delta,
         stats: {
           savedBeforeUsd: Math.round(savedBefore),
@@ -311,7 +332,12 @@ async function main(): Promise<void> {
           worstSiteChangeUsd: Math.round(worstChange),
         },
         combined: siteGuard(planned), // plan with the room, then the guard on the meter
-      });
+      };
+    };
+    const traded = new Map<number, Awaited<ReturnType<typeof planWithRoom>>>();
+    for (const n of FLEETS) {
+      twoBosses.set(n, await planWithRoom(n, 'size'));
+      traded.set(n, await planWithRoom(n, 'traded'));
     }
     const fleets = FLEETS.map((n, f) => {
       const d = deltaByFleet[f];
@@ -350,6 +376,8 @@ async function main(): Promise<void> {
         withSiteGuard: { ...summarize(site.delta), ...site.stats },
         twoBosses: { ...summarize(two.delta), ...two.stats },
         planAndGuard: { ...summarize(two.combined.delta), ...two.combined.stats },
+        traded: { ...summarize(traded.get(n)!.delta), ...traded.get(n)!.stats },
+        tradedAndGuard: { ...summarize(traded.get(n)!.combined.delta), ...traded.get(n)!.combined.stats },
         maxChargeMW: +Math.max(...vals).toFixed(2),
         maxDischargeMW: +(-Math.min(...vals)).toFixed(2),
         avgByLocalHour: profile(d),
@@ -375,6 +403,7 @@ async function main(): Promise<void> {
       console.log(`  ${f.sites} sites ${f.pulseMW} MW site guard`, JSON.stringify(f.withSiteGuard));
       console.log(`  ${f.sites} sites ${f.pulseMW} MW two bosses`, JSON.stringify(f.twoBosses));
       console.log(`  ${f.sites} sites ${f.pulseMW} MW plan+guard`, JSON.stringify(f.planAndGuard));
+      console.log(`  ${f.sites} sites ${f.pulseMW} MW traded+guard`, JSON.stringify(f.tradedAndGuard));
     }
     console.log('  saved per site per month', JSON.stringify(o.savedPerSitePerMonth));
   }
