@@ -7,6 +7,7 @@ import { explanationFor, stepKey, explainedBy } from '../lib/explain';
 import { MinuteChart } from './MinuteChart';
 import { FleetView } from './FleetView';
 import { DispatchOrders } from './DispatchOrders';
+import { PlanDials } from './PlanDials';
 import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
@@ -78,6 +79,7 @@ const co2 = (t: number) =>
 const of100 = (s: number) => Math.round(s * 100);
 const NAV: [string, string][] = [
   ['route-h', 'Tomorrow'],
+  ['dial-h', 'Try it'],
   ['ev-h', 'Overloads'],
   ['cap-h', 'Capacity'],
   ['fv-h', 'Customer batteries'],
@@ -506,6 +508,16 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
+      </section>
+
+      <section className="result" aria-labelledby="dial-h">
+        <h2 id="dial-h">Try it: change tomorrow's plan</h2>
+        <p className="sub">
+          The same planner, solved again in your browser for tomorrow with three settings you choose: energy held back
+          for a utility event (Wattsmart) at the busiest hour, a safety margin on the load forecast, and how much the
+          plan pays to stay out of traffic. With the starting settings it gives the published plan.
+        </p>
+        <PlanDials />
       </section>
 
       <section className="evidence" aria-labelledby="ev-h">
