@@ -8,6 +8,9 @@ export interface Limit {
   // Optional lowest stored energy (MWh) at the end of each hour, e.g. a reserve held for a utility
   // event. Hours without a value use the asset's own minimum.
   floorMWh?: (number | undefined)[];
+  // Optional hours in which the battery may not charge (true), e.g. forecast jam hours: staying out of
+  // traffic as a rule rather than a price.
+  noCharge?: boolean[];
 }
 export const capAt = (cap: number | number[], t: number) => (Array.isArray(cap) ? cap[t] : cap);
 
@@ -46,6 +49,7 @@ export function dispatch(
   const reward = (t: number, delta: number): number => {
     if (delta >= 0) {
       const c = delta / eta;
+      if (c > 1e-9 && limit?.noCharge?.[t]) return -Infinity;
       if (c > a.powerMW + 1e-9) return -Infinity;
       return -(v[t] + a.cycleCostPerMWh) * c - over(t, c, 0);
     }
@@ -87,6 +91,10 @@ export function dispatch(
     }
   }
 
+  // Hours closed to charging can make the end of day target unreachable (late in a replanned day);
+  // then plan as if they were open, and let the guard and the next replans handle it.
+  if (choice[0]?.[i0] === -1 && limit?.noCharge)
+    return dispatch(v, a, { ...limit, noCharge: undefined }, step, startMWh, endMWh);
   const charge: number[] = [],
     discharge: number[] = [],
     soc: number[] = [];

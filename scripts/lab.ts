@@ -9,7 +9,7 @@ import { marginFromMisses, peakShaver, runReplan } from '../src/engine/execute.j
 import { dispatch } from '../src/engine/dispatch.js';
 import { ratingPU, simulate, XFMR } from '../src/engine/thermal.js';
 import type { Schedule } from '../src/engine/types.js';
-import { actualLoad, all, awareSignal, backtestDates, byT, days, misses, p } from './common.js';
+import { actualLoad, all, aware, backtestDates, byT, days, misses, p } from './common.js';
 
 const report = JSON.parse(fs.readFileSync('public/data/report.json', 'utf8'));
 const TOL = 0.1;
@@ -133,11 +133,11 @@ const reserveFloor = (c: (typeof cases)[number]) => {
   return f;
 };
 const strategies: Record<string, (c: (typeof cases)[number]) => Schedule> = {
-  ours: c => runReplan(A, { ...base(c), margin: 0, signal: awareSignal(c.day) }, c.act, true, c.prevMiss),
+  ours: c => runReplan(A, { ...base(c), margin: 0, ...aware(c.day) }, c.act, true, c.prevMiss),
   oursWithReserve: c =>
     runReplan(
       A,
-      { ...base(c), margin: 0, signal: awareSignal(c.day) },
+      { ...base(c), margin: 0, ...aware(c.day) },
       c.act,
       true,
       c.prevMiss,
@@ -203,7 +203,7 @@ const frontier = [
 ].map(({ label, q, guard }) => {
   const res = cases.map(c => {
     const margin = guard ? 0 : marginAt(c.d, q);
-    const s = runReplan(A, { ...base(c), margin, signal: awareSignal(c.day) }, c.act, guard, c.prevMiss);
+    const s = runReplan(A, { ...base(c), margin, ...aware(c.day) }, c.act, guard, c.prevMiss);
     return {
       over: overMWh(c.act, c.day.capMW, s),
       value: value(c.day.lmp, s),
@@ -249,7 +249,7 @@ const runFor = (c: (typeof cases)[number], x: number, mode: Mode, cap: number | 
       forecastLoad: c.day.loadMW.map(l => l + x),
       cap,
       margin: 0,
-      signal: awareSignal(c.day),
+      ...aware(c.day),
       penalty: p.overloadPenalty,
     },
     act,

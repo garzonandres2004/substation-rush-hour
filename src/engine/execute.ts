@@ -17,11 +17,17 @@ export interface Run {
   cap: number | number[];
   penalty: number;
   margin: number;
+  noCharge?: boolean[]; // hours the plan may not charge in (see dispatch)
 }
 
 // Day ahead plan: solved once, the night before, on forecast load plus the margin.
 export function planAhead(a: Asset, r: Run): Schedule {
-  return dispatch(r.signal, a, { load: r.forecastLoad.map(x => x + r.margin), cap: r.cap, penalty: r.penalty });
+  return dispatch(r.signal, a, {
+    load: r.forecastLoad.map(x => x + r.margin),
+    cap: r.cap,
+    penalty: r.penalty,
+    noCharge: r.noCharge,
+  });
 }
 
 // Real time guard. Applied to what the meter shows during the hour: if the planned action would
@@ -74,7 +80,7 @@ export function runReplan(
     const s = dispatch(
       r.signal.slice(t),
       a,
-      { load: est, cap, penalty: r.penalty, floorMWh: floorMWh?.slice(t) },
+      { load: est, cap, penalty: r.penalty, floorMWh: floorMWh?.slice(t), noCharge: r.noCharge?.slice(t) },
       STEP,
       soc,
     );

@@ -30,6 +30,7 @@ function replan(reserveMWh: number, marginMW: number, premium: number): Sc {
     cap: sc0.capMW,
     penalty: P.overloadPenalty,
     floorMWh: floor,
+    noCharge: hs.map(h => h.congested), // as the published plan: never charge in a forecast jam hour
   });
   return {
     ...sc0,

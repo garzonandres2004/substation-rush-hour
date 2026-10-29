@@ -21,13 +21,15 @@ import {
   misses,
   co2HatFor,
   awareSignal,
+  aware,
+  jamHours,
 } from './common.js';
 
 // Day ahead plans on forecast load (plus an optional margin, used only in the ablation).
 function plans(day: DayInputs, co2Hat: number[], margin: number) {
   const base = { forecastLoad: day.loadMW, cap: day.capMW, margin };
   return {
-    stressAware: planAhead(p.asset, { ...base, signal: awareSignal(day), penalty: p.overloadPenalty }),
+    stressAware: planAhead(p.asset, { ...base, ...aware(day), penalty: p.overloadPenalty }),
     priceOnly: dispatch(day.lmp, p.asset),
     clean: planAhead(p.asset, { ...base, signal: co2Hat, penalty: p.cleanOverloadPenalty }),
     naive: naiveSchedule(p.asset, day.hourLocal),
@@ -109,7 +111,7 @@ for (const d of backtestDates) {
   // stressAware  replan every hour plus a real time guard that reacts to the meter (main)
   // priceLimit   same layers as main but no traffic index (price plus the limit only)
   // peakShaver   five line rule: discharge whatever is over the limit, recharge at night
-  const mainRun = runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, true, prevMiss);
+  const mainRun = runReplan(p.asset, { ...base, margin: 0, ...aware(day) }, act, true, prevMiss);
   const run: Record<string, Schedule> = {
     stressAware: mainRun,
     priceOnly: plan.priceOnly,
@@ -122,14 +124,19 @@ for (const d of backtestDates) {
     ),
     naive: plan.naive,
     none: plan.none,
-    awareV1: planAhead(p.asset, { ...base, margin: 0, signal: awareSignal(day) }),
-    awareReplan: runReplan(p.asset, { ...base, margin: 0, signal: awareSignal(day) }, act, false, prevMiss),
-    awareReplanMargin: runReplan(p.asset, { ...base, margin, signal: awareSignal(day) }, act, false, prevMiss),
+    awareV1: planAhead(p.asset, { ...base, margin: 0, ...aware(day) }),
+    awareReplan: runReplan(p.asset, { ...base, margin: 0, ...aware(day) }, act, false, prevMiss),
+    awareReplanMargin: runReplan(p.asset, { ...base, margin, ...aware(day) }, act, false, prevMiss),
     priceLimit: runReplan(p.asset, { ...base, margin: 0, signal: day.lmp }, act, true, prevMiss),
     peakShaver: peakShaver(p.asset, act, day.hourLocal, day.capMW),
     // Perfect hindsight: the same objective planned once with the real load known in advance. Nothing can
     // do better on this day, so it is the yardstick for how much of the possible value ours captures.
-    hindsight: dispatch(awareSignal(day), p.asset, { load: act, cap: day.capMW, penalty: p.overloadPenalty }),
+    hindsight: dispatch(awareSignal(day), p.asset, {
+      load: act,
+      cap: day.capMW,
+      penalty: p.overloadPenalty,
+      noCharge: jamHours(day),
+    }),
   };
 
   const real = { ...day, loadMW: act };
@@ -144,7 +151,7 @@ for (const d of backtestDates) {
       cap: day.capMW,
       penalty: p.overloadPenalty,
       margin: 0,
-      signal: awareSignal(day),
+      ...aware(day),
     };
     robust.eia.v1.push(scoreRun(planAhead(p.asset, b2)));
     robust.eia.replan.push(scoreRun(runReplan(p.asset, b2, act, false, 0)));
@@ -152,7 +159,9 @@ for (const d of backtestDates) {
   }
   for (const prem of PREMIUMS) {
     const sig = day.lmp.map((x, i) => x + prem * day.stress[i]);
-    robust.premium[prem].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
+    robust.premium[prem].push(
+      scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig, noCharge: jamHours(day) }, act, true, prevMiss)),
+    );
   }
   for (const { name, w } of WEIGHTS) {
     const alt = day.lmp.map(
@@ -163,7 +172,9 @@ for (const d of backtestDates) {
         w.price * day.comps.price[i],
     );
     const sig = day.lmp.map((x, i) => x + p.stressPremium * alt[i]);
-    robust.weights[name].push(scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig }, act, true, prevMiss)));
+    robust.weights[name].push(
+      scoreRun(runReplan(p.asset, { ...base, margin: 0, signal: sig, noCharge: jamHours(day) }, act, true, prevMiss)),
+    );
   }
   let dm = 0,
     dn = 0,

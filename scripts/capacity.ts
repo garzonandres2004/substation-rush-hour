@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import { runReplan, peakShaver } from '../src/engine/execute.js';
 import type { Asset } from '../src/engine/types.js';
-import { p, all, backtestDates, days, actualLoad, awareSignal, misses, marginFor } from './common.js';
+import { p, all, backtestDates, days, actualLoad, aware, misses, marginFor } from './common.js';
 
 const TOL = 0.1; // MWh over the limit per day still counted as zero (planning grid rounding)
 const STEP = 0.25;
@@ -85,7 +85,7 @@ function worstDay(x: number, mode: Mode, a: Asset, fixed: boolean): number {
           forecastLoad: c.day.loadMW.map(l => l + x),
           cap,
           margin: 0,
-          signal: awareSignal(c.day),
+          ...aware(c.day),
           penalty: p.overloadPenalty,
         },
         act,

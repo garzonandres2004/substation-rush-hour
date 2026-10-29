@@ -103,6 +103,7 @@ for (const d of dates) {
         A,
         {
           signal,
+          noCharge: day.stress.map(s => s >= p.congestedThreshold),
           forecastLoad: day.loadMW.map((l, i) => l + f[i]),
           cap: day.capMW,
           penalty: p.overloadPenalty,

@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import { runReplan } from '../src/engine/execute.js';
 import { dataCenterMinutes, runMinutes } from '../src/engine/station.js';
-import { p, backtestDates, days, actualLoad, awareSignal, misses } from './common.js';
+import { p, backtestDates, days, actualLoad, aware, misses } from './common.js';
 
 const cap = JSON.parse(fs.readFileSync('public/data/capacity.json', 'utf8'));
 const X: number = cap.limits.moving.stations.find(
@@ -74,7 +74,7 @@ for (const c of cases) {
       forecastLoad: c.day.loadMW.map(l => l + X),
       cap: c.day.capMW,
       margin: 0,
-      signal: awareSignal(c.day),
+      ...aware(c.day),
       penalty: p.overloadPenalty,
     },
     hourlyLoad,

@@ -54,3 +54,7 @@ export const co2HatFor = (day: DayInputs) => {
   return day.hourLocal.map(hr => intensityHat(hist, hr));
 };
 export const awareSignal = (day: DayInputs) => day.lmp.map((x, i) => x + p.stressPremium * day.stress[i]);
+// Forecast jam hours: the everyday planner never charges in them (staying out of traffic as a rule).
+export const jamHours = (day: DayInputs) => day.stress.map(s => s >= p.congestedThreshold);
+// The everyday planner's inputs: the traffic aware signal and the closed hours.
+export const aware = (day: DayInputs) => ({ signal: awareSignal(day), noCharge: jamHours(day) });
