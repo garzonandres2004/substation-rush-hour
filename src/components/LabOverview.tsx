@@ -2,6 +2,7 @@ import gpuRaw from '../../lab-data/gpu-stats.json';
 import capRaw from '../../public/data/lab-capacity-year.json';
 import flexRaw from '../../public/data/lab-flex.json';
 import fleetRaw from '../../public/data/merge-fleet.json';
+import stackRaw from '../../public/data/merge-fullstack.json';
 import labRaw from '../../public/data/lab.json';
 import secRaw from '../../public/data/lab-seconds.json';
 import sweepRaw from '../../public/data/lab-sweep.json';
@@ -127,8 +128,8 @@ export default function LabOverview() {
       '#fl-h',
       'K',
       'Many customer batteries behind one substation (with DETOUR)',
-      `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Room traded by need plus guard: ${fleetBoth}, customers keep ${Math.min(100, fleetBothKept).toFixed(0)}%.`,
-      'New, cut but not closed',
+      `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Room traded by need plus guard: ${fleetBoth}, customers keep ${Math.min(100, fleetBothKept).toFixed(0)}%. With the utility's Station too: ${(stackRaw as any).result.stationFleetTraded.hoursNotOverWithoutBatteries}.`,
+      'New, nearly closed with the Station',
     ],
   ];
   return (

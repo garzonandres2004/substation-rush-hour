@@ -1,0 +1,52 @@
+{
+ "generatedAt": "2026-10-29T13:43:48.208Z",
+ "first": "2025-11-01",
+ "last": "2026-09-30",
+ "days": 332,
+ "station": "10 MW, 40 MWh",
+ "fleet": "60 businesses (DETOUR archetypes), 42 MW of Pulse batteries",
+ "result": {
+  "none": {
+   "overloadHours": 587,
+   "overloadDays": 110,
+   "overloadMWh": 2222.6,
+   "hoursNotOverWithoutBatteries": 0
+  },
+  "fleetAlone": {
+   "overloadHours": 697,
+   "overloadDays": 179,
+   "overloadMWh": 3120.6,
+   "hoursNotOverWithoutBatteries": 230
+  },
+  "fleetGuard": {
+   "overloadHours": 584,
+   "overloadDays": 143,
+   "overloadMWh": 2145.3,
+   "hoursNotOverWithoutBatteries": 119
+  },
+  "fleetTraded": {
+   "overloadHours": 547,
+   "overloadDays": 110,
+   "overloadMWh": 1865.1,
+   "hoursNotOverWithoutBatteries": 59
+  },
+  "station": {
+   "overloadHours": 138,
+   "overloadDays": 30,
+   "overloadMWh": 1009.1,
+   "hoursNotOverWithoutBatteries": 0
+  },
+  "stationFleetAlone": {
+   "overloadHours": 158,
+   "overloadDays": 42,
+   "overloadMWh": 1046.9,
+   "hoursNotOverWithoutBatteries": 35
+  },
+  "stationFleetTraded": {
+   "overloadHours": 130,
+   "overloadDays": 27,
+   "overloadMWh": 863.3,
+   "hoursNotOverWithoutBatteries": 2
+  }
+ }
+}

@@ -1,4 +1,5 @@
 import fleetRaw from '../../public/data/merge-fleet.json';
+import stackRaw from '../../public/data/merge-fullstack.json';
 
 // Section K: many customer batteries behind one substation. Built with DETOUR (Juan Lizarazo, MIT,
 // used with his permission): its Rocky Mountain Power tariffs, simulated businesses and bill planner,
@@ -42,6 +43,21 @@ interface Month {
   fleets: FleetRow[];
 }
 const fleet = fleetRaw as unknown as { generatedAt: string; months: Record<string, Month> };
+interface StackRow {
+  overloadHours: number;
+  overloadDays: number;
+  overloadMWh: number;
+  hoursNotOverWithoutBatteries: number;
+}
+const stack = stackRaw as unknown as { days: number; station: string; result: Record<string, StackRow> };
+const STACK_ROWS: [string, string][] = [
+  ['none', 'No batteries at all'],
+  ['fleetAlone', 'Customer batteries, each alone'],
+  ['fleetTraded', 'Customer batteries, room traded by need, guard'],
+  ['station', "The utility's Station only"],
+  ['stationFleetAlone', "The utility's Station, customer batteries each alone"],
+  ['stationFleetTraded', "The utility's Station, customer batteries with room traded and the guard"],
+];
 const months = Object.keys(fleet.months).sort();
 const WINTER = ['11', '12', '01', '02', '03'];
 const SUMMER = ['06', '07', '08'];
@@ -322,6 +338,40 @@ export default function FleetLab() {
           <b>The same lesson as the main page.</b> Planning ahead is not enough, because the forecast misses; a guard on
           the meter is not enough, because some days have no room left to move into. The plan and the guard together
           hold best.
+        </li>
+        <li>
+          <b>With the utility's own Station.</b> The substation also has this project's {stack.station} Station, planned
+          as on the main page and in section A, and it plans around the fleet's published charging. Over the same{' '}
+          {stack.days} days:
+          <div className="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>At the substation</th>
+                  <th>Hours over the limit</th>
+                  <th>New hours caused by customer batteries</th>
+                  <th>Energy over the limit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {STACK_ROWS.map(([k, label]) => (
+                  <tr key={k} className={k === 'stationFleetTraded' ? 'best' : ''}>
+                    <th scope="row">{label}</th>
+                    <td>{stack.result[k].overloadHours}</td>
+                    <td>{k === 'none' || k === 'station' ? 'n/a' : stack.result[k].hoursNotOverWithoutBatteries}</td>
+                    <td>{stack.result[k].overloadMWh.toFixed(0)} MWh</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          The Station soaks up most of the fleet's late night rebound even when every business acts alone (
+          {stack.result.stationFleetAlone.hoursNotOverWithoutBatteries} new hours instead of{' '}
+          {stack.result.fleetAlone.hoursNotOverWithoutBatteries}). With the room traded and the guard on top, the fleet
+          causes {stack.result.stationFleetTraded.hoursNotOverWithoutBatteries} new hours in {stack.days} days, and the
+          substation does better than with the Station alone ({stack.result.stationFleetTraded.overloadHours} hours
+          against {stack.result.station.overloadHours}). Utility storage and customer storage, coordinated, beat either
+          one alone.
         </li>
         <li>
           Limits: simulated businesses, as in DETOUR; their copies differ only in day to day noise, which makes them

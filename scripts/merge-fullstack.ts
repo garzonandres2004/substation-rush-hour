@@ -91,7 +91,8 @@ for (const d of dates) {
   const prem = priced ? p.stressPremium : NO_PRICE.stressPremium;
   const signal = day.lmp.map((x, i) => x + prem * day.stress[i]);
   const caps = Array.isArray(day.capMW) ? day.capMW : Array(24).fill(day.capMW);
-  const baseOver = act0.map((l, i) => l > caps[i] + 1e-9);
+  const TOL_MW = 0.001; // 1 kW: the saved fleet power is rounded to 0.1 kW
+  const baseOver = act0.map((l, i) => l > caps[i] + TOL_MW);
   for (const c of CFGS) {
     const fleet = FLEET_OF[c];
     const f = day.t.map(t => (fleet ? fleetAt(fleet, t) : 0));
@@ -117,7 +118,7 @@ for (const d of dates) {
     }
     for (let i = 0; i < 24; i++) {
       const load = act[i] + net[i];
-      if (load > caps[i] + 1e-9) {
+      if (load > caps[i] + TOL_MW) {
         tot[c].hours++;
         tot[c].mwh += load - caps[i];
         tot[c].days.add(d);
