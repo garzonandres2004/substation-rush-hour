@@ -33,6 +33,8 @@ interface FleetRow {
   withSiteGuard: SiteGuard;
   twoBosses: Billed;
   planAndGuard: SiteGuard;
+  traded: Billed;
+  tradedAndGuard: SiteGuard;
   avgByLocalHour: number[];
 }
 interface Month {
@@ -72,8 +74,9 @@ function total(i: number) {
       [
         ['Each business alone', 'withFleet'],
         ['Guard on the meter, site by site', 'withSiteGuard'],
-        ["Two bosses: the substation's room inside each plan", 'twoBosses'],
-        ['Plan with the room, then the guard', 'planAndGuard'],
+        ["Two bosses: the substation's room inside each plan, fixed slices by battery size", 'twoBosses'],
+        ['Fixed slices, then the guard', 'planAndGuard'],
+        ['Room traded by need, then the guard', 'tradedAndGuard'],
       ] as const
     ).map(([label, key]) => {
       const xs = rows.map(r => r[key] as Overload & Partial<Billed>);
@@ -166,15 +169,16 @@ export default function FleetLab() {
     .map(m => ({ m, d: fleet.months[m].fleets[big].withFleet.overloadHours - fleet.months[m].noFleet.overloadHours }))
     .sort((x, y) => y.d - x.d)[0];
   const wm = fleet.months[worstMonth.m];
-  const [alone, guard, two, pg] = b.approaches;
+  const [alone, guard, two, pg, tg] = b.approaches;
   const usd = (x: number) => `$${Math.round(Math.abs(x)).toLocaleString('en-US')}`;
   return (
     <section className="evidence" aria-labelledby="fl-h">
       <p className="eyebrow">K · Many customer batteries behind one substation, built with DETOUR</p>
       <h2 id="fl-h">
         {b.sites} businesses each cutting their own bill caused {b.aloneCreated} new hours over this substation's limit.
-        A guard on the meter halved that at no cost to any customer; planning around the substation cut it further, but
-        customers gave up {(100 - pg.kept).toFixed(0)}% of their savings.
+        A guard on the meter halved that at no cost to any customer. Planning around the substation, with room traded by
+        need, plus the guard, cut it to {tg.created}, and customers kept {Math.min(100, tg.kept).toFixed(0)}% of their
+        savings.
       </h2>
       <p className="sub">
         A Torus Station behind a business answers to two bosses: the customer's bill and the substation's limit.{' '}
@@ -293,12 +297,26 @@ export default function FleetLab() {
         </li>
         <li>
           <b>Two bosses.</b> Each business plans the day before with the substation's published room for tomorrow (its
-          limit minus EIA's day ahead forecast, scaled), shared by battery size, and pays a steep price for planning
-          above its share. That leaves {two.created} new hours, and {pg.created} with the guard on top: the lowest, and
-          the only one that puts the substation below where it was with no batteries ({pg.mwh.toFixed(0)} against{' '}
-          {b.noFleetMWh.toFixed(0)} MWh over). The cost: customers keep {pg.kept.toFixed(0)}% of their savings, and one
-          site lost {usd(pg.worstUsd)} in a month, because a fixed share can block a business from charging before its
-          own peak. A smarter split (sites trading room they do not need) is the next step.
+          limit minus EIA's day ahead forecast, scaled) and pays a steep price for planning above its share. With fixed
+          slices by battery size that leaves {two.created} new hours, and {pg.created} with the guard on top, but
+          customers keep only {pg.kept.toFixed(0)}% of their savings and one site lost {usd(pg.worstUsd)} in a month: a
+          fixed slice can block a business from charging before its own peak.
+        </li>
+        <li>
+          <b>Room traded by need.</b> In each 15 minutes the room goes first to the businesses that want to charge then
+          (from their plans made alone), in proportion to how much, and only the rest is shared by battery size. With
+          the guard: {tg.created} new hours, {tg.hours} hours over the limit in all ({b.noFleetHours} with no batteries)
+          and {tg.mwh.toFixed(0)} MWh over ({b.noFleetMWh.toFixed(0)} with no batteries), while customers keep{' '}
+          {Math.min(100, tg.kept).toFixed(0)}% of their savings and the worst site month loses {usd(tg.worstUsd)}. With
+          fewer businesses the trade is nearly free:{' '}
+          {t
+            .slice(0, -1)
+            .map(r => {
+              const x = r.approaches[4];
+              return `${r.sites} businesses keep ${Math.min(100, x.kept).toFixed(0)}% (${x.created} new hours)`;
+            })
+            .join(', ')}
+          . With {b.sites}, they all want the same afternoon hours, so there is not enough room to trade.
         </li>
         <li>
           <b>The same lesson as the main page.</b> Planning ahead is not enough, because the forecast misses; a guard on

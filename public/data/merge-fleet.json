@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-29T05:30:24.928Z",
+ "generatedAt": "2026-10-29T07:17:51.103Z",
  "months": {
   "2025-11": {
    "noFleet": {
@@ -95,6 +95,42 @@
        "cement-plant": 101.68,
        "airport": 72.5,
        "ski-resort": 100
+      }
+     },
+     "traded": {
+      "overloadHours": 65,
+      "overloadDays": 13,
+      "overloadMWh": 138.4,
+      "peakMW": 96.01,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 15,
+      "savedBeforeUsd": 65059,
+      "savedAfterUsd": 65143,
+      "savingsKeptPct": 100.13,
+      "worstSiteKeptPct": 90.18,
+      "worstSiteChangeUsd": -933
+     },
+     "tradedAndGuard": {
+      "overloadHours": 64,
+      "overloadDays": 13,
+      "overloadMWh": 136.6,
+      "peakMW": 96.01,
+      "hoursCreatedByFleet": 1,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 15,
+      "movedMWh": 1.9,
+      "unmovedMWh": 2.2,
+      "maxShiftHours": 5.75,
+      "savedBeforeUsd": 65059,
+      "savedAfterUsd": 65143,
+      "savingsKeptPct": 100.13,
+      "worstSiteKeptPct": 90.18,
+      "worstSiteChangeUsd": -933,
+      "keptPctByType": {
+       "cement-plant": 102.32,
+       "airport": 99.35,
+       "ski-resort": 100.06
       }
      },
      "maxChargeMW": 8.5,
@@ -211,6 +247,42 @@
        "ski-resort": 101
       }
      },
+     "traded": {
+      "overloadHours": 64,
+      "overloadDays": 13,
+      "overloadMWh": 138.1,
+      "peakMW": 96.01,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 3,
+      "hoursRelievedByFleet": 17,
+      "savedBeforeUsd": 125358,
+      "savedAfterUsd": 112311,
+      "savingsKeptPct": 89.59,
+      "worstSiteKeptPct": 67.71,
+      "worstSiteChangeUsd": -2362
+     },
+     "tradedAndGuard": {
+      "overloadHours": 63,
+      "overloadDays": 13,
+      "overloadMWh": 134.8,
+      "peakMW": 96.01,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 17,
+      "movedMWh": 3.6,
+      "unmovedMWh": 4.4,
+      "maxShiftHours": 6,
+      "savedBeforeUsd": 125358,
+      "savedAfterUsd": 112311,
+      "savingsKeptPct": 89.59,
+      "worstSiteKeptPct": 67.71,
+      "worstSiteChangeUsd": -2362,
+      "keptPctByType": {
+       "cement-plant": 100.96,
+       "airport": 81.78,
+       "ski-resort": 101.05
+      }
+     },
      "maxChargeMW": 17.03,
      "maxDischargeMW": 10.08,
      "avgByLocalHour": [
@@ -323,6 +395,42 @@
        "cement-plant": 99.97,
        "airport": 50.17,
        "ski-resort": 101.06
+      }
+     },
+     "traded": {
+      "overloadHours": 67,
+      "overloadDays": 15,
+      "overloadMWh": 139.5,
+      "peakMW": 96.01,
+      "hoursCreatedByFleet": 6,
+      "daysWithCreatedHours": 5,
+      "hoursRelievedByFleet": 17,
+      "savedBeforeUsd": 259894,
+      "savedAfterUsd": 199535,
+      "savingsKeptPct": 76.78,
+      "worstSiteKeptPct": 44.63,
+      "worstSiteChangeUsd": -4872
+     },
+     "tradedAndGuard": {
+      "overloadHours": 66,
+      "overloadDays": 14,
+      "overloadMWh": 132,
+      "peakMW": 96.01,
+      "hoursCreatedByFleet": 5,
+      "daysWithCreatedHours": 4,
+      "hoursRelievedByFleet": 17,
+      "movedMWh": 8.1,
+      "unmovedMWh": 7.9,
+      "maxShiftHours": 6.25,
+      "savedBeforeUsd": 259894,
+      "savedAfterUsd": 199535,
+      "savingsKeptPct": 76.78,
+      "worstSiteKeptPct": 44.63,
+      "worstSiteChangeUsd": -4872,
+      "keptPctByType": {
+       "cement-plant": 101.19,
+       "airport": 62.43,
+       "ski-resort": 115.45
       }
      },
      "maxChargeMW": 33.74,
@@ -525,6 +633,42 @@
        "ski-resort": 253.13
       }
      },
+     "traded": {
+      "overloadHours": 122,
+      "overloadDays": 18,
+      "overloadMWh": 327,
+      "peakMW": 102.21,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 4,
+      "savedBeforeUsd": 41670,
+      "savedAfterUsd": 51763,
+      "savingsKeptPct": 124.22,
+      "worstSiteKeptPct": 61.84,
+      "worstSiteChangeUsd": -775
+     },
+     "tradedAndGuard": {
+      "overloadHours": 121,
+      "overloadDays": 18,
+      "overloadMWh": 325.4,
+      "peakMW": 102.21,
+      "hoursCreatedByFleet": 1,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 4,
+      "movedMWh": 1.7,
+      "unmovedMWh": 3.6,
+      "maxShiftHours": 6.25,
+      "savedBeforeUsd": 41670,
+      "savedAfterUsd": 51763,
+      "savingsKeptPct": 124.22,
+      "worstSiteKeptPct": 61.84,
+      "worstSiteChangeUsd": -775,
+      "keptPctByType": {
+       "cement-plant": 131.95,
+       "airport": 123.37,
+       "ski-resort": 250.55
+      }
+     },
      "maxChargeMW": 7.14,
      "maxDischargeMW": 4.72,
      "avgByLocalHour": [
@@ -639,6 +783,42 @@
        "ski-resort": 207.93
       }
      },
+     "traded": {
+      "overloadHours": 120,
+      "overloadDays": 18,
+      "overloadMWh": 329.9,
+      "peakMW": 102.55,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 6,
+      "savedBeforeUsd": 84481,
+      "savedAfterUsd": 77202,
+      "savingsKeptPct": 91.38,
+      "worstSiteKeptPct": 12.12,
+      "worstSiteChangeUsd": -2292
+     },
+     "tradedAndGuard": {
+      "overloadHours": 119,
+      "overloadDays": 18,
+      "overloadMWh": 327.8,
+      "peakMW": 102.55,
+      "hoursCreatedByFleet": 1,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 6,
+      "movedMWh": 2.5,
+      "unmovedMWh": 6.3,
+      "maxShiftHours": 6.25,
+      "savedBeforeUsd": 84481,
+      "savedAfterUsd": 77275,
+      "savingsKeptPct": 91.47,
+      "worstSiteKeptPct": 12.12,
+      "worstSiteChangeUsd": -2292,
+      "keptPctByType": {
+       "cement-plant": 109.28,
+       "airport": 60.86,
+       "ski-resort": 214.62
+      }
+     },
      "maxChargeMW": 13.12,
      "maxDischargeMW": 8,
      "avgByLocalHour": [
@@ -751,6 +931,42 @@
        "cement-plant": 84.63,
        "airport": 62.58,
        "ski-resort": 185.84
+      }
+     },
+     "traded": {
+      "overloadHours": 118,
+      "overloadDays": 19,
+      "overloadMWh": 348.8,
+      "peakMW": 106.47,
+      "hoursCreatedByFleet": 8,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 14,
+      "savedBeforeUsd": 170948,
+      "savedAfterUsd": 138907,
+      "savingsKeptPct": 81.26,
+      "worstSiteKeptPct": -0.22,
+      "worstSiteChangeUsd": -3350
+     },
+     "tradedAndGuard": {
+      "overloadHours": 117,
+      "overloadDays": 19,
+      "overloadMWh": 318.8,
+      "peakMW": 101.94,
+      "hoursCreatedByFleet": 7,
+      "daysWithCreatedHours": 7,
+      "hoursRelievedByFleet": 14,
+      "movedMWh": 32,
+      "unmovedMWh": 20,
+      "maxShiftHours": 7.25,
+      "savedBeforeUsd": 170948,
+      "savedAfterUsd": 139193,
+      "savingsKeptPct": 81.42,
+      "worstSiteKeptPct": -0.22,
+      "worstSiteChangeUsd": -3350,
+      "keptPctByType": {
+       "cement-plant": 88.89,
+       "airport": 62.7,
+       "ski-resort": 183.79
       }
      },
      "maxChargeMW": 25.23,
@@ -953,6 +1169,42 @@
        "ski-resort": 102.87
       }
      },
+     "traded": {
+      "overloadHours": 23,
+      "overloadDays": 7,
+      "overloadMWh": 38.1,
+      "peakMW": 98.33,
+      "hoursCreatedByFleet": 1,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 11,
+      "savedBeforeUsd": 73857,
+      "savedAfterUsd": 73849,
+      "savingsKeptPct": 99.99,
+      "worstSiteKeptPct": 91.1,
+      "worstSiteChangeUsd": -882
+     },
+     "tradedAndGuard": {
+      "overloadHours": 23,
+      "overloadDays": 7,
+      "overloadMWh": 37.6,
+      "peakMW": 98.33,
+      "hoursCreatedByFleet": 1,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 11,
+      "movedMWh": 0.6,
+      "unmovedMWh": 1.1,
+      "maxShiftHours": 2.5,
+      "savedBeforeUsd": 73857,
+      "savedAfterUsd": 73852,
+      "savingsKeptPct": 99.99,
+      "worstSiteKeptPct": 91.1,
+      "worstSiteChangeUsd": -882,
+      "keptPctByType": {
+       "cement-plant": 100.04,
+       "airport": 99.94,
+       "ski-resort": 99.99
+      }
+     },
      "maxChargeMW": 7.86,
      "maxDischargeMW": 4.6,
      "avgByLocalHour": [
@@ -1067,6 +1319,42 @@
        "ski-resort": 95.56
       }
      },
+     "traded": {
+      "overloadHours": 22,
+      "overloadDays": 5,
+      "overloadMWh": 36.3,
+      "peakMW": 98.09,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 14,
+      "savedBeforeUsd": 145134,
+      "savedAfterUsd": 124627,
+      "savingsKeptPct": 85.87,
+      "worstSiteKeptPct": 45.68,
+      "worstSiteChangeUsd": -4402
+     },
+     "tradedAndGuard": {
+      "overloadHours": 21,
+      "overloadDays": 5,
+      "overloadMWh": 33.4,
+      "peakMW": 98.09,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 14,
+      "movedMWh": 4.5,
+      "unmovedMWh": 1.2,
+      "maxShiftHours": 5.5,
+      "savedBeforeUsd": 145134,
+      "savedAfterUsd": 124627,
+      "savingsKeptPct": 85.87,
+      "worstSiteKeptPct": 45.68,
+      "worstSiteChangeUsd": -4402,
+      "keptPctByType": {
+       "cement-plant": 105.09,
+       "airport": 74.25,
+       "ski-resort": 92.1
+      }
+     },
      "maxChargeMW": 16.71,
      "maxDischargeMW": 10.17,
      "avgByLocalHour": [
@@ -1179,6 +1467,42 @@
        "cement-plant": 99.1,
        "airport": 52.01,
        "ski-resort": 89.16
+      }
+     },
+     "traded": {
+      "overloadHours": 39,
+      "overloadDays": 10,
+      "overloadMWh": 59.7,
+      "peakMW": 99.86,
+      "hoursCreatedByFleet": 20,
+      "daysWithCreatedHours": 10,
+      "hoursRelievedByFleet": 14,
+      "savedBeforeUsd": 294323,
+      "savedAfterUsd": 229104,
+      "savingsKeptPct": 77.84,
+      "worstSiteKeptPct": 36.05,
+      "worstSiteChangeUsd": -5112
+     },
+     "tradedAndGuard": {
+      "overloadHours": 31,
+      "overloadDays": 8,
+      "overloadMWh": 35.1,
+      "peakMW": 97.94,
+      "hoursCreatedByFleet": 12,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 14,
+      "movedMWh": 28.2,
+      "unmovedMWh": 8.9,
+      "maxShiftHours": 6,
+      "savedBeforeUsd": 294323,
+      "savedAfterUsd": 229104,
+      "savingsKeptPct": 77.84,
+      "worstSiteKeptPct": 36.05,
+      "worstSiteChangeUsd": -5112,
+      "keptPctByType": {
+       "cement-plant": 101.82,
+       "airport": 61.39,
+       "ski-resort": 94.62
       }
      },
      "maxChargeMW": 29.85,
@@ -1381,6 +1705,42 @@
        "ski-resort": 100
       }
      },
+     "traded": {
+      "overloadHours": 5,
+      "overloadDays": 1,
+      "overloadMWh": 9.3,
+      "peakMW": 95.72,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 1,
+      "savedBeforeUsd": 75808,
+      "savedAfterUsd": 78689,
+      "savingsKeptPct": 103.8,
+      "worstSiteKeptPct": 99.89,
+      "worstSiteChangeUsd": -4
+     },
+     "tradedAndGuard": {
+      "overloadHours": 5,
+      "overloadDays": 1,
+      "overloadMWh": 9.3,
+      "peakMW": 95.72,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 1,
+      "movedMWh": 0.3,
+      "unmovedMWh": 0.1,
+      "maxShiftHours": 0.75,
+      "savedBeforeUsd": 75808,
+      "savedAfterUsd": 78689,
+      "savingsKeptPct": 103.8,
+      "worstSiteKeptPct": 99.89,
+      "worstSiteChangeUsd": -4,
+      "keptPctByType": {
+       "cement-plant": 110.39,
+       "airport": 101.96,
+       "ski-resort": 100
+      }
+     },
      "maxChargeMW": 7.58,
      "maxDischargeMW": 4.74,
      "avgByLocalHour": [
@@ -1495,6 +1855,42 @@
        "ski-resort": 144.91
       }
      },
+     "traded": {
+      "overloadHours": 8,
+      "overloadDays": 2,
+      "overloadMWh": 13,
+      "peakMW": 96.3,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 1,
+      "savedBeforeUsd": 142712,
+      "savedAfterUsd": 135952,
+      "savingsKeptPct": 95.26,
+      "worstSiteKeptPct": 81.89,
+      "worstSiteChangeUsd": -1503
+     },
+     "tradedAndGuard": {
+      "overloadHours": 8,
+      "overloadDays": 2,
+      "overloadMWh": 9.9,
+      "peakMW": 95.68,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 1,
+      "movedMWh": 3.7,
+      "unmovedMWh": 0.8,
+      "maxShiftHours": 3,
+      "savedBeforeUsd": 142712,
+      "savedAfterUsd": 135952,
+      "savingsKeptPct": 95.26,
+      "worstSiteKeptPct": 81.89,
+      "worstSiteChangeUsd": -1503,
+      "keptPctByType": {
+       "cement-plant": 107.71,
+       "airport": 88.02,
+       "ski-resort": 98.82
+      }
+     },
      "maxChargeMW": 13.86,
      "maxDischargeMW": 9.13,
      "avgByLocalHour": [
@@ -1607,6 +2003,42 @@
        "cement-plant": 103.96,
        "airport": 56.74,
        "ski-resort": 114.29
+      }
+     },
+     "traded": {
+      "overloadHours": 8,
+      "overloadDays": 2,
+      "overloadMWh": 14.3,
+      "peakMW": 96.13,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 1,
+      "savedBeforeUsd": 286990,
+      "savedAfterUsd": 241431,
+      "savingsKeptPct": 84.13,
+      "worstSiteKeptPct": 57.95,
+      "worstSiteChangeUsd": -4203
+     },
+     "tradedAndGuard": {
+      "overloadHours": 8,
+      "overloadDays": 2,
+      "overloadMWh": 9.9,
+      "peakMW": 95.59,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 1,
+      "movedMWh": 5.1,
+      "unmovedMWh": 1.4,
+      "maxShiftHours": 4.5,
+      "savedBeforeUsd": 286990,
+      "savedAfterUsd": 241431,
+      "savingsKeptPct": 84.13,
+      "worstSiteKeptPct": 57.95,
+      "worstSiteChangeUsd": -4203,
+      "keptPctByType": {
+       "cement-plant": 103.3,
+       "airport": 68.52,
+       "ski-resort": 109.44
       }
      },
      "maxChargeMW": 28.64,
@@ -1809,6 +2241,42 @@
        "ski-resort": 100
       }
      },
+     "traded": {
+      "overloadHours": 10,
+      "overloadDays": 2,
+      "overloadMWh": 28.1,
+      "peakMW": 93.33,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 3,
+      "savedBeforeUsd": 63235,
+      "savedAfterUsd": 63961,
+      "savingsKeptPct": 101.15,
+      "worstSiteKeptPct": 99.88,
+      "worstSiteChangeUsd": -5
+     },
+     "tradedAndGuard": {
+      "overloadHours": 10,
+      "overloadDays": 2,
+      "overloadMWh": 28,
+      "peakMW": 93.33,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 3,
+      "movedMWh": 0.3,
+      "unmovedMWh": 0,
+      "maxShiftHours": 0.75,
+      "savedBeforeUsd": 63235,
+      "savedAfterUsd": 63962,
+      "savingsKeptPct": 101.15,
+      "worstSiteKeptPct": 99.88,
+      "worstSiteChangeUsd": -5,
+      "keptPctByType": {
+       "cement-plant": 100.09,
+       "airport": 101.93,
+       "ski-resort": 100
+      }
+     },
      "maxChargeMW": 7.66,
      "maxDischargeMW": 4.16,
      "avgByLocalHour": [
@@ -1920,6 +2388,42 @@
       "keptPctByType": {
        "cement-plant": 99.07,
        "airport": 71.57,
+       "ski-resort": 100
+      }
+     },
+     "traded": {
+      "overloadHours": 11,
+      "overloadDays": 3,
+      "overloadMWh": 24.9,
+      "peakMW": 93.32,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 4,
+      "savedBeforeUsd": 121536,
+      "savedAfterUsd": 114052,
+      "savingsKeptPct": 93.84,
+      "worstSiteKeptPct": 83.52,
+      "worstSiteChangeUsd": -1595
+     },
+     "tradedAndGuard": {
+      "overloadHours": 10,
+      "overloadDays": 2,
+      "overloadMWh": 24.3,
+      "peakMW": 93.32,
+      "hoursCreatedByFleet": 1,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 4,
+      "movedMWh": 0.7,
+      "unmovedMWh": 0.6,
+      "maxShiftHours": 1.5,
+      "savedBeforeUsd": 121536,
+      "savedAfterUsd": 114052,
+      "savingsKeptPct": 93.84,
+      "worstSiteKeptPct": 83.52,
+      "worstSiteChangeUsd": -1595,
+      "keptPctByType": {
+       "cement-plant": 99.76,
+       "airport": 90.9,
        "ski-resort": 100
       }
      },
@@ -2035,6 +2539,42 @@
        "cement-plant": 100.68,
        "airport": 63.27,
        "ski-resort": 69.65
+      }
+     },
+     "traded": {
+      "overloadHours": 15,
+      "overloadDays": 8,
+      "overloadMWh": 26.6,
+      "peakMW": 93.32,
+      "hoursCreatedByFleet": 8,
+      "daysWithCreatedHours": 8,
+      "hoursRelievedByFleet": 6,
+      "savedBeforeUsd": 243326,
+      "savedAfterUsd": 198527,
+      "savingsKeptPct": 81.59,
+      "worstSiteKeptPct": 59.21,
+      "worstSiteChangeUsd": -4001
+     },
+     "tradedAndGuard": {
+      "overloadHours": 10,
+      "overloadDays": 5,
+      "overloadMWh": 23.4,
+      "peakMW": 93.32,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 3,
+      "hoursRelievedByFleet": 6,
+      "movedMWh": 4.6,
+      "unmovedMWh": 2.8,
+      "maxShiftHours": 2.25,
+      "savedBeforeUsd": 243326,
+      "savedAfterUsd": 198527,
+      "savingsKeptPct": 81.59,
+      "worstSiteKeptPct": 59.21,
+      "worstSiteChangeUsd": -4001,
+      "keptPctByType": {
+       "cement-plant": 102.09,
+       "airport": 70.44,
+       "ski-resort": 103.57
       }
      },
      "maxChargeMW": 28.62,
@@ -2237,6 +2777,42 @@
        "ski-resort": 100
       }
      },
+     "traded": {
+      "overloadHours": 44,
+      "overloadDays": 10,
+      "overloadMWh": 63.7,
+      "peakMW": 90.74,
+      "hoursCreatedByFleet": 4,
+      "daysWithCreatedHours": 4,
+      "hoursRelievedByFleet": 3,
+      "savedBeforeUsd": 34168,
+      "savedAfterUsd": 31874,
+      "savingsKeptPct": 93.29,
+      "worstSiteKeptPct": 48.3,
+      "worstSiteChangeUsd": -2637
+     },
+     "tradedAndGuard": {
+      "overloadHours": 43,
+      "overloadDays": 10,
+      "overloadMWh": 60,
+      "peakMW": 90.74,
+      "hoursCreatedByFleet": 4,
+      "daysWithCreatedHours": 4,
+      "hoursRelievedByFleet": 4,
+      "movedMWh": 4.4,
+      "unmovedMWh": 3.8,
+      "maxShiftHours": 7.25,
+      "savedBeforeUsd": 34168,
+      "savedAfterUsd": 31874,
+      "savingsKeptPct": 93.29,
+      "worstSiteKeptPct": 48.3,
+      "worstSiteChangeUsd": -2637,
+      "keptPctByType": {
+       "cement-plant": 89.6,
+       "airport": 102.82,
+       "ski-resort": 100
+      }
+     },
      "maxChargeMW": 6.58,
      "maxDischargeMW": 4.95,
      "avgByLocalHour": [
@@ -2351,6 +2927,42 @@
        "ski-resort": 100
       }
      },
+     "traded": {
+      "overloadHours": 42,
+      "overloadDays": 10,
+      "overloadMWh": 64.2,
+      "peakMW": 90.73,
+      "hoursCreatedByFleet": 8,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 9,
+      "savedBeforeUsd": 68851,
+      "savedAfterUsd": 88046,
+      "savingsKeptPct": 127.88,
+      "worstSiteKeptPct": 10.67,
+      "worstSiteChangeUsd": -4556
+     },
+     "tradedAndGuard": {
+      "overloadHours": 38,
+      "overloadDays": 7,
+      "overloadMWh": 50,
+      "peakMW": 90.73,
+      "hoursCreatedByFleet": 4,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 9,
+      "movedMWh": 15.3,
+      "unmovedMWh": 8.2,
+      "maxShiftHours": 4.75,
+      "savedBeforeUsd": 68851,
+      "savedAfterUsd": 88046,
+      "savingsKeptPct": 127.88,
+      "worstSiteKeptPct": 10.67,
+      "worstSiteChangeUsd": -4556,
+      "keptPctByType": {
+       "cement-plant": 93.17,
+       "airport": 220.35,
+       "ski-resort": 100
+      }
+     },
      "maxChargeMW": 12.54,
      "maxDischargeMW": 8.13,
      "avgByLocalHour": [
@@ -2462,6 +3074,42 @@
       "keptPctByType": {
        "cement-plant": 98.75,
        "airport": 166.69,
+       "ski-resort": 100
+      }
+     },
+     "traded": {
+      "overloadHours": 43,
+      "overloadDays": 10,
+      "overloadMWh": 75.7,
+      "peakMW": 90.71,
+      "hoursCreatedByFleet": 14,
+      "daysWithCreatedHours": 7,
+      "hoursRelievedByFleet": 14,
+      "savedBeforeUsd": 142486,
+      "savedAfterUsd": 158419,
+      "savingsKeptPct": 111.18,
+      "worstSiteKeptPct": 44.91,
+      "worstSiteChangeUsd": -2810
+     },
+     "tradedAndGuard": {
+      "overloadHours": 41,
+      "overloadDays": 8,
+      "overloadMWh": 46.2,
+      "peakMW": 90.71,
+      "hoursCreatedByFleet": 12,
+      "daysWithCreatedHours": 5,
+      "hoursRelievedByFleet": 14,
+      "movedMWh": 30.9,
+      "unmovedMWh": 9.7,
+      "maxShiftHours": 6.75,
+      "savedBeforeUsd": 142486,
+      "savedAfterUsd": 158419,
+      "savingsKeptPct": 111.18,
+      "worstSiteKeptPct": 44.91,
+      "worstSiteChangeUsd": -2810,
+      "keptPctByType": {
+       "cement-plant": 98.09,
+       "airport": 143.83,
        "ski-resort": 100
       }
      },
@@ -2665,6 +3313,42 @@
        "ski-resort": 105.03
       }
      },
+     "traded": {
+      "overloadHours": 87,
+      "overloadDays": 14,
+      "overloadMWh": 605.4,
+      "peakMW": 106.44,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 1,
+      "savedBeforeUsd": 34759,
+      "savedAfterUsd": 34690,
+      "savingsKeptPct": 99.8,
+      "worstSiteKeptPct": 90.01,
+      "worstSiteChangeUsd": -315
+     },
+     "tradedAndGuard": {
+      "overloadHours": 87,
+      "overloadDays": 14,
+      "overloadMWh": 604.1,
+      "peakMW": 106.44,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 1,
+      "movedMWh": 1.3,
+      "unmovedMWh": 3,
+      "maxShiftHours": 5,
+      "savedBeforeUsd": 34759,
+      "savedAfterUsd": 34690,
+      "savingsKeptPct": 99.8,
+      "worstSiteKeptPct": 90.01,
+      "worstSiteChangeUsd": -315,
+      "keptPctByType": {
+       "cement-plant": 102.26,
+       "airport": 96.45,
+       "ski-resort": 104.79
+      }
+     },
      "maxChargeMW": 7.22,
      "maxDischargeMW": 4.74,
      "avgByLocalHour": [
@@ -2779,6 +3463,42 @@
        "ski-resort": 102.9
       }
      },
+     "traded": {
+      "overloadHours": 88,
+      "overloadDays": 15,
+      "overloadMWh": 593,
+      "peakMW": 106.3,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 2,
+      "savedBeforeUsd": 70067,
+      "savedAfterUsd": 77322,
+      "savingsKeptPct": 110.36,
+      "worstSiteKeptPct": 92.81,
+      "worstSiteChangeUsd": -227
+     },
+     "tradedAndGuard": {
+      "overloadHours": 88,
+      "overloadDays": 15,
+      "overloadMWh": 587.5,
+      "peakMW": 106.3,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 1,
+      "hoursRelievedByFleet": 2,
+      "movedMWh": 6.3,
+      "unmovedMWh": 5.4,
+      "maxShiftHours": 6.25,
+      "savedBeforeUsd": 70067,
+      "savedAfterUsd": 77322,
+      "savingsKeptPct": 110.36,
+      "worstSiteKeptPct": 92.81,
+      "worstSiteChangeUsd": -227,
+      "keptPctByType": {
+       "cement-plant": 100.73,
+       "airport": 144.4,
+       "ski-resort": 102.76
+      }
+     },
      "maxChargeMW": 13.46,
      "maxDischargeMW": 8.38,
      "avgByLocalHour": [
@@ -2891,6 +3611,42 @@
        "cement-plant": 100.02,
        "airport": 135.26,
        "ski-resort": 108.16
+      }
+     },
+     "traded": {
+      "overloadHours": 91,
+      "overloadDays": 16,
+      "overloadMWh": 582.9,
+      "peakMW": 106.32,
+      "hoursCreatedByFleet": 8,
+      "daysWithCreatedHours": 4,
+      "hoursRelievedByFleet": 5,
+      "savedBeforeUsd": 143128,
+      "savedAfterUsd": 154604,
+      "savingsKeptPct": 108.02,
+      "worstSiteKeptPct": 70.04,
+      "worstSiteChangeUsd": -1105
+     },
+     "tradedAndGuard": {
+      "overloadHours": 89,
+      "overloadDays": 15,
+      "overloadMWh": 571,
+      "peakMW": 106.32,
+      "hoursCreatedByFleet": 6,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 5,
+      "movedMWh": 12.1,
+      "unmovedMWh": 7.6,
+      "maxShiftHours": 12,
+      "savedBeforeUsd": 143128,
+      "savedAfterUsd": 154604,
+      "savingsKeptPct": 108.02,
+      "worstSiteKeptPct": 70.04,
+      "worstSiteChangeUsd": -1105,
+      "keptPctByType": {
+       "cement-plant": 105.34,
+       "airport": 132.54,
+       "ski-resort": 107.14
       }
      },
      "maxChargeMW": 26.64,
@@ -3093,6 +3849,42 @@
        "ski-resort": 95.92
       }
      },
+     "traded": {
+      "overloadHours": 104,
+      "overloadDays": 18,
+      "overloadMWh": 548.6,
+      "peakMW": 104.3,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 1,
+      "savedBeforeUsd": 36697,
+      "savedAfterUsd": 55236,
+      "savingsKeptPct": 150.52,
+      "worstSiteKeptPct": 90.09,
+      "worstSiteChangeUsd": -131
+     },
+     "tradedAndGuard": {
+      "overloadHours": 104,
+      "overloadDays": 18,
+      "overloadMWh": 548.4,
+      "peakMW": 104.3,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 1,
+      "movedMWh": 0.2,
+      "unmovedMWh": 3.8,
+      "maxShiftHours": 1.75,
+      "savedBeforeUsd": 36697,
+      "savedAfterUsd": 55236,
+      "savingsKeptPct": 150.52,
+      "worstSiteKeptPct": 90.09,
+      "worstSiteChangeUsd": -131,
+      "keptPctByType": {
+       "cement-plant": 115.94,
+       "airport": 253.06,
+       "ski-resort": 96.34
+      }
+     },
      "maxChargeMW": 6.14,
      "maxDischargeMW": 2.37,
      "avgByLocalHour": [
@@ -3207,6 +3999,42 @@
        "ski-resort": 97.64
       }
      },
+     "traded": {
+      "overloadHours": 104,
+      "overloadDays": 18,
+      "overloadMWh": 510,
+      "peakMW": 103.34,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 3,
+      "savedBeforeUsd": 76002,
+      "savedAfterUsd": 108730,
+      "savingsKeptPct": 143.06,
+      "worstSiteKeptPct": 76.22,
+      "worstSiteChangeUsd": -1336
+     },
+     "tradedAndGuard": {
+      "overloadHours": 104,
+      "overloadDays": 18,
+      "overloadMWh": 509.4,
+      "peakMW": 103.34,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 3,
+      "movedMWh": 0.9,
+      "unmovedMWh": 6.7,
+      "maxShiftHours": 3.75,
+      "savedBeforeUsd": 76002,
+      "savedAfterUsd": 108730,
+      "savingsKeptPct": 143.06,
+      "worstSiteKeptPct": 76.22,
+      "worstSiteChangeUsd": -1336,
+      "keptPctByType": {
+       "cement-plant": 105.04,
+       "airport": 858.79,
+       "ski-resort": 97.93
+      }
+     },
      "maxChargeMW": 11.74,
      "maxDischargeMW": 4.37,
      "avgByLocalHour": [
@@ -3319,6 +4147,42 @@
        "cement-plant": 119.05,
        "airport": 22807.91,
        "ski-resort": 98.45
+      }
+     },
+     "traded": {
+      "overloadHours": 106,
+      "overloadDays": 18,
+      "overloadMWh": 465.7,
+      "peakMW": 102.59,
+      "hoursCreatedByFleet": 7,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 6,
+      "savedBeforeUsd": 141785,
+      "savedAfterUsd": 205356,
+      "savingsKeptPct": 144.84,
+      "worstSiteKeptPct": 76.03,
+      "worstSiteChangeUsd": -1347
+     },
+     "tradedAndGuard": {
+      "overloadHours": 106,
+      "overloadDays": 18,
+      "overloadMWh": 464.4,
+      "peakMW": 102.59,
+      "hoursCreatedByFleet": 7,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 6,
+      "movedMWh": 2.1,
+      "unmovedMWh": 12.1,
+      "maxShiftHours": 5.25,
+      "savedBeforeUsd": 141785,
+      "savedAfterUsd": 205356,
+      "savingsKeptPct": 144.84,
+      "worstSiteKeptPct": 76.03,
+      "worstSiteChangeUsd": -1347,
+      "keptPctByType": {
+       "cement-plant": 116.88,
+       "airport": 22199.47,
+       "ski-resort": 98.68
       }
      },
      "maxChargeMW": 25.12,
@@ -3521,6 +4385,42 @@
        "ski-resort": 93.76
       }
      },
+     "traded": {
+      "overloadHours": 75,
+      "overloadDays": 17,
+      "overloadMWh": 283.4,
+      "peakMW": 102.68,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 3,
+      "hoursRelievedByFleet": 10,
+      "savedBeforeUsd": 77189,
+      "savedAfterUsd": 69001,
+      "savingsKeptPct": 89.39,
+      "worstSiteKeptPct": 67.44,
+      "worstSiteChangeUsd": -3855
+     },
+     "tradedAndGuard": {
+      "overloadHours": 75,
+      "overloadDays": 17,
+      "overloadMWh": 283.4,
+      "peakMW": 102.68,
+      "hoursCreatedByFleet": 3,
+      "daysWithCreatedHours": 3,
+      "hoursRelievedByFleet": 10,
+      "movedMWh": 0.1,
+      "unmovedMWh": 2,
+      "maxShiftHours": 2.5,
+      "savedBeforeUsd": 77189,
+      "savedAfterUsd": 69001,
+      "savingsKeptPct": 89.39,
+      "worstSiteKeptPct": 67.44,
+      "worstSiteChangeUsd": -3855,
+      "keptPctByType": {
+       "cement-plant": 103.09,
+       "airport": 84.43,
+       "ski-resort": 94.08
+      }
+     },
      "maxChargeMW": 7.07,
      "maxDischargeMW": 4.01,
      "avgByLocalHour": [
@@ -3635,6 +4535,42 @@
        "ski-resort": 94.04
       }
      },
+     "traded": {
+      "overloadHours": 70,
+      "overloadDays": 18,
+      "overloadMWh": 263.4,
+      "peakMW": 102.38,
+      "hoursCreatedByFleet": 5,
+      "daysWithCreatedHours": 5,
+      "hoursRelievedByFleet": 17,
+      "savedBeforeUsd": 142408,
+      "savedAfterUsd": 123288,
+      "savingsKeptPct": 86.57,
+      "worstSiteKeptPct": 62.66,
+      "worstSiteChangeUsd": -4422
+     },
+     "tradedAndGuard": {
+      "overloadHours": 70,
+      "overloadDays": 18,
+      "overloadMWh": 262.7,
+      "peakMW": 102.38,
+      "hoursCreatedByFleet": 5,
+      "daysWithCreatedHours": 5,
+      "hoursRelievedByFleet": 17,
+      "movedMWh": 0.7,
+      "unmovedMWh": 3.9,
+      "maxShiftHours": 2.5,
+      "savedBeforeUsd": 142408,
+      "savedAfterUsd": 123288,
+      "savingsKeptPct": 86.57,
+      "worstSiteKeptPct": 62.66,
+      "worstSiteChangeUsd": -4422,
+      "keptPctByType": {
+       "cement-plant": 100.19,
+       "airport": 82.67,
+       "ski-resort": 94.09
+      }
+     },
      "maxChargeMW": 12.54,
      "maxDischargeMW": 7.65,
      "avgByLocalHour": [
@@ -3747,6 +4683,42 @@
        "cement-plant": 112.99,
        "airport": 74.24,
        "ski-resort": 93.23
+      }
+     },
+     "traded": {
+      "overloadHours": 72,
+      "overloadDays": 18,
+      "overloadMWh": 245.1,
+      "peakMW": 102.03,
+      "hoursCreatedByFleet": 8,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 18,
+      "savedBeforeUsd": 266908,
+      "savedAfterUsd": 224283,
+      "savingsKeptPct": 84.03,
+      "worstSiteKeptPct": 49.4,
+      "worstSiteChangeUsd": -5991
+     },
+     "tradedAndGuard": {
+      "overloadHours": 70,
+      "overloadDays": 18,
+      "overloadMWh": 242.7,
+      "peakMW": 102.03,
+      "hoursCreatedByFleet": 6,
+      "daysWithCreatedHours": 6,
+      "hoursRelievedByFleet": 18,
+      "movedMWh": 2.9,
+      "unmovedMWh": 8.2,
+      "maxShiftHours": 2.75,
+      "savedBeforeUsd": 266908,
+      "savedAfterUsd": 224283,
+      "savingsKeptPct": 84.03,
+      "worstSiteKeptPct": 49.4,
+      "worstSiteChangeUsd": -5991,
+      "keptPctByType": {
+       "cement-plant": 110.35,
+       "airport": 78.49,
+       "ski-resort": 93.21
       }
      },
      "maxChargeMW": 23.94,
@@ -3949,6 +4921,42 @@
        "ski-resort": 100
       }
      },
+     "traded": {
+      "overloadHours": 12,
+      "overloadDays": 4,
+      "overloadMWh": 17.9,
+      "peakMW": 93.89,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 3,
+      "savedBeforeUsd": 83430,
+      "savedAfterUsd": 90656,
+      "savingsKeptPct": 108.66,
+      "worstSiteKeptPct": 99.49,
+      "worstSiteChangeUsd": -25
+     },
+     "tradedAndGuard": {
+      "overloadHours": 12,
+      "overloadDays": 4,
+      "overloadMWh": 17.9,
+      "peakMW": 93.89,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 3,
+      "movedMWh": 0,
+      "unmovedMWh": 2.4,
+      "maxShiftHours": 2,
+      "savedBeforeUsd": 83430,
+      "savedAfterUsd": 90656,
+      "savingsKeptPct": 108.66,
+      "worstSiteKeptPct": 99.49,
+      "worstSiteChangeUsd": -25,
+      "keptPctByType": {
+       "cement-plant": 124.99,
+       "airport": 103.63,
+       "ski-resort": 100
+      }
+     },
      "maxChargeMW": 7.34,
      "maxDischargeMW": 4.91,
      "avgByLocalHour": [
@@ -4063,6 +5071,42 @@
        "ski-resort": 99.61
       }
      },
+     "traded": {
+      "overloadHours": 11,
+      "overloadDays": 4,
+      "overloadMWh": 18.4,
+      "peakMW": 93.92,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 4,
+      "savedBeforeUsd": 169945,
+      "savedAfterUsd": 167646,
+      "savingsKeptPct": 98.65,
+      "worstSiteKeptPct": 80.67,
+      "worstSiteChangeUsd": -2289
+     },
+     "tradedAndGuard": {
+      "overloadHours": 11,
+      "overloadDays": 4,
+      "overloadMWh": 18.4,
+      "peakMW": 93.92,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 4,
+      "movedMWh": 0.1,
+      "unmovedMWh": 4.3,
+      "maxShiftHours": 1.75,
+      "savedBeforeUsd": 169945,
+      "savedAfterUsd": 167646,
+      "savingsKeptPct": 98.65,
+      "worstSiteKeptPct": 80.67,
+      "worstSiteChangeUsd": -2289,
+      "keptPctByType": {
+       "cement-plant": 113.23,
+       "airport": 92.2,
+       "ski-resort": 99.62
+      }
+     },
      "maxChargeMW": 14.33,
      "maxDischargeMW": 7.41,
      "avgByLocalHour": [
@@ -4175,6 +5219,42 @@
        "cement-plant": 124.26,
        "airport": 59.79,
        "ski-resort": 99.78
+      }
+     },
+     "traded": {
+      "overloadHours": 13,
+      "overloadDays": 4,
+      "overloadMWh": 22.9,
+      "peakMW": 93.93,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 4,
+      "savedBeforeUsd": 329396,
+      "savedAfterUsd": 265502,
+      "savingsKeptPct": 80.6,
+      "worstSiteKeptPct": 59.31,
+      "worstSiteChangeUsd": -4722
+     },
+     "tradedAndGuard": {
+      "overloadHours": 13,
+      "overloadDays": 4,
+      "overloadMWh": 21.5,
+      "peakMW": 93.93,
+      "hoursCreatedByFleet": 2,
+      "daysWithCreatedHours": 2,
+      "hoursRelievedByFleet": 4,
+      "movedMWh": 1.4,
+      "unmovedMWh": 8.2,
+      "maxShiftHours": 1.5,
+      "savedBeforeUsd": 329396,
+      "savedAfterUsd": 265502,
+      "savingsKeptPct": 80.6,
+      "worstSiteKeptPct": 59.31,
+      "worstSiteChangeUsd": -4722,
+      "keptPctByType": {
+       "cement-plant": 115.68,
+       "airport": 69.01,
+       "ski-resort": 99.8
       }
      },
      "maxChargeMW": 30.91,
@@ -4377,6 +5457,42 @@
        "ski-resort": 99.98
       }
      },
+     "traded": {
+      "overloadHours": 0,
+      "overloadDays": 0,
+      "overloadMWh": 0,
+      "peakMW": 82.18,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 0,
+      "savedBeforeUsd": 88708,
+      "savedAfterUsd": 88718,
+      "savingsKeptPct": 100.01,
+      "worstSiteKeptPct": 99.83,
+      "worstSiteChangeUsd": 0
+     },
+     "tradedAndGuard": {
+      "overloadHours": 0,
+      "overloadDays": 0,
+      "overloadMWh": 0,
+      "peakMW": 82.18,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 0,
+      "movedMWh": 0,
+      "unmovedMWh": 0,
+      "maxShiftHours": 0,
+      "savedBeforeUsd": 88708,
+      "savedAfterUsd": 88718,
+      "savingsKeptPct": 100.01,
+      "worstSiteKeptPct": 99.83,
+      "worstSiteChangeUsd": 0,
+      "keptPctByType": {
+       "cement-plant": 100.05,
+       "airport": 100,
+       "ski-resort": 99.97
+      }
+     },
      "maxChargeMW": 7.02,
      "maxDischargeMW": 4.6,
      "avgByLocalHour": [
@@ -4491,6 +5607,42 @@
        "ski-resort": 99.95
       }
      },
+     "traded": {
+      "overloadHours": 0,
+      "overloadDays": 0,
+      "overloadMWh": 0,
+      "peakMW": 82.36,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 0,
+      "savedBeforeUsd": 176608,
+      "savedAfterUsd": 176621,
+      "savingsKeptPct": 100.01,
+      "worstSiteKeptPct": 99.51,
+      "worstSiteChangeUsd": -1
+     },
+     "tradedAndGuard": {
+      "overloadHours": 0,
+      "overloadDays": 0,
+      "overloadMWh": 0,
+      "peakMW": 82.36,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 0,
+      "movedMWh": 0,
+      "unmovedMWh": 0,
+      "maxShiftHours": 0,
+      "savedBeforeUsd": 176608,
+      "savedAfterUsd": 176621,
+      "savingsKeptPct": 100.01,
+      "worstSiteKeptPct": 99.51,
+      "worstSiteChangeUsd": -1,
+      "keptPctByType": {
+       "cement-plant": 100.03,
+       "airport": 100,
+       "ski-resort": 99.95
+      }
+     },
      "maxChargeMW": 13.01,
      "maxDischargeMW": 8.67,
      "avgByLocalHour": [
@@ -4602,6 +5754,42 @@
       "keptPctByType": {
        "cement-plant": 106.7,
        "airport": 74,
+       "ski-resort": 99.98
+      }
+     },
+     "traded": {
+      "overloadHours": 0,
+      "overloadDays": 0,
+      "overloadMWh": 0,
+      "peakMW": 83.79,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 0,
+      "savedBeforeUsd": 345225,
+      "savedAfterUsd": 342981,
+      "savingsKeptPct": 99.35,
+      "worstSiteKeptPct": 2.33,
+      "worstSiteChangeUsd": -4157
+     },
+     "tradedAndGuard": {
+      "overloadHours": 0,
+      "overloadDays": 0,
+      "overloadMWh": 0,
+      "peakMW": 83.79,
+      "hoursCreatedByFleet": 0,
+      "daysWithCreatedHours": 0,
+      "hoursRelievedByFleet": 0,
+      "movedMWh": 0.2,
+      "unmovedMWh": 1,
+      "maxShiftHours": 0.25,
+      "savedBeforeUsd": 345225,
+      "savedAfterUsd": 342981,
+      "savingsKeptPct": 99.35,
+      "worstSiteKeptPct": 2.33,
+      "worstSiteChangeUsd": -4157,
+      "keptPctByType": {
+       "cement-plant": 99.6,
+       "airport": 99.82,
        "ski-resort": 99.98
       }
      },

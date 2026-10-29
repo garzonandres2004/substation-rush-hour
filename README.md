@@ -96,7 +96,7 @@ The live page recomputes these every day over the trailing 30 days, so it is the
 | Did we tune it to win? 17 settings | 0 days made worse in all 17. Index ahead of price plus guard in 16, about 1.2 times over a year (2.6 on the 30 autumn days) | Held, smaller than it looked |
 | Compute that yields to traffic | Pausing 0.5 percent of yearly energy: 17.5 MW with the Station (7 firm), about 123 hours a year | New |
 | The limit as heat (IEEE C57.91), not a fixed number | Year round 7 to 7.5 MW. November to April 47 MW or more | New |
-| Many customer batteries behind one substation, built with [DETOUR](https://detourgrid.com) | 60 businesses cutting their own bills: 230 new hours over the limit. Guard on the meter: 119, at no cost to customers. Plan plus guard: 58, customers keep 84% | New, cut but not closed |
+| Many customer batteries behind one substation, built with [DETOUR](https://detourgrid.com) | 60 businesses cutting their own bills: 230 new hours over the limit. Guard on the meter: 119, at no cost to customers. Room traded by need plus guard: 63, customers keep 90% | New, cut but not closed |
 
 **Built with DETOUR.** Test K uses DETOUR by Juan Lizarazo (same bounty, MIT, used with his permission): Rocky Mountain Power Schedule 6 and 8 bills, three simulated businesses and his bill planner, vendored unchanged under `src/detour` (see its README). `src/merge` adds the fleet guard and the substation's room inside his plan. `npx tsx scripts/merge-fleet.ts` rebuilds `public/data/merge-fleet.json` from the lab's EIA pull in `data/lab-raw`.
 

@@ -48,8 +48,8 @@ export default function LabOverview() {
   const fSites = fleet.months[fm[0]].fleets[fBig].sites;
   const fleetAlone = fSum(r => r.withFleet.hoursCreatedByFleet);
   const fleetGuard = fSum(r => r.withSiteGuard.hoursCreatedByFleet);
-  const fleetBoth = fSum(r => r.planAndGuard.hoursCreatedByFleet);
-  const fleetBothKept = (100 * fSum(r => r.planAndGuard.savedAfterUsd)) / fSum(r => r.planAndGuard.savedBeforeUsd);
+  const fleetBoth = fSum(r => r.tradedAndGuard.hoursCreatedByFleet);
+  const fleetBothKept = (100 * fSum(r => r.tradedAndGuard.savedAfterUsd)) / fSum(r => r.tradedAndGuard.savedBeforeUsd);
   const rows: [string, string, string, string, string][] = [
     [
       '#yr-h',
@@ -127,7 +127,7 @@ export default function LabOverview() {
       '#fl-h',
       'K',
       'Many customer batteries behind one substation (with DETOUR)',
-      `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Plan plus guard: ${fleetBoth}, customers keep ${fleetBothKept.toFixed(0)}%.`,
+      `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Room traded by need plus guard: ${fleetBoth}, customers keep ${Math.min(100, fleetBothKept).toFixed(0)}%.`,
       'New, cut but not closed',
     ],
   ];
