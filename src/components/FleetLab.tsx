@@ -1,4 +1,5 @@
 import fleetRaw from '../../public/data/merge-fleet.json';
+import stackRaw from '../../public/data/merge-fullstack.json';
 
 // Section K: many customer batteries behind one substation. Built with DETOUR (Juan Lizarazo, MIT,
 // used with his permission): its Rocky Mountain Power tariffs, simulated businesses and bill planner,
@@ -33,6 +34,8 @@ interface FleetRow {
   withSiteGuard: SiteGuard;
   twoBosses: Billed;
   planAndGuard: SiteGuard;
+  traded: Billed;
+  tradedAndGuard: SiteGuard;
   avgByLocalHour: number[];
 }
 interface Month {
@@ -40,6 +43,21 @@ interface Month {
   fleets: FleetRow[];
 }
 const fleet = fleetRaw as unknown as { generatedAt: string; months: Record<string, Month> };
+interface StackRow {
+  overloadHours: number;
+  overloadDays: number;
+  overloadMWh: number;
+  hoursNotOverWithoutBatteries: number;
+}
+const stack = stackRaw as unknown as { days: number; station: string; result: Record<string, StackRow> };
+const STACK_ROWS: [string, string][] = [
+  ['none', 'No batteries at all'],
+  ['fleetAlone', 'Customer batteries, each alone'],
+  ['fleetTraded', 'Customer batteries, room traded by need, guard'],
+  ['station', "The utility's Station only"],
+  ['stationFleetAlone', "The utility's Station, customer batteries each alone"],
+  ['stationFleetTraded', "The utility's Station, customer batteries with room traded and the guard"],
+];
 const months = Object.keys(fleet.months).sort();
 const WINTER = ['11', '12', '01', '02', '03'];
 const SUMMER = ['06', '07', '08'];
@@ -72,8 +90,9 @@ function total(i: number) {
       [
         ['Each business alone', 'withFleet'],
         ['Guard on the meter, site by site', 'withSiteGuard'],
-        ["Two bosses: the substation's room inside each plan", 'twoBosses'],
-        ['Plan with the room, then the guard', 'planAndGuard'],
+        ["Two bosses: the substation's room inside each plan, fixed slices by battery size", 'twoBosses'],
+        ['Fixed slices, then the guard', 'planAndGuard'],
+        ['Room traded by need, then the guard', 'tradedAndGuard'],
       ] as const
     ).map(([label, key]) => {
       const xs = rows.map(r => r[key] as Overload & Partial<Billed>);
@@ -166,23 +185,24 @@ export default function FleetLab() {
     .map(m => ({ m, d: fleet.months[m].fleets[big].withFleet.overloadHours - fleet.months[m].noFleet.overloadHours }))
     .sort((x, y) => y.d - x.d)[0];
   const wm = fleet.months[worstMonth.m];
-  const [alone, guard, two, pg] = b.approaches;
+  const [alone, guard, two, pg, tg] = b.approaches;
   const usd = (x: number) => `$${Math.round(Math.abs(x)).toLocaleString('en-US')}`;
   return (
     <section className="evidence" aria-labelledby="fl-h">
       <p className="eyebrow">K · Many customer batteries behind one substation, built with DETOUR</p>
       <h2 id="fl-h">
         {b.sites} businesses each cutting their own bill caused {b.aloneCreated} new hours over this substation's limit.
-        A guard on the meter halved that at no cost to any customer; planning around the substation cut it further, but
-        customers gave up {(100 - pg.kept).toFixed(0)}% of their savings.
+        A guard on the meter halved that at no cost to any customer. Planning around the substation, with room traded by
+        need, plus the guard, cut it to {tg.created}, and customers kept {Math.min(100, tg.kept).toFixed(0)}% of their
+        savings.
       </h2>
       <p className="sub">
         A Torus Station behind a business answers to two bosses: the customer's bill and the substation's limit.{' '}
         <a href="https://detourgrid.com">DETOUR</a>, by Juan Lizarazo for the same bounty, plans for the bill: Rocky
         Mountain Power's real Schedule 8 and 6 rates, simulated businesses (a regional airport, a cement plant and a ski
-        resort, each with its own Spin and Pulse), and a day ahead plan solved as a linear program. We put copies of his
-        businesses, each running his planner on its own bill, behind this project's substation (PacifiCorp East demand
-        scaled to 100 MW, limit at the 95th percentile of the last 30 days), from {monthName(months[0])} to{' '}
+        resort, each with its own Nova Spin and Nova Pulse), and a day ahead plan solved as a linear program. We put
+        copies of his businesses, each running his planner on its own bill, behind this project's substation (PacifiCorp
+        East demand scaled to 100 MW, limit at the 95th percentile of the last 30 days), from {monthName(months[0])} to{' '}
         {monthName(months[months.length - 1])}. Only what the batteries change is added to the substation load. Used
         with Juan's permission under the MIT license.
       </p>
@@ -293,17 +313,65 @@ export default function FleetLab() {
         </li>
         <li>
           <b>Two bosses.</b> Each business plans the day before with the substation's published room for tomorrow (its
-          limit minus EIA's day ahead forecast, scaled), shared by battery size, and pays a steep price for planning
-          above its share. That leaves {two.created} new hours, and {pg.created} with the guard on top: the lowest, and
-          the only one that puts the substation below where it was with no batteries ({pg.mwh.toFixed(0)} against{' '}
-          {b.noFleetMWh.toFixed(0)} MWh over). The cost: customers keep {pg.kept.toFixed(0)}% of their savings, and one
-          site lost {usd(pg.worstUsd)} in a month, because a fixed share can block a business from charging before its
-          own peak. A smarter split (sites trading room they do not need) is the next step.
+          limit minus EIA's day ahead forecast, scaled) and pays a steep price for planning above its share. With fixed
+          slices by battery size that leaves {two.created} new hours, and {pg.created} with the guard on top, but
+          customers keep only {pg.kept.toFixed(0)}% of their savings and one site lost {usd(pg.worstUsd)} in a month: a
+          fixed slice can block a business from charging before its own peak.
+        </li>
+        <li>
+          <b>Room traded by need.</b> In each 15 minutes the room goes first to the businesses that want to charge then
+          (from their plans made alone), in proportion to how much, and only the rest is shared by battery size. With
+          the guard: {tg.created} new hours, {tg.hours} hours over the limit in all ({b.noFleetHours} with no batteries)
+          and {tg.mwh.toFixed(0)} MWh over ({b.noFleetMWh.toFixed(0)} with no batteries), while customers keep{' '}
+          {Math.min(100, tg.kept).toFixed(0)}% of their savings and the worst site month loses {usd(tg.worstUsd)}. With
+          fewer businesses the trade is nearly free:{' '}
+          {t
+            .slice(0, -1)
+            .map(r => {
+              const x = r.approaches[4];
+              return `${r.sites} businesses keep ${Math.min(100, x.kept).toFixed(0)}% (${x.created} new hours)`;
+            })
+            .join(', ')}
+          . With {b.sites}, they all want the same afternoon hours, so there is not enough room to trade.
         </li>
         <li>
           <b>The same lesson as the main page.</b> Planning ahead is not enough, because the forecast misses; a guard on
           the meter is not enough, because some days have no room left to move into. The plan and the guard together
           hold best.
+        </li>
+        <li>
+          <b>With the utility's own Station.</b> The substation also has this project's {stack.station} Station, planned
+          as on the main page and in section A, and it plans around the fleet's published charging. Over the same{' '}
+          {stack.days} days:
+          <div className="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>At the substation</th>
+                  <th>Hours over the limit</th>
+                  <th>New hours caused by customer batteries</th>
+                  <th>Energy over the limit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {STACK_ROWS.map(([k, label]) => (
+                  <tr key={k} className={k === 'stationFleetTraded' ? 'best' : ''}>
+                    <th scope="row">{label}</th>
+                    <td>{stack.result[k].overloadHours}</td>
+                    <td>{k === 'none' || k === 'station' ? 'n/a' : stack.result[k].hoursNotOverWithoutBatteries}</td>
+                    <td>{stack.result[k].overloadMWh.toFixed(0)} MWh</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          The Station soaks up most of the fleet's late night rebound even when every business acts alone (
+          {stack.result.stationFleetAlone.hoursNotOverWithoutBatteries} new hours instead of{' '}
+          {stack.result.fleetAlone.hoursNotOverWithoutBatteries}). With the room traded and the guard on top, the fleet
+          causes {stack.result.stationFleetTraded.hoursNotOverWithoutBatteries} new hours in {stack.days} days, and the
+          substation does better than with the Station alone ({stack.result.stationFleetTraded.overloadHours} hours
+          against {stack.result.station.overloadHours}). Utility storage and customer storage, coordinated, beat either
+          one alone.
         </li>
         <li>
           Limits: simulated businesses, as in DETOUR; their copies differ only in day to day noise, which makes them

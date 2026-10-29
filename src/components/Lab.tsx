@@ -6,6 +6,7 @@ import FleetLab from './FleetLab';
 import FlexLab from './FlexLab';
 import ThermalLab from './ThermalLab';
 import YearLab from './YearLab';
+import WearLab from './WearLab';
 
 interface Range {
   mean: number;
@@ -46,6 +47,12 @@ interface LabData {
     hours: number;
     requestMWh: number;
     byStrategy: Record<string, { meanReadyPct: number; fullDays: number; worstPct: number }>;
+    reserve?: {
+      reserveMWh: number;
+      valuePerDay: Record<'ours' | 'oursWithReserve', number>;
+      jamReliefMWh: Record<'ours' | 'oursWithReserve', number>;
+      overloadDays: Record<'ours' | 'oursWithReserve', number>;
+    };
   };
   frontier: {
     label: string;
@@ -72,6 +79,7 @@ const pct = (x: number) => `${Math.round(x * 100)}%`;
 const money = (x: number) => `${x < 0 ? '-' : ''}$${Math.abs(Math.round(x)).toLocaleString('en-US')}`;
 const NAMES: Record<string, string> = {
   ours: 'Stays out of traffic, with the guard (ours)',
+  oursWithReserve: 'Ours, holding a reserve for the event hour',
   priceOnlyWithGuard: 'Price plus the guard',
   priceOnly: 'Follows price only',
   fiveLineRule: 'Five line rule',
@@ -107,6 +115,7 @@ export default function Lab() {
       <FlexLab />
       <ThermalLab />
       <FleetLab />
+      <WearLab />
 
       <section className="evidence" aria-labelledby="conf-h">
         <p className="eyebrow">H · On the main page's 30 days: confidence</p>
@@ -176,7 +185,7 @@ export default function Lab() {
             </thead>
             <tbody>
               {Object.entries(lab.events.byStrategy).map(([k, v]) => (
-                <tr key={k} className={k === 'ours' ? 'best' : ''}>
+                <tr key={k} className={k === (lab.events.reserve ? 'oursWithReserve' : 'ours') ? 'best' : ''}>
                   <th scope="row">{NAMES[k] ?? k}</th>
                   <td>{Math.round(v.meanReadyPct)}%</td>
                   <td>
@@ -188,6 +197,23 @@ export default function Lab() {
             </tbody>
           </table>
         </div>
+        {lab.events.reserve && (
+          <ul className="notes">
+            <li>
+              The reserve: the busiest hour is on the day ahead forecast, so the planner is told to hold{' '}
+              {lab.events.reserve.reserveMWh.toFixed(1)} MWh at the start of it (enough for the full request after
+              losses), and replans every hour as before.
+            </li>
+            <li>
+              What it costs on ordinary days: value falls from ${Math.round(lab.events.reserve.valuePerDay.ours)} to $
+              {Math.round(lab.events.reserve.valuePerDay.oursWithReserve)} a day, because some energy waits instead of
+              selling at the best price. Jam relief goes from {lab.events.reserve.jamReliefMWh.ours.toFixed(1)} to{' '}
+              {lab.events.reserve.jamReliefMWh.oursWithReserve.toFixed(1)} MWh a day, since the held energy is there for
+              the jam. Days over the limit: {lab.events.reserve.overloadDays.ours} without,{' '}
+              {lab.events.reserve.overloadDays.oursWithReserve} with.
+            </li>
+          </ul>
+        )}
       </section>
 
       <section className="evidence" aria-labelledby="fr-h">
@@ -238,11 +264,6 @@ export default function Lab() {
       <section className="honest" aria-labelledby="next-h">
         <h2 id="next-h">Not done yet</h2>
         <ul className="notes">
-          <li>
-            Rerun with the corrected EIA hours. EIA-930 values are hour ending; until Oct 29, 2026 this project filed
-            them one hour late against prices and weather. The main page is recomputed daily with the fix; the lab
-            results above were computed before it.
-          </li>
           <li>One real feeder: its load trace, its rating and a real Station's limits. That is the validation step.</li>
           <li>Settings changed together, not one at a time (section E).</li>
           <li>Battery aging from cycle depth and temperature instead of a flat cost per MWh.</li>

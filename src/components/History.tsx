@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import { fingerprint } from '../lib/fingerprint';
 import { dateLabel, hourLabel, rangeLabel, report, stressColor } from '../lib/report';
 
 export interface SavedDay {
@@ -7,6 +8,7 @@ export interface SavedDay {
   generatedAt: string;
   capMW: number;
   jamThreshold: number;
+  fingerprint?: string; // SHA-256 of the plan, saved by the refresh (src/lib/fingerprint.ts)
   hours: {
     h: number;
     stress: number;
@@ -166,6 +168,7 @@ export default function History({ saved }: { saved: SavedDay[] }) {
                     })}
                     , from EIA demand, solar and wind, and CAISO day ahead prices.
                   </li>
+                  {day.fingerprint && <Fingerprint day={day} />}
                 </ul>
               </>
             ) : (
@@ -242,5 +245,38 @@ export default function History({ saved }: { saved: SavedDay[] }) {
         Same engine and data as the main page. The report card replays each day the way the backtest does.
       </footer>
     </main>
+  );
+}
+
+// Recomputes the saved plan's fingerprint in the browser and says whether it matches the one saved before
+// the day; the file's commit history in the public repo shows when it was saved.
+function Fingerprint({ day }: { day: SavedDay }) {
+  const [now, setNow] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    fingerprint(day)
+      .then(x => live && setNow(x))
+      .catch(() => live && setNow(''));
+    return () => {
+      live = false;
+    };
+  }, [day]);
+  const ok = now !== null && now === day.fingerprint;
+  return (
+    <li>
+      <b>Plan fingerprint:</b> <code>{day.fingerprint!.slice(0, 16)}</code>, saved with the plan before the day.{' '}
+      {now === null
+        ? 'Checking…'
+        : ok
+          ? 'Recomputed here from the hours above: it matches.'
+          : 'Recomputed here: it does not match.'}{' '}
+      <a
+        href={`https://github.com/garzonandres2004/substation-rush-hour/commits/main/public/data/archive/${day.date}.json`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        When it was saved
+      </a>
+    </li>
   );
 }

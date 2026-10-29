@@ -1,7 +1,9 @@
 import gpuRaw from '../../lab-data/gpu-stats.json';
 import capRaw from '../../public/data/lab-capacity-year.json';
+import wearRaw from '../../public/data/lab-wear.json';
 import flexRaw from '../../public/data/lab-flex.json';
 import fleetRaw from '../../public/data/merge-fleet.json';
+import stackRaw from '../../public/data/merge-fullstack.json';
 import labRaw from '../../public/data/lab.json';
 import secRaw from '../../public/data/lab-seconds.json';
 import sweepRaw from '../../public/data/lab-sweep.json';
@@ -26,7 +28,8 @@ const time = (s: number) => (s >= 3600 ? `${(s / 3600).toFixed(1)} h` : `${Math.
 export default function LabOverview() {
   const days = year.priced.days + year.trafficOnly.days;
   const worse = year.priced.byStrategy.ours.daysMadeWorse + year.trafficOnly.byStrategy.ours.daysMadeWorse;
-  const station4 = cap.stations.find((s: any) => s.label === '10 MW, 4 h').ours.mw;
+  const s4 = cap.stations.find((s: any) => s.label === '10 MW, 4 h');
+  const station4 = (s4.capacityMode ?? s4.ours).mw;
   const S = sec.sync;
   const sAlone = S.sweep.find((r: any) => r.flywheelAlone.overSeconds === 0);
   const fAlone = sec.fleet.sweep.find((r: any) => r.flywheelAlone.overSeconds === 0);
@@ -48,8 +51,8 @@ export default function LabOverview() {
   const fSites = fleet.months[fm[0]].fleets[fBig].sites;
   const fleetAlone = fSum(r => r.withFleet.hoursCreatedByFleet);
   const fleetGuard = fSum(r => r.withSiteGuard.hoursCreatedByFleet);
-  const fleetBoth = fSum(r => r.planAndGuard.hoursCreatedByFleet);
-  const fleetBothKept = (100 * fSum(r => r.planAndGuard.savedAfterUsd)) / fSum(r => r.planAndGuard.savedBeforeUsd);
+  const fleetBoth = fSum(r => r.tradedAndGuard.hoursCreatedByFleet);
+  const fleetBothKept = (100 * fSum(r => r.tradedAndGuard.savedAfterUsd)) / fSum(r => r.tradedAndGuard.savedBeforeUsd);
   const rows: [string, string, string, string, string][] = [
     [
       '#yr-h',
@@ -111,8 +114,10 @@ export default function LabOverview() {
       '#ev2-h',
       'I',
       'If the utility calls an event in the jam',
-      `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days.`,
-      'Held',
+      lab.events.reserve
+        ? `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days; holding a reserve for the event hour, on ${lab.events.byStrategy.oursWithReserve.fullDays}, for $${Math.round(lab.events.reserve.valuePerDay.ours - lab.events.reserve.valuePerDay.oursWithReserve)} a day.`
+        : `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days.`,
+      (lab.events.byStrategy.oursWithReserve?.fullDays ?? ev.fullDays) === lab.days ? 'Held' : 'Mostly held',
     ],
     [
       '#fr-h',
@@ -127,14 +132,32 @@ export default function LabOverview() {
       '#fl-h',
       'K',
       'Many customer batteries behind one substation (with DETOUR)',
-      `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Plan plus guard: ${fleetBoth}, customers keep ${fleetBothKept.toFixed(0)}%.`,
-      'New, cut but not closed',
+      `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Room traded by need plus guard: ${fleetBoth}, customers keep ${Math.min(100, fleetBothKept).toFixed(0)}%. With the utility's Station too: ${(stackRaw as any).result.stationFleetTraded.hoursNotOverWithoutBatteries}.`,
+      'New, nearly closed with the Station',
+    ],
+    [
+      '#wear-h',
+      'L',
+      'What if battery wear costs more?',
+      (() => {
+        const w = wearRaw as any;
+        const lo = w.rows[0];
+        const hi = w.rows.at(-1);
+        return `Value falls from $${Math.round(lo.valuePerDay)} to ${hi.valuePerDay < 0 ? '−' : ''}$${Math.abs(Math.round(hi.valuePerDay))} a day and jam relief from ${lo.jamReliefMWhPerDay.toFixed(1)} to ${hi.jamReliefMWhPerDay.toFixed(1)} MWh between $${lo.costPerMWhThroughput} and $${hi.costPerMWhThroughput} per MWh moved. The limit holds at every cost.`;
+      })(),
+      'Changed what we say',
     ],
   ];
   return (
     <section className="evidence" aria-labelledby="ov-h">
       <p className="eyebrow">At a glance</p>
-      <h2 id="ov-h">Eleven tests on real open data. The safety held in every one, and three changed what we say.</h2>
+      <h2 id="ov-h">Twelve tests on real open data. The safety held in every one, and four changed what we say.</h2>
+      <p className="sub">
+        Rerun on Oct 29, 2026 with EIA hours read as hour ending (they had been filed one hour late against prices and
+        weather), and again after the everyday planner stopped charging in forecast jam hours. The safety held in every
+        test. Sections A, B, I and J use the planner with that rule, and so does K's full stack; D, E, F and G were run
+        before it.
+      </p>
       <div className="tablewrap">
         <table>
           <thead>

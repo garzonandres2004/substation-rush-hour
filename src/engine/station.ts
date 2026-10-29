@@ -58,6 +58,7 @@ export interface MinuteResult {
   overloadMWh: number;
   maxExcessMW: number; // largest single minute above the limit
   max15ExcessMW: number; // largest rolling 15 minute average above the limit
+  over15Intervals: number; // clock aligned 15 minute blocks whose average is above the limit (how demand is metered)
   maxRampMWPerMin: number; // steepest minute to minute change the grid sees
   batteryChanges: number; // minutes where battery power moves by more than 0.1 MW
   batteryExtraMWh: number; // battery energy beyond its hourly plan (grid side)
@@ -70,13 +71,16 @@ export interface MinuteResult {
 //   the energy it actually has left (minStoredMWh is the lowest planned stored energy per hour).
 // mode 'station': the flywheel covers spikes first and recharges in headroom; the battery holds
 //   its hourly setpoint and only steps in if the flywheel runs out.
+// mode 'quarter': the battery may change power every 15 minutes, not every minute: at each quarter hour it
+//   adds the last quarter's average excess to its discharge (and eases off when there was room). Acting in
+//   15 minute steps, as a meter that bills 15 minute demand sees the grid.
 export function runMinutes(
   baseHourly: number[],
   dc: number[],
   setpointHourly: number[],
   cap: number,
   battery: { powerMW: number; minStoredMWh: number[]; floorMWh: number; eff: number },
-  mode: 'hourly' | 'battery' | 'station',
+  mode: 'hourly' | 'battery' | 'station' | 'quarter',
   spin?: Spin,
   batteryBackup = true,
 ): MinuteResult {
@@ -90,16 +94,38 @@ export function runMinutes(
     overloadMWh: 0,
     maxExcessMW: 0,
     max15ExcessMW: 0,
+    over15Intervals: 0,
     maxRampMWPerMin: 0,
     batteryChanges: 0,
     batteryExtraMWh: 0,
     flywheelThroughputMWh: 0,
     grid: [],
   };
+  let qAdj = 0, // quarter mode: extra discharge set at the last quarter hour (MW)
+    qRefill = 0; // quarter mode: charging to put back energy used beyond the plan (MW)
   for (let m = 0; m < dc.length; m++) {
     const h = Math.floor(m / 60);
     const load = baseHourly[h] + dc[m];
     let b = setpointHourly[h]; // battery, positive = charging (grid side)
+    if (mode === 'quarter') {
+      if (m % 15 === 0 && m >= 15) {
+        const avg = res.grid.slice(m - 15, m).reduce((x, y) => x + y, 0) / 15;
+        qAdj = Math.max(0, qAdj + (avg - cap));
+        // With no excess to cover, put back what was used earlier, within last quarter's room.
+        qRefill = qAdj === 0 ? Math.max(0, Math.min(cap - avg, battery.powerMW, (extraStored / etaB) * 4)) : 0;
+      }
+      const room = Math.max(0, battery.minStoredMWh[h] - battery.floorMWh - extraStored) * etaB * 60;
+      const nb = Math.max(-battery.powerMW, b - Math.min(qAdj, room));
+      res.batteryExtraMWh += (b - nb) / 60;
+      extraStored += (b - nb) / etaB / 60;
+      b = nb;
+      const add = Math.min(qRefill, (Math.max(0, extraStored) / etaB) * 60, Math.max(0, battery.powerMW - b));
+      if (add > 0) {
+        b += add;
+        extraStored -= (add * etaB) / 60;
+        res.batteryExtraMWh += add / 60;
+      }
+    }
     let f = 0; // flywheel, positive = charging (grid side)
     let over = load + b - cap;
     if (mode === 'station' && spin) {
@@ -115,7 +141,9 @@ export function runMinutes(
         over += c;
       }
     }
-    if ((mode === 'battery' || (mode === 'station' && batteryBackup)) && over > 1e-9) {
+    if (mode === 'quarter') {
+      over = load + b - cap;
+    } else if ((mode === 'battery' || (mode === 'station' && batteryBackup)) && over > 1e-9) {
       const room = Math.max(0, battery.minStoredMWh[h] - battery.floorMWh - extraStored) * etaB * 60; // MW for one minute
       const nb = Math.max(-battery.powerMW, b - Math.min(over, room));
       res.batteryExtraMWh += (b - nb) / 60;
@@ -143,6 +171,9 @@ export function runMinutes(
     if (res.grid.length)
       res.maxRampMWPerMin = Math.max(res.maxRampMWPerMin, Math.abs(g - res.grid[res.grid.length - 1]));
     res.grid.push(g);
+  }
+  for (let q = 0; q + 15 <= res.grid.length; q += 15) {
+    if (res.grid.slice(q, q + 15).reduce((x, y) => x + y, 0) / 15 > cap + 1e-6) res.over15Intervals++;
   }
   let roll = 0;
   for (let m = 0; m < res.grid.length; m++) {

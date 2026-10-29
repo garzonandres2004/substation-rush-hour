@@ -54,7 +54,7 @@ export interface Report {
   region: string;
   assumptions: string[];
   params: {
-    asset: { powerMW: number; energyMWh: number };
+    asset: { powerMW: number; energyMWh: number; cycleCostPerMWh: number };
     congestedThreshold: number;
     stressPremium: number;
     stressWeights: { demand: number; netLoad: number; ramp: number; price: number };
@@ -78,6 +78,8 @@ export interface Report {
       carbonDays: number;
       meanCo2TPerDay: Record<string, number>;
       demandForecastMapePct: { ours: number; eiaDayAhead: number };
+      meanCo2MarginalTPerDay?: Record<string, number>;
+      captureVsHindsight?: { valuePct: number | null; jamReliefPct: number | null };
       robust?: {
         eiaForecast: Record<'v1' | 'replan' | 'guard', Robust>;
         premium: (Robust & { premium: number })[];
@@ -97,6 +99,8 @@ export interface CapacityLimit {
     awareResidualMWh: number;
     shaverMW: number;
     awareDaysOverAtShaverMW?: string[]; // our planner at the simple rule's size: days over the limit
+    capacityModeMW?: number; // the planner holding a reserve for forecast overload (capacity mode)
+    shaverFullMW?: number; // the five line rule recharging to full instead of half
   }[];
 }
 export interface Robust {
@@ -114,7 +118,15 @@ export interface Summer {
   forecastMapePct: number;
   ratedForSummerPeak: {
     capMW: number;
-    stations: { label: string; powerMW: number; energyMWh: number; awareMW: number; shaverMW: number }[];
+    stations: {
+      label: string;
+      powerMW: number;
+      energyMWh: number;
+      awareMW: number;
+      shaverMW: number;
+      capacityModeMW?: number;
+      shaverFullMW?: number;
+    }[];
   };
   autumnRating: {
     capMW: number;

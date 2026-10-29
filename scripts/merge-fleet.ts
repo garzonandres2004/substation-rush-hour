@@ -73,6 +73,8 @@ async function main(): Promise<void> {
   const highs = await highsLoader();
   const solver: ILpSolver = { solve: async (input: ILpInput) => PlanEngineHelper.solve(highs, input) };
   const out: Record<string, unknown> = {};
+  // hourly fleet battery power (MW, + charging) for the largest fleet, for the full stack test
+  const dump: Record<string, Record<number, number>> = { alone: {}, guard: {}, tradedAndGuard: {} };
   for (const month of MONTHS) {
     const gridMonth = gridMonths.find(g => g.month === month);
     if (!gridMonth) throw new Error(`no grid data for ${month}`);
@@ -339,6 +341,15 @@ async function main(): Promise<void> {
       twoBosses.set(n, await planWithRoom(n, 'size'));
       traded.set(n, await planWithRoom(n, 'traded'));
     }
+    {
+      const n = FLEETS[FLEETS.length - 1];
+      const save = (key: string, m: Map<number, number>) => {
+        for (const [h, v] of m) dump[key][h] = +v.toFixed(4);
+      };
+      save('alone', deltaByFleet[FLEETS.length - 1]);
+      save('guard', siteGuard(runs.filter(r => r.k < n)).delta);
+      save('tradedAndGuard', traded.get(n)!.combined.delta);
+    }
     const fleets = FLEETS.map((n, f) => {
       const d = deltaByFleet[f];
       const vals = hours.map(h => d.get(h) ?? 0);
@@ -407,6 +418,7 @@ async function main(): Promise<void> {
     }
     console.log('  saved per site per month', JSON.stringify(o.savedPerSitePerMonth));
   }
+  fs.writeFileSync('data/lab-raw/fleet-deltas.json', JSON.stringify(dump));
   fs.writeFileSync(
     process.env.OUT ?? 'public/data/merge-fleet.json',
     JSON.stringify({ generatedAt: new Date().toISOString(), months: out }, null, 1),

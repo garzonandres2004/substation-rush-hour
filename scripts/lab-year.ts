@@ -85,16 +85,17 @@ for (const d of dates) {
   const base = { forecastLoad: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty, margin: 0 };
   const prem = priced ? p.stressPremium : NO_PRICE.stressPremium;
   const signal = day.lmp.map((x, i) => x + prem * day.stress[i]);
+  const noCharge = day.stress.map(s => s >= p.congestedThreshold); // the everyday planner never charges in a jam
   const runs: Partial<Record<Name, Schedule>> = {
-    ours: runReplan(A, { ...base, signal }, act, true, prevMiss, carry.ours),
+    ours: runReplan(A, { ...base, signal, noCharge }, act, true, prevMiss, carry.ours),
     planOnce: dispatch(
       signal,
       A,
-      { load: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty },
+      { load: day.loadMW, cap: day.capMW, penalty: p.overloadPenalty, noCharge },
       0.25,
       carry.planOnce,
     ),
-    replanNoGuard: runReplan(A, { ...base, signal }, act, false, prevMiss, carry.replanNoGuard),
+    replanNoGuard: runReplan(A, { ...base, signal, noCharge }, act, false, prevMiss, carry.replanNoGuard),
     fiveLineRule: peakShaver(A, act, day.hourLocal, day.capMW, carry.fiveLineRule),
   };
   if (priced) {
