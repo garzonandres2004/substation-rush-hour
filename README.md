@@ -89,10 +89,14 @@ The event is over; the project keeps going. What changed, with the numbers from 
 
 | Change | Result |
 | --- | --- |
-| Capacity mode | On days the forecast plus the recent miss margin shows risk, hold that reserve and discharge exactly what the meter shows over the limit. 10 MW, 4 h Station: **7.75 MW** of new load (everyday planner 3.5, five line rule 5.25). A rule that recharges to full also gets 7.75: for new load alone, being full before the overload is what matters |
-| Graded against perfect hindsight | Ours gets 93% of the value and 98% of the jam relief of the same plan made knowing the real load |
+| Capacity mode | On days the forecast plus the largest miss of the last two weeks shows risk, the battery fills, stays full until the risk has passed, and discharges exactly what the meter shows over the limit; other days run the everyday planner. 10 MW, 4 h Station: **7.75 MW** of new load on 30 autumn days, 7.25 MW over a full year. A rule that recharges to full ties in every test: for new load alone, being full before the overload is what matters |
+| Never charge in a jam | The everyday planner may not charge in a forecast jam hour (a rule, not a price). 30 days: jam relief 9.4 to 10.8 MWh a day, value $299 to $279, 0 days over. Year walk: still 0 of 359 days made worse |
+| Graded against perfect hindsight | Ours gets 90% of the value and 97% of the jam relief of the same plan made knowing the real load |
 | Marginal CO2 (method from DETOUR) | On the average mix the plans seem to avoid 2.5 to 5.5 t a day; at the margin every plan adds 4 to 5 t, because coal makes up the round trip losses |
-| Reserve for utility events | Ready for a 2 hour full power call on 30 of 30 days instead of 24, for about $30 a day |
+| Reserve for utility events | Ready for a 2 hour full power call on 30 of 30 days instead of 23, for about $23 a day |
+| Battery wear (lab L) | At $3 of wear per MWh moved the Station earns $279 a day; at about $35 (DETOUR's Nova Pulse assumption) about nothing. The limit holds at every cost. Inside the hour the flywheel's wear is about $7 a day against $20 for the battery chasing spikes |
+| 15 minute steps | Adjusting the battery every 15 minutes leaves 19 quarter hours over the limit in 30 days against 17 for the hourly plan: the AI swings are faster. The flywheel removes them |
+| What one Station is worth | One table for the utility, Wattsmart, the owner, the grid and the businesses behind the substation |
 | Customer batteries on the main page | Pick 15, 30 or 60 businesses and how they are coordinated (built with DETOUR) |
 | Try it | Tomorrow's plan solved again in the browser with your reserve, margin and traffic premium |
 | Tomorrow's orders | The plan as dispatch orders for Nova Pulse, with an approve step (no Torus connection) and a CSV download |
@@ -101,19 +105,20 @@ The event is over; the project keeps going. What changed, with the numbers from 
 
 ## The lab: trying to break our own results
 
-**Live:** https://torus-green.vercel.app/lab. Eleven more tests on real open data. The safety held in every one, and three changed what we say. Rerun on Oct 29, 2026 with EIA hours read as hour ending.
+**Live:** https://torus-green.vercel.app/lab. Twelve more tests on real open data. The safety held in every one, and four changed what we say. Rerun on Oct 29, 2026 with EIA hours read as hour ending.
 
 | Test | Result | Verdict |
 | --- | --- | --- |
 | A full year, planned each night on weather forecasts as issued | Our plan made the substation worse on 0 of 359 days | Held |
-| New load all year, substation rated at its annual peak | 0 MW without storage, 5.5 MW with a 10 MW, 4 h Station | Held |
+| New load all year, substation rated at its annual peak | 0 MW without storage, 7.25 MW with a 10 MW, 4 h Station in capacity mode (6 for the everyday planner; a rule recharging to full also 7.25) | Held |
 | Real AI training power (MIT Supercloud, 44 jobs) | Swings repeat about every 5 seconds: our simulation had the size right, the speed wrong | Corrected our model |
 | Inside the hour, second by second | Independent jobs: a 0.5 MW flywheel covers it. One synchronized run: a 4 MW flywheel | Corrected our claim |
 | Did we tune it to win? 17 settings | 0 days made worse in all 17. Index ahead of price plus guard in 16, about 1.5 times over a year (3.2 on the 30 autumn days) | Held, smaller than it looked |
 | Compute that yields to traffic | Pausing 0.5 percent of yearly energy: 17 MW with the Station (5.5 firm), about 121 hours a year | New |
 | The limit as heat (IEEE C57.91), not a fixed number | Year round 5.5 to 6.5 MW. November to April 47 MW or more | New |
-| A utility event in the jam: 2 hours at full power from the busiest hour | Ready on 24 of 30 days as planned. Holding a reserve for the busiest hour on the day ahead forecast: 30 of 30, for about $30 a day ($299 to $269), jam relief 9.4 to 9.9 MWh, 0 days over | New, closed |
-| Many customer batteries behind one substation, built with [DETOUR](https://detourgrid.com) | 60 businesses cutting their own bills: 230 new hours over the limit. Guard on the meter: 119, at no cost to customers. Room traded by need plus guard: 63, customers keep 90%. With the utility's Station too: 2 new hours in 11 months, and fewer overload hours than the Station alone (130 vs 138) | New, nearly closed |
+| A utility event in the jam: 2 hours at full power from the busiest hour | Ready on 23 of 30 days as planned. Holding a reserve for the busiest hour on the day ahead forecast: 30 of 30, for about $23 a day, jam relief kept, 0 days over | New, closed |
+| Many customer batteries behind one substation, built with [DETOUR](https://detourgrid.com) | 60 businesses cutting their own bills: 230 new hours over the limit. Guard on the meter: 119, at no cost to customers. Room traded by need plus guard: 63, customers keep 90%. With the utility's Station too: 2 new hours in 11 months, and fewer overload hours than the Station alone (132 vs 141) | New, nearly closed |
+| Battery wear | Value a day $279, 115, 44, 3, −26 at $3, 8, 15, 25, 35 of wear per MWh moved; 0 days over at every cost | Changed what we say |
 
 **Built with DETOUR.** Test K uses DETOUR by Juan Lizarazo (same bounty, MIT, used with his permission): Rocky Mountain Power Schedule 6 and 8 bills, three simulated businesses and his bill planner, vendored unchanged under `src/detour` (see its README). The main page has an interactive version (number of businesses, how they are coordinated) that reads the same results. `src/merge` adds the fleet guard and the substation's room inside his plan. `npx tsx scripts/merge-fleet.ts` rebuilds `public/data/merge-fleet.json` from the lab's EIA pull in `data/lab-raw`.
 
