@@ -17,9 +17,9 @@ I come from logistics, not energy. So when Torus said "rush hour for electrons" 
 | --- | --- |
 | A bridge with a weight limit | The substation and its rating |
 | Rush hour traffic | Demand peaks, the evening ramp when solar fades, high prices |
-| A warehouse next to the bridge | The battery (Torus Pulse) |
+| A warehouse next to the bridge | The battery (Torus Nova Pulse) |
 | Sending trucks across | Charging, it adds load to the substation |
-| Delivery motorbike for quick runs | The flywheel (Torus Spin), fast swings |
+| Delivery motorbike for quick runs | The flywheel (Torus Nova Spin), fast swings |
 | A traffic cop at the bridge | The real time guard on the meter |
 
 If you send your trucks across at the cheapest hour without checking traffic, you can cause the jam yourself. That became the whole project.
@@ -82,6 +82,22 @@ The live page recomputes these every day over the trailing 30 days, so it is the
 | Same, rated for the summer peak (July and August) | 7.25 MW with the Station |
 | Inside the hour, simulated AI load | Hourly plan alone: 2,362 minutes over in 30 days. Battery chasing every spike: 0 minutes but about 61 power changes a day. Flywheel plus battery: 0 minutes, battery at about 12 changes a day |
 | Demand forecast error | Ours 5.0 percent vs 8.6 percent for the day ahead forecast reported to EIA. Ours used observed weather here, so read it as an upper bound |
+
+## After the hackathon
+
+The event is over; the project keeps going. What changed, with the numbers from local runs on Oct 29, 2026 (EIA hours read as hour ending):
+
+| Change | Result |
+| --- | --- |
+| Capacity mode | On days the forecast plus the recent miss margin shows risk, hold that reserve and discharge exactly what the meter shows over the limit. 10 MW, 4 h Station: **7.75 MW** of new load (everyday planner 3.5, five line rule 5.25). A rule that recharges to full also gets 7.75: for new load alone, being full before the overload is what matters |
+| Graded against perfect hindsight | Ours gets 93% of the value and 98% of the jam relief of the same plan made knowing the real load |
+| Marginal CO2 (method from DETOUR) | On the average mix the plans seem to avoid 2.5 to 5.5 t a day; at the margin every plan adds 4 to 5 t, because coal makes up the round trip losses |
+| Reserve for utility events | Ready for a 2 hour full power call on 30 of 30 days instead of 24, for about $30 a day |
+| Customer batteries on the main page | Pick 15, 30 or 60 businesses and how they are coordinated (built with DETOUR) |
+| Try it | Tomorrow's plan solved again in the browser with your reserve, margin and traffic premium |
+| Tomorrow's orders | The plan as dispatch orders for Nova Pulse, with an approve step (no Torus connection) and a CSV download |
+| Plan fingerprints | Each daily plan saved with a SHA-256 before the day; the history page recomputes it (idea from RampMeter) |
+| DETOUR's own tests | 19 of 19 pass on the vendored code, run before every deploy |
 
 ## The lab: trying to break our own results
 
