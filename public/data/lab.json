@@ -58,6 +58,11 @@
     "fullDays": 24,
     "worstPct": 0
    },
+   "oursWithReserve": {
+    "meanReadyPct": 100,
+    "fullDays": 30,
+    "worstPct": 100
+   },
    "priceOnlyWithGuard": {
     "meanReadyPct": 84.18850767346588,
     "fullDays": 21,
@@ -80,6 +85,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -90,6 +96,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -100,6 +107,7 @@
     "hour": 7,
     "ready": {
      "ours": 0.4924936547814601,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0.7504665215717488,
      "priceOnly": 0.7504665215717488,
      "fiveLineRule": 0.7504665215717488
@@ -110,6 +118,7 @@
     "hour": 16,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -120,6 +129,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -130,6 +140,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -140,6 +151,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -150,6 +162,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -160,6 +173,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -170,6 +184,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -180,6 +195,7 @@
     "hour": 19,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -190,6 +206,7 @@
     "hour": 17,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -200,6 +217,7 @@
     "hour": 17,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -210,6 +228,7 @@
     "hour": 15,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0.7270144427726316,
      "priceOnly": 0.7270144427726316,
      "fiveLineRule": 0.7504665215717488
@@ -220,6 +239,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -230,6 +250,7 @@
     "hour": 17,
     "ready": {
      "ours": 0.7504665215717488,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0.7504665215717488,
      "priceOnly": 0.7504665215717488,
      "fiveLineRule": 0.7504665215717488
@@ -240,6 +261,7 @@
     "hour": 17,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -250,6 +272,7 @@
     "hour": 9,
     "ready": {
      "ours": 0.6097540487770459,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0,
      "priceOnly": 0,
      "fiveLineRule": 0.7504665215717488
@@ -260,6 +283,7 @@
     "hour": 16,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0.9967133489624788,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -270,6 +294,7 @@
     "hour": 19,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -280,6 +305,7 @@
     "hour": 19,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 0.7504665215717488,
      "fiveLineRule": 0.7504665215717488
@@ -290,6 +316,7 @@
     "hour": 18,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -300,6 +327,7 @@
     "hour": 17,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -310,6 +338,7 @@
     "hour": 12,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0.7739186003708659,
      "priceOnly": 0.7270144427726316,
      "fiveLineRule": 0.7504665215717488
@@ -320,6 +349,7 @@
     "hour": 9,
     "ready": {
      "ours": 0,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0,
      "priceOnly": 0,
      "fiveLineRule": 0.7504665215717488
@@ -330,6 +360,7 @@
     "hour": 15,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -340,6 +371,7 @@
     "hour": 16,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
@@ -350,6 +382,7 @@
     "hour": 8,
     "ready": {
      "ours": 0.4924936547814601,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0.25797286679028864,
      "priceOnly": 0.25797286679028864,
      "fiveLineRule": 0.7504665215717488
@@ -360,6 +393,7 @@
     "hour": 9,
     "ready": {
      "ours": 0,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 0,
      "priceOnly": 0,
      "fiveLineRule": 0.7504665215717488
@@ -370,12 +404,28 @@
     "hour": 19,
     "ready": {
      "ours": 1,
+     "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
      "fiveLineRule": 0.7504665215717488
     }
    }
-  ]
+  ],
+  "reserve": {
+   "reserveMWh": 25.320071635561042,
+   "valuePerDay": {
+    "ours": 298.8297784294425,
+    "oursWithReserve": 269.1976802139319
+   },
+   "jamReliefMWh": {
+    "ours": 9.422760993863466,
+    "oursWithReserve": 9.876523185173655
+   },
+   "overloadDays": {
+    "ours": 0,
+    "oursWithReserve": 0
+   }
+  }
  },
  "frontier": [
   {

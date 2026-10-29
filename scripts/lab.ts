@@ -115,8 +115,36 @@ const relief = (stress: number[], s: Schedule) =>
 // hour. We measure how much of that the Station could deliver from what it had stored at that moment.
 const EVENT_H = 2;
 const request = A.powerMW * EVENT_H;
+// The busiest traffic hour on the day ahead forecast: known the night before, so the planner can
+// hold a reserve for it.
+const eventHour = (c: (typeof cases)[number]) => {
+  let tPeak = 0;
+  c.day.stress.forEach((s, t) => {
+    if (s > c.day.stress[tPeak]) tPeak = t;
+  });
+  return Math.min(tPeak, 24 - EVENT_H);
+};
+// Reserve: enough stored at the start of the event hour to deliver the full request.
+const RESERVE_MWH = minE + request / eta;
+const reserveFloor = (c: (typeof cases)[number]) => {
+  const f: (number | undefined)[] = Array(24).fill(undefined);
+  const t = eventHour(c);
+  if (t > 0) f[t - 1] = RESERVE_MWH;
+  return f;
+};
 const strategies: Record<string, (c: (typeof cases)[number]) => Schedule> = {
   ours: c => runReplan(A, { ...base(c), margin: 0, signal: awareSignal(c.day) }, c.act, true, c.prevMiss),
+  oursWithReserve: c =>
+    runReplan(
+      A,
+      { ...base(c), margin: 0, signal: awareSignal(c.day) },
+      c.act,
+      true,
+      c.prevMiss,
+      undefined,
+      undefined,
+      reserveFloor(c),
+    ),
   priceOnlyWithGuard: c => runReplan(A, { ...base(c), margin: 0, signal: c.day.lmp }, c.act, true, c.prevMiss),
   priceOnly: c => dispatch(c.day.lmp, A),
   fiveLineRule: c => peakShaver(A, c.act, c.day.hourLocal, c.day.capMW),
@@ -126,11 +154,7 @@ const eventDays: { date: string; hour: number; ready: Record<string, number> }[]
 const schedules: Record<string, Schedule[]> = {};
 for (const [name, f] of Object.entries(strategies)) schedules[name] = cases.map(f);
 cases.forEach((c, i) => {
-  let tPeak = 0;
-  c.day.stress.forEach((s, t) => {
-    if (s > c.day.stress[tPeak]) tPeak = t;
-  });
-  tPeak = Math.min(tPeak, 24 - EVENT_H);
+  const tPeak = eventHour(c);
   const ready: Record<string, number> = {};
   for (const name of Object.keys(strategies)) {
     const s = schedules[name][i];
@@ -147,7 +171,20 @@ for (const name of Object.keys(strategies)) {
     worstPct: 100 * Math.min(...xs),
   };
 }
-console.error('events done');
+// What holding the reserve costs on ordinary days: value, jam relief and overload, ours with and without.
+const sumOver = (name: string) =>
+  cases.map((c, i) => overMWh(c.act, c.day.capMW, schedules[name][i])).filter(x => x > TOL).length;
+const reserve = {
+  reserveMWh: RESERVE_MWH,
+  valuePerDay: Object.fromEntries(
+    ['ours', 'oursWithReserve'].map(k => [k, mean(cases.map((c, i) => value(c.day.lmp, schedules[k][i])))]),
+  ),
+  jamReliefMWh: Object.fromEntries(
+    ['ours', 'oursWithReserve'].map(k => [k, mean(cases.map((c, i) => relief(c.day.stress, schedules[k][i])))]),
+  ),
+  overloadDays: Object.fromEntries(['ours', 'oursWithReserve'].map(k => [k, sumOver(k)])),
+};
+console.error('events done', JSON.stringify(reserve));
 
 // ---------- 3. Margin versus guard ----------
 const QS = [0.5, 0.75, 0.9, 0.95, 0.99];
@@ -294,7 +331,7 @@ const lab = {
   firstDay: cases[0].d,
   lastDay: cases.at(-1)!.d,
   confidence,
-  events: { hours: EVENT_H, requestMWh: request, byStrategy: events, days: eventDays },
+  events: { hours: EVENT_H, requestMWh: request, byStrategy: events, days: eventDays, reserve },
   frontier,
   thermal: thermalOut,
 };

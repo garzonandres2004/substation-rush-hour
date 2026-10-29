@@ -5,6 +5,9 @@ export interface Limit {
   // One limit for every hour, or one per hour (a temperature based rating).
   cap: number | number[];
   penalty: number;
+  // Optional lowest stored energy (MWh) at the end of each hour, e.g. a reserve held for a utility
+  // event. Hours without a value use the asset's own minimum.
+  floorMWh?: (number | undefined)[];
 }
 export const capAt = (cap: number | number[], t: number) => (Array.isArray(cap) ? cap[t] : cap);
 
@@ -51,14 +54,24 @@ export function dispatch(
     return (v[t] - a.cycleCostPerMWh) * d - over(t, 0, d);
   };
 
+  // States below an hour's reserve floor are not allowed at the end of that hour. A floor the battery
+  // cannot reach from where it starts, or cannot come back down from to the end of day target, is
+  // lowered to the most it can do, so the plan always exists.
+  const floorIdx = (t: number) => {
+    const f = limit?.floorMWh?.[t];
+    if (f === undefined) return 0;
+    const want = Math.ceil(f / step - 1e-9) - lo;
+    return Math.max(0, Math.min(want, n - 1, i0 + up * (t + 1), iEnd + down * (T - 1 - t)));
+  };
   for (let t = T - 1; t >= 0; t--) {
+    const jMin = floorIdx(t);
     for (let i = 0; i < n; i++) {
       let best = -Infinity,
         bj = -1;
       // Only states reachable within the power limit (same result, much faster).
       const jLo = Math.max(0, i - Math.floor(a.powerMW / eta / step) - 1);
       const jHi = Math.min(n - 1, i + Math.floor((a.powerMW * eta) / step) + 1);
-      for (let j = jLo; j <= jHi; j++) {
+      for (let j = Math.max(jLo, jMin); j <= jHi; j++) {
         const nxt = V[t + 1][j];
         if (nxt === -Infinity) continue;
         const r = reward(t, (j - i) * step);

@@ -112,8 +112,10 @@ export default function LabOverview() {
       '#ev2-h',
       'I',
       'If the utility calls an event in the jam',
-      `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days.`,
-      ev.fullDays === lab.days ? 'Held' : 'Mostly held',
+      lab.events.reserve
+        ? `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days; holding a reserve for the event hour, on ${lab.events.byStrategy.oursWithReserve.fullDays}, for $${Math.round(lab.events.reserve.valuePerDay.ours - lab.events.reserve.valuePerDay.oursWithReserve)} a day.`
+        : `Our plan had the energy ready on ${ev.fullDays} of ${lab.days} days.`,
+      (lab.events.byStrategy.oursWithReserve?.fullDays ?? ev.fullDays) === lab.days ? 'Held' : 'Mostly held',
     ],
     [
       '#fr-h',

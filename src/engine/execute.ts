@@ -55,6 +55,7 @@ export function runReplan(
   prevMiss = 0,
   startMWh = a.energyMWh * a.startSocFrac,
   guardCap?: number | number[], // the limit the guard sees in real time, if it differs from the plan's
+  floorMWh?: (number | undefined)[], // optional reserve per hour of the day (see dispatch)
 ): Schedule & { guardHours: number } {
   const T = r.signal.length;
   let soc = startMWh;
@@ -66,7 +67,13 @@ export function runReplan(
     const miss = t > 0 ? actualLoad[t - 1] - r.forecastLoad[t - 1] : prevMiss;
     const est = r.forecastLoad.slice(t).map(x => x + miss + r.margin);
     const cap = Array.isArray(r.cap) ? r.cap.slice(t) : r.cap;
-    const s = dispatch(r.signal.slice(t), a, { load: est, cap, penalty: r.penalty }, STEP, soc);
+    const s = dispatch(
+      r.signal.slice(t),
+      a,
+      { load: est, cap, penalty: r.penalty, floorMWh: floorMWh?.slice(t) },
+      STEP,
+      soc,
+    );
     let c = s.charge[0],
       d = s.discharge[0],
       next = s.soc[0];
