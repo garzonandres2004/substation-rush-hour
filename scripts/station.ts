@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import { runReplan } from '../src/engine/execute.js';
 import { dataCenterMinutes, runMinutes } from '../src/engine/station.js';
-import { p, backtestDates, days, actualLoad, awareSignal, misses } from './common.js';
+import { p, backtestDates, days, actualLoad, aware, misses } from './common.js';
 
 const cap = JSON.parse(fs.readFileSync('public/data/capacity.json', 'utf8'));
 const X: number = cap.limits.moving.stations.find(
@@ -26,6 +26,7 @@ type Agg = {
   flywheelThroughputMWh: number;
   maxExcessMW: number;
   max15ExcessMW: number;
+  over15Intervals: number;
   maxRampMWPerMin: number;
 };
 const zero = (): Agg => ({
@@ -36,13 +37,14 @@ const zero = (): Agg => ({
   flywheelThroughputMWh: 0,
   maxExcessMW: 0,
   max15ExcessMW: -1e9,
+  over15Intervals: 0,
   maxRampMWPerMin: 0,
 });
 const MAXK = new Set(['maxExcessMW', 'max15ExcessMW', 'maxRampMWPerMin']);
 const add = (a: Agg, r: Agg) => {
   for (const k of Object.keys(a) as (keyof Agg)[]) a[k] = MAXK.has(k) ? Math.max(a[k], r[k]) : a[k] + r[k];
 };
-const agg = { hourly: zero(), battery: zero(), station: zero() };
+const agg = { hourly: zero(), quarter: zero(), battery: zero(), station: zero() };
 let stationAlone = 0;
 const sweep = Object.fromEntries(SIZES.map(s => [s, zero()]));
 const sweepAlone = Object.fromEntries(SIZES.map(s => [s, zero()]));
@@ -74,7 +76,7 @@ for (const c of cases) {
       forecastLoad: c.day.loadMW.map(l => l + X),
       cap: c.day.capMW,
       margin: 0,
-      signal: awareSignal(c.day),
+      ...aware(c.day),
       penalty: p.overloadPenalty,
     },
     hourlyLoad,
@@ -93,6 +95,7 @@ for (const c of cases) {
   for (let m = 1; m < dc.length; m++) maxRamp = Math.max(maxRamp, Math.abs(dc[m] - dc[m - 1]));
   const h = runMinutes(base, dc, sp, c.day.capMW, bat, 'hourly');
   add(agg.hourly, h);
+  add(agg.quarter, runMinutes(base, dc, sp, c.day.capMW, bat, 'quarter'));
   add(agg.battery, runMinutes(base, dc, sp, c.day.capMW, bat, 'battery'));
   add(agg.station, runMinutes(base, dc, sp, c.day.capMW, bat, 'station', spinOf(MAIN_SPIN)));
   stationAlone += runMinutes(base, dc, sp, c.day.capMW, bat, 'station', spinOf(MAIN_SPIN), false).overloadMinutes;
@@ -130,6 +133,21 @@ const out = {
   totals: agg,
   limitTypicalMW: cases.reduce((s2, c) => s2 + c.day.capMW, 0) / n,
   wearCostPerMWh: p.asset.cycleCostPerMWh,
+  // Wear of the fast work inside the hour, priced as DETOUR does (Juan Lizarazo, MIT; assumptions):
+  // Nova Pulse $70.6 per MWh discharged, about $35.3 per MWh moved either way; Nova Spin $23.6 per MWh
+  // discharged, about $11.8 per MWh moved. Dollars per day for the energy each mode moves beyond the plan.
+  wearInsideHour: (() => {
+    const PULSE = 35.3,
+      SPIN = 11.8;
+    const per = (k: 'battery' | 'station') =>
+      (agg[k].batteryExtraMWh * PULSE + agg[k].flywheelThroughputMWh * SPIN) / n;
+    return {
+      pulsePerMWhMoved: PULSE,
+      spinPerMWhMoved: SPIN,
+      batteryChasingPerDay: per('battery'),
+      stationPerDay: per('station'),
+    };
+  })(),
   batteryBackupMinutes: stationAlone,
   perDay: Object.fromEntries(
     Object.entries(agg).map(([k, a]) => [

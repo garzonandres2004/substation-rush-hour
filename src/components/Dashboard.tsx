@@ -8,15 +8,17 @@ import { MinuteChart } from './MinuteChart';
 import { FleetView } from './FleetView';
 import { DispatchOrders } from './DispatchOrders';
 import { PlanDials } from './PlanDials';
+import { StackedValue } from './StackedValue';
 import stationRaw from '../../public/data/station.json';
 
 type ScenarioKey = 'normal' | 'derate';
-type Mode = 'hourly' | 'battery' | 'station';
+type Mode = 'hourly' | 'quarter' | 'battery' | 'station';
 interface MinuteTotals {
   overloadMinutes: number;
   overloadMWh: number;
   maxExcessMW: number;
   max15ExcessMW: number;
+  over15Intervals?: number;
   maxRampMWPerMin: number;
   batteryChanges: number;
   batteryExtraMWh: number;
@@ -31,8 +33,16 @@ interface StationData {
   batteryBackupMinutes: number;
   limitTypicalMW: number;
   wearCostPerMWh: number;
-  totals: Record<Mode, MinuteTotals>;
-  perDay: Record<Mode, { batteryChanges: number; flywheelCycles: number }>;
+  wearInsideHour?: {
+    pulsePerMWhMoved: number;
+    spinPerMWhMoved: number;
+    batteryChasingPerDay: number;
+    stationPerDay: number;
+  };
+  totals: Record<Exclude<Mode, 'quarter'>, MinuteTotals> & { quarter?: MinuteTotals };
+  perDay: Record<Exclude<Mode, 'quarter'>, { batteryChanges: number; flywheelCycles: number }> & {
+    quarter?: { batteryChanges: number; flywheelCycles: number };
+  };
   sweep: {
     spinMW: number;
     overloadMinutesFlywheelAlone: number;
@@ -709,7 +719,7 @@ export default function Dashboard() {
           needs new wires? We added a constant block of load to every hour of {cap.days} real days and raised it in{' '}
           {cap.stepMW} MW steps until the first overload, with the battery replanning hourly and the guard on
           {hasCm
-            ? ', in capacity mode: on days the forecast, plus the recent miss margin, shows risk, the planner holds enough charge for that overload and discharges only what the meter shows over the limit'
+            ? ', in capacity mode: on days the forecast, plus the largest miss of the last two weeks, shows risk, the battery fills, stays full until the risk has passed, and discharges only what the meter shows over the limit'
             : ''}
           . Station sizes are modeled, not Torus specs.
         </p>
@@ -756,9 +766,9 @@ export default function Dashboard() {
           {hasCm ? (
             <li>
               Why a capacity mode: the everyday planner, built to earn value and relieve the jam, gets {main.awareMW}{' '}
-              MW. It spends charge during the day and is short when a forecast miss comes late. Holding a reserve for
-              the forecast overload gets {cm(main)} MW. A five line rule that only discharges what is over the limit
-              gets {main.shaverMW} MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night.{' '}
+              MW. It spends charge during the day and is short when a forecast miss comes late. Staying full on days at
+              risk gets {cm(main)} MW. A five line rule that only discharges what is over the limit gets {main.shaverMW}{' '}
+              MW, or {main.shaverFullMW ?? main.shaverMW} MW if it recharges to full at night.{' '}
               {main.shaverFullMW !== undefined && main.shaverFullMW === cm(main)
                 ? 'For new load alone, being full before the overload is what matters, and a simple rule that does that ties. On the other days capacity mode runs the everyday planner, which earns value and relieves the jam. '
                 : ''}
@@ -915,6 +925,7 @@ export default function Dashboard() {
                 <th>Battery power changes a day</th>
                 <th>Minutes above the limit</th>
                 <th>Highest 15 minute average above the limit</th>
+                {station.totals.hourly.over15Intervals !== undefined && <th>15 minute blocks above the limit</th>}
                 <th>Extra battery throughput</th>
               </tr>
             </thead>
@@ -922,24 +933,28 @@ export default function Dashboard() {
               {(
                 [
                   ['hourly', 'Nobody: hourly plan only'],
+                  ['quarter', 'The battery adjusts every 15 minutes'],
                   ['battery', 'The battery chases every spike'],
                   [
                     'station',
                     `Station: ${station.mainSpinMW} MW, ${station.spinMinutes} minute flywheel plus the battery`,
                   ],
                 ] as [Mode, string][]
-              ).map(([k, name]) => {
-                const t = station.totals[k];
-                return (
-                  <tr key={k} className={k === 'station' ? 'best' : ''}>
-                    <th scope="row">{name}</th>
-                    <td>{int(station.perDay[k].batteryChanges)}</td>
-                    <td>{int(t.overloadMinutes)}</td>
-                    <td>{t.max15ExcessMW > 0.005 ? `${t.max15ExcessMW.toFixed(2)} MW` : 'none'}</td>
-                    <td>{t.batteryExtraMWh > 0.05 ? `${f1(t.batteryExtraMWh / station.days)} MWh a day` : 'none'}</td>
-                  </tr>
-                );
-              })}
+              )
+                .filter(([k]) => station.totals[k] !== undefined)
+                .map(([k, name]) => {
+                  const t = station.totals[k]!;
+                  return (
+                    <tr key={k} className={k === 'station' ? 'best' : ''}>
+                      <th scope="row">{name}</th>
+                      <td>{int(station.perDay[k]?.batteryChanges ?? 0)}</td>
+                      <td>{int(t.overloadMinutes)}</td>
+                      <td>{t.max15ExcessMW > 0.005 ? `${t.max15ExcessMW.toFixed(2)} MW` : 'none'}</td>
+                      {t.over15Intervals !== undefined && <td>{int(t.over15Intervals)}</td>}
+                      <td>{t.batteryExtraMWh > 0.05 ? `${f1(t.batteryExtraMWh / station.days)} MWh a day` : 'none'}</td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
@@ -956,10 +971,24 @@ export default function Dashboard() {
             instead of {int(station.perDay.hourly.batteryChanges)}, and moves{' '}
             {f1(station.totals.battery.batteryExtraMWh / station.days)} MWh more a day (about{' '}
             {money((station.totals.battery.batteryExtraMWh / station.days) * station.wearCostPerMWh)} of wear at our
-            assumed cost). On wear dollars alone the flywheel case is small. The case is the split of jobs: a{' '}
-            {station.spinMinutes} minute flywheel for fast power, the battery for hours, which is how a Torus Station is
-            built.
+            assumed cost).{' '}
+            {station.wearInsideHour
+              ? `Priced the way DETOUR prices wear (about $${Math.round(station.wearInsideHour.pulsePerMWhMoved)} per MWh moved for Nova Pulse, $${Math.round(station.wearInsideHour.spinPerMWhMoved)} for Nova Spin; assumptions), the battery chasing spikes costs about ${money(station.wearInsideHour.batteryChasingPerDay)} a day, the flywheel doing the same work about ${money(station.wearInsideHour.stationPerDay)}. `
+              : 'On wear dollars alone the flywheel case is small. '}
+            The case is the split of jobs: a {station.spinMinutes} minute flywheel for fast power, the battery for
+            hours, which is how a Torus Station is built.
           </li>
+          {station.totals.quarter?.over15Intervals !== undefined &&
+            station.totals.hourly.over15Intervals !== undefined && (
+              <li>
+                Acting in 15 minute steps, the interval demand is metered in, does not fix it: the battery adjusting
+                every quarter hour leaves {int(station.totals.quarter.over15Intervals)} quarter hours above the limit in{' '}
+                {station.days} days against {int(station.totals.hourly.over15Intervals)} for the hourly plan. The swings
+                repeat within minutes, so a quarter hour average reacts after they are gone. Only minute level response,
+                the flywheel's job, removes them. The substation's own load is hourly public data, so the plan itself
+                stays hourly.
+              </li>
+            )}
           <li>
             Sizing the flywheel on its own:{' '}
             {station.sweep
@@ -1006,6 +1035,12 @@ export default function Dashboard() {
             schedules to.
           </li>
         </ol>
+        <h3 style={{ marginTop: 28 }}>What one Station and its neighbors are worth</h3>
+        <p className="sub">
+          The same Station seen by everyone it serves. Each line comes from a test on this site; the money for
+          businesses comes from DETOUR's Rocky Mountain Power bills.
+        </p>
+        <StackedValue />
         <h3 style={{ marginTop: 28 }}>Tomorrow's orders, as the Station would get them</h3>
         <DispatchOrders />
       </section>

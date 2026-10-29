@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-29T06:41:44.436Z",
+ "generatedAt": "2026-10-29T16:48:55.641Z",
  "days": 30,
  "firstDay": "2026-09-26",
  "lastDay": "2026-10-25",
@@ -54,8 +54,8 @@
   "requestMWh": 20,
   "byStrategy": {
    "ours": {
-    "meanReadyPct": 87.8173595997057,
-    "fullDays": 24,
+    "meanReadyPct": 88.15818527823407,
+    "fullDays": 23,
     "worstPct": 0
    },
    "oursWithReserve": {
@@ -183,7 +183,7 @@
     "date": "2026-10-05",
     "hour": 18,
     "ready": {
-     "ours": 1,
+     "ours": 0.9849873095629202,
      "oursWithReserve": 1,
      "priceOnlyWithGuard": 1,
      "priceOnly": 1,
@@ -348,7 +348,7 @@
     "date": "2026-10-20",
     "hour": 9,
     "ready": {
-     "ours": 0,
+     "ours": 0.11726039399558574,
      "oursWithReserve": 1,
      "priceOnlyWithGuard": 0,
      "priceOnly": 0,
@@ -414,12 +414,12 @@
   "reserve": {
    "reserveMWh": 25.320071635561042,
    "valuePerDay": {
-    "ours": 298.8297784294425,
-    "oursWithReserve": 269.1976802139319
+    "ours": 279.0004594424121,
+    "oursWithReserve": 256.3431972240765
    },
    "jamReliefMWh": {
-    "ours": 9.422760993863466,
-    "oursWithReserve": 9.876523185173655
+    "ours": 10.834860405192122,
+    "oursWithReserve": 10.748869449595361
    },
    "overloadDays": {
     "ours": 0,
@@ -432,10 +432,10 @@
    "label": "margin at the 50th percentile of misses",
    "guard": false,
    "meanMarginMW": 0.00547098299254903,
-   "daysOver": 10,
-   "totalOverMWh": 29.200890212491515,
-   "valuePerDay": 303.1404095551207,
-   "jamReliefMWh": 9.609311620674621
+   "daysOver": 9,
+   "totalOverMWh": 26.251162105018707,
+   "valuePerDay": 284.5657680959139,
+   "jamReliefMWh": 11.077198552782999
   },
   {
    "label": "margin at the 75th percentile of misses",
@@ -443,8 +443,8 @@
    "meanMarginMW": 1.1702579704516636,
    "daysOver": 7,
    "totalOverMWh": 16.59725370696235,
-   "valuePerDay": 275.3244281551596,
-   "jamReliefMWh": 9.363064793283892
+   "valuePerDay": 259.5219920715851,
+   "jamReliefMWh": 10.092211243220078
   },
   {
    "label": "margin at the 90th percentile of misses",
@@ -452,8 +452,8 @@
    "meanMarginMW": 3.443808644730391,
    "daysOver": 3,
    "totalOverMWh": 2.95752056794187,
-   "valuePerDay": 213.65177447604168,
-   "jamReliefMWh": 8.896865893519623
+   "valuePerDay": 205.07884828448798,
+   "jamReliefMWh": 9.591900228838913
   },
   {
    "label": "margin at the 95th percentile of misses",
@@ -461,8 +461,8 @@
    "meanMarginMW": 4.83044910571928,
    "daysOver": 1,
    "totalOverMWh": 0.1807045833099039,
-   "valuePerDay": 174.15338083250944,
-   "jamReliefMWh": 8.960115439371787
+   "valuePerDay": 170.28232596664327,
+   "jamReliefMWh": 9.459005115643915
   },
   {
    "label": "margin at the 99th percentile of misses",
@@ -470,8 +470,8 @@
    "meanMarginMW": 6.778790584813083,
    "daysOver": 0,
    "totalOverMWh": 0,
-   "valuePerDay": 115.55633013232165,
-   "jamReliefMWh": 8.918541299682447
+   "valuePerDay": 117.56543229565631,
+   "jamReliefMWh": 9.576265509639505
   },
   {
    "label": "no margin, real time guard",
@@ -479,8 +479,8 @@
    "meanMarginMW": 0,
    "daysOver": 0,
    "totalOverMWh": 0,
-   "valuePerDay": 298.8297784294425,
-   "jamReliefMWh": 9.422760993863466
+   "valuePerDay": 279.0004594424121,
+   "jamReliefMWh": 10.834860405192122
   }
  ],
  "thermal": {
@@ -512,11 +512,11 @@
   "results": {
    "fixed": {
     "withoutStorageMW": 3.75,
-    "stationMW": 6,
+    "stationMW": 7.75,
     "fiveLineRuleMW": 8,
     "heatAtStationMax": {
-     "maxHotSpotC": 109.67443513204597,
-     "agingDays": 1.8277365071473064,
+     "maxHotSpotC": 110.2898292930408,
+     "agingDays": 2.1735379714239085,
      "calendarDays": 30
     },
     "heatWithoutStorageMax": {
@@ -527,11 +527,11 @@
    },
    "temperature": {
     "withoutStorageMW": 2.75,
-    "stationMW": 6.75,
+    "stationMW": 7,
     "fiveLineRuleMW": 7.25,
     "heatAtStationMax": {
-     "maxHotSpotC": 109.0485887286211,
-     "agingDays": 2.0812198675250153,
+     "maxHotSpotC": 109.3640632712529,
+     "agingDays": 2.1299249453869424,
      "calendarDays": 30
     },
     "heatWithoutStorageMax": {
