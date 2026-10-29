@@ -130,6 +130,21 @@ const out = {
   totals: agg,
   limitTypicalMW: cases.reduce((s2, c) => s2 + c.day.capMW, 0) / n,
   wearCostPerMWh: p.asset.cycleCostPerMWh,
+  // Wear of the fast work inside the hour, priced as DETOUR does (Juan Lizarazo, MIT; assumptions):
+  // Nova Pulse $70.6 per MWh discharged, about $35.3 per MWh moved either way; Nova Spin $23.6 per MWh
+  // discharged, about $11.8 per MWh moved. Dollars per day for the energy each mode moves beyond the plan.
+  wearInsideHour: (() => {
+    const PULSE = 35.3,
+      SPIN = 11.8;
+    const per = (k: 'battery' | 'station') =>
+      (agg[k].batteryExtraMWh * PULSE + agg[k].flywheelThroughputMWh * SPIN) / n;
+    return {
+      pulsePerMWhMoved: PULSE,
+      spinPerMWhMoved: SPIN,
+      batteryChasingPerDay: per('battery'),
+      stationPerDay: per('station'),
+    };
+  })(),
   batteryBackupMinutes: stationAlone,
   perDay: Object.fromEntries(
     Object.entries(agg).map(([k, a]) => [
