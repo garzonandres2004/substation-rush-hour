@@ -91,7 +91,8 @@ export default function Lab() {
           <p className="lede">
             We tried to break our own results with more real, open data: a full year planned on weather forecasts as
             they were issued, 17 different settings, real GPU power second by second, a heat based transformer limit,
-            flexible data centers and a fleet of customer batteries built with DETOUR. Every number is labeled measured, modeled or assumed.
+            flexible data centers and a fleet of customer batteries built with DETOUR. Every number is labeled measured,
+            modeled or assumed.
           </p>
         </div>
         <p className="meta">

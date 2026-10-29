@@ -18,14 +18,19 @@ export interface HighsLike {
 // the demand charge (about $15 per kW a month), not the energy price: at $1 the plans paid it and went over.
 export const PENALTY_PER_KWH = Number(process.env.ENVELOPE_PENALTY ?? 50);
 
-export function withEnvelope(lpText: string, envelopeKw: number[], stepHours: number): string {
+export function withEnvelope(
+  lpText: string,
+  envelopeKw: number[],
+  stepHours: number,
+  penaltyPerKwh = PENALTY_PER_KWH,
+): string {
   const lines = lpText.split('\n');
   const subjectTo = lines.indexOf('Subject To');
   const bounds = lines.indexOf('Bounds');
   if (subjectTo < 0 || bounds < 0) throw new Error('unexpected LP layout');
   const n = envelopeKw.length;
   const objTerms: string[] = [];
-  for (let t = 0; t < n; t++) objTerms.push(`+ ${(PENALTY_PER_KWH * stepHours).toFixed(6)} o_${t}`);
+  for (let t = 0; t < n; t++) objTerms.push(`+ ${(penaltyPerKwh * stepHours).toFixed(6)} o_${t}`);
   const objLines: string[] = [];
   for (let i = 0; i < objTerms.length; i += 8) objLines.push(` ${objTerms.slice(i, i + 8).join(' ')}`);
   const rows = ['', '\\ Substation envelope: grid draw over the published room is paid at the penalty'];
