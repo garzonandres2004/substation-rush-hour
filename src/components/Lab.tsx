@@ -6,6 +6,7 @@ import FleetLab from './FleetLab';
 import FlexLab from './FlexLab';
 import ThermalLab from './ThermalLab';
 import YearLab from './YearLab';
+import WearLab from './WearLab';
 
 interface Range {
   mean: number;
@@ -114,6 +115,7 @@ export default function Lab() {
       <FlexLab />
       <ThermalLab />
       <FleetLab />
+      <WearLab />
 
       <section className="evidence" aria-labelledby="conf-h">
         <p className="eyebrow">H · On the main page's 30 days: confidence</p>

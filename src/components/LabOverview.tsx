@@ -1,5 +1,6 @@
 import gpuRaw from '../../lab-data/gpu-stats.json';
 import capRaw from '../../public/data/lab-capacity-year.json';
+import wearRaw from '../../public/data/lab-wear.json';
 import flexRaw from '../../public/data/lab-flex.json';
 import fleetRaw from '../../public/data/merge-fleet.json';
 import stackRaw from '../../public/data/merge-fullstack.json';
@@ -134,16 +135,28 @@ export default function LabOverview() {
       `${fSites} businesses each cutting their own bill: ${fleetAlone} new hours over the limit. Guard alone: ${fleetGuard}, at no cost to customers. Room traded by need plus guard: ${fleetBoth}, customers keep ${Math.min(100, fleetBothKept).toFixed(0)}%. With the utility's Station too: ${(stackRaw as any).result.stationFleetTraded.hoursNotOverWithoutBatteries}.`,
       'New, nearly closed with the Station',
     ],
+    [
+      '#wear-h',
+      'L',
+      'What if battery wear costs more?',
+      (() => {
+        const w = wearRaw as any;
+        const lo = w.rows[0];
+        const hi = w.rows.at(-1);
+        return `Value falls from $${Math.round(lo.valuePerDay)} to ${hi.valuePerDay < 0 ? '−' : ''}$${Math.abs(Math.round(hi.valuePerDay))} a day and jam relief from ${lo.jamReliefMWhPerDay.toFixed(1)} to ${hi.jamReliefMWhPerDay.toFixed(1)} MWh between $${lo.costPerMWhThroughput} and $${hi.costPerMWhThroughput} per MWh moved. The limit holds at every cost.`;
+      })(),
+      'Changed what we say',
+    ],
   ];
   return (
     <section className="evidence" aria-labelledby="ov-h">
       <p className="eyebrow">At a glance</p>
-      <h2 id="ov-h">Eleven tests on real open data. The safety held in every one, and three changed what we say.</h2>
+      <h2 id="ov-h">Twelve tests on real open data. The safety held in every one, and four changed what we say.</h2>
       <p className="sub">
         Rerun on Oct 29, 2026 with EIA hours read as hour ending (they had been filed one hour late against prices and
-        weather). The safety held in every test; new load numbers fell (B: 7 to 5.5 MW with a 10 MW, 4 h Station), the
-        index's lead over price grew (E: 1.2 to 1.5 times), and section I fell from 30 to 24 days fully ready. Every
-        number on this page is the rerun.
+        weather), and again after the everyday planner stopped charging in forecast jam hours. The safety held in every
+        test. Sections A, I and J, and B's capacity mode, use the planner with that rule, and so does K's full stack; D, E, F and G were run before
+        it.
       </p>
       <div className="tablewrap">
         <table>

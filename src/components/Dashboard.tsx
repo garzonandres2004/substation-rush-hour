@@ -31,6 +31,12 @@ interface StationData {
   batteryBackupMinutes: number;
   limitTypicalMW: number;
   wearCostPerMWh: number;
+  wearInsideHour?: {
+    pulsePerMWhMoved: number;
+    spinPerMWhMoved: number;
+    batteryChasingPerDay: number;
+    stationPerDay: number;
+  };
   totals: Record<Mode, MinuteTotals>;
   perDay: Record<Mode, { batteryChanges: number; flywheelCycles: number }>;
   sweep: {
@@ -956,9 +962,12 @@ export default function Dashboard() {
             instead of {int(station.perDay.hourly.batteryChanges)}, and moves{' '}
             {f1(station.totals.battery.batteryExtraMWh / station.days)} MWh more a day (about{' '}
             {money((station.totals.battery.batteryExtraMWh / station.days) * station.wearCostPerMWh)} of wear at our
-            assumed cost). On wear dollars alone the flywheel case is small. The case is the split of jobs: a{' '}
-            {station.spinMinutes} minute flywheel for fast power, the battery for hours, which is how a Torus Station is
-            built.
+            assumed cost).{' '}
+            {station.wearInsideHour
+              ? `Priced the way DETOUR prices wear (about $${Math.round(station.wearInsideHour.pulsePerMWhMoved)} per MWh moved for Nova Pulse, $${Math.round(station.wearInsideHour.spinPerMWhMoved)} for Nova Spin; assumptions), the battery chasing spikes costs about ${money(station.wearInsideHour.batteryChasingPerDay)} a day, the flywheel doing the same work about ${money(station.wearInsideHour.stationPerDay)}. `
+              : 'On wear dollars alone the flywheel case is small. '}
+            The case is the split of jobs: a {station.spinMinutes} minute flywheel for fast power, the battery for
+            hours, which is how a Torus Station is built.
           </li>
           <li>
             Sizing the flywheel on its own:{' '}
