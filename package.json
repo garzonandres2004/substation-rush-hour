@@ -16,7 +16,8 @@
     "format": "biome format --write .",
     "lab": "tsx scripts/lab.ts",
     "lab:year": "tsx scripts/lab-year.ts",
-    "lab:capacity-year": "tsx scripts/lab-capacity-year.ts"
+    "lab:capacity-year": "tsx scripts/lab-capacity-year.ts",
+    "test:detour": "vitest run -c vitest.detour.config.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.3",
@@ -24,7 +25,8 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@fontsource/barlow": "^5.3.0",

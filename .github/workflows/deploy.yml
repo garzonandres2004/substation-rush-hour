@@ -24,6 +24,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:detour
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
