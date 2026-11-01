@@ -1,5 +1,5 @@
 {
- "days": 31,
+ "days": 30,
  "toleranceMWh": 0.1,
  "stepMW": 0.25,
  "fixedLimitMW": 92.07243943391701,
