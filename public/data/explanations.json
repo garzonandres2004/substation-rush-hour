@@ -4,142 +4,142 @@
  "entries": {
   "normal|aware|discharge|0-1": {
    "hash": "1l0405d",
-   "text": "The battery discharges 15 MWh because the price averages $51 per MWh and traffic index 0.56 is slowing. The busiest hour drops from 61.9 to 56.7 MW.",
+   "text": "From 12 AM to 2 AM, the model discharges 15 MWh of electricity because prices average $51 per MWh and traffic is slowing at an index of 0.56. This action lowers the busiest hour from 61.9 to 56.7 MW.",
    "source": "gemini"
   },
   "normal|aware|charge|12-13": {
    "hash": "19gfapm",
-   "text": "The battery charges 14 MWh because the price averages $33 per MWh and traffic index 0.53 is slowing. Grid draw is held to the 81.3 MW limit.",
+   "text": "From 12 PM to 2 PM, the model charges 14 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.53. This keeps grid draw safely held to the 81.3 MW limit.",
    "source": "gemini"
   },
   "normal|aware|charge|15-15": {
    "hash": "dgkn21",
-   "text": "The battery charges 9 MWh because the price averages $33 per MWh and traffic index 0.57 is slowing. Grid draw peaks at 81.1 MW, 0.2 MW under the limit.",
+   "text": "At 3 PM, the model charges 9 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.57. This results in a grid draw peak of 81.1 MW, which is 0.2 MW under the limit.",
    "source": "gemini"
   },
   "normal|aware|discharge|17-17": {
    "hash": "181m226",
-   "text": "The battery discharges 5 MWh because the price averages $44 per MWh and traffic index 0.63 is slowing. The busiest hour drops from 69.2 to 63.8 MW.",
+   "text": "At 5 PM, the model discharges 5 MWh of electricity because prices average $44 per MWh and traffic is slowing at an index of 0.63. This action drops the busiest hour from 69.2 to 63.8 MW.",
    "source": "gemini"
   },
   "normal|priceOnly|discharge|0-0": {
    "hash": "1ala840",
-   "text": "The battery discharges 10 MWh because the price averages $56 per MWh and traffic index 0.56 is slowing. The busiest hour drops from 60.8 to 51.0 MW.",
+   "text": "At 12 AM, the model discharges 10 MWh of electricity because prices average $56 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 60.8 to 51.0 MW.",
    "source": "gemini"
   },
   "normal|priceOnly|discharge|5-5": {
    "hash": "tjt36m",
-   "text": "The battery discharges 5 MWh because the price averages $47 per MWh and traffic index 0.48 is free flowing. The busiest hour drops from 59.8 to 54.7 MW.",
+   "text": "At 5 AM, the model discharges 5 MWh of electricity because prices average $47 per MWh and traffic is free flowing at an index of 0.48. This action drops the busiest hour from 59.8 to 54.7 MW.",
    "source": "gemini"
   },
   "normal|priceOnly|charge|11-11": {
    "hash": "1mtydxl",
-   "text": "The battery charges 7 MWh because the price averages $33 per MWh and traffic index 0.57 is slowing. Grid draw peaks at 79.7 MW, 1.6 MW under the limit.",
+   "text": "At 11 AM, the model charges 7 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.57. This results in a grid draw peak of 79.7 MW, which is 1.6 MW under the limit.",
    "source": "gemini"
   },
   "normal|priceOnly|charge|13-15": {
    "hash": "5gkah5",
-   "text": "The battery charges 30 MWh because the price averages $32 per MWh and traffic index 0.58 is slowing. Grid draw reaches 83.3 MW, 2.0 MW over the limit.",
+   "text": "From 1 PM to 4 PM, the model charges 30 MWh of electricity because prices average $32 per MWh and traffic is slowing at an index of 0.58. This causes grid draw to reach 83.3 MW, pushing it 2.0 MW over the limit.",
    "source": "gemini"
   },
   "normal|priceOnly|discharge|18-19": {
-   "hash": "ptfq9g",
-   "text": "The battery discharges 17 MWh because the price averages $45 per MWh and traffic index 0.57 is slowing. The busiest hour drops from 63.0 to 55.5 MW.",
+   "hash": "y31cij",
+   "text": "From 6 PM to 8 PM, the model discharges 17 MWh of electricity because prices average $45 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 62.9 to 55.5 MW.",
    "source": "gemini"
   },
   "normal|clean|discharge|2-2": {
    "hash": "1d2glio",
-   "text": "The battery discharges 5 MWh because the price averages $47 per MWh and traffic index 0.54 is slowing. The busiest hour drops from 61.1 to 56.0 MW.",
+   "text": "At 2 AM, the model discharges 5 MWh of electricity because prices average $47 per MWh and traffic is slowing at an index of 0.54. This action drops the busiest hour from 61.1 to 56.0 MW.",
    "source": "gemini"
   },
   "normal|clean|discharge|7-7": {
    "hash": "1llcp6r",
-   "text": "The battery discharges 10 MWh because the price averages $46 per MWh and traffic index 0.49 is free flowing. The busiest hour drops from 59.0 to 49.2 MW.",
+   "text": "At 7 AM, the model discharges 10 MWh of electricity because prices average $46 per MWh and traffic is free flowing at an index of 0.49. This action drops the busiest hour from 59.0 to 49.2 MW.",
    "source": "gemini"
   },
   "normal|clean|charge|12-16": {
    "hash": "dkvrja",
-   "text": "The battery charges 36 MWh because the price averages $33 per MWh and traffic index 0.58 is slowing. Grid draw is held to the 81.3 MW limit.",
+   "text": "From 12 PM to 5 PM, the model charges 36 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.58. This keeps grid draw held to the 81.3 MW limit.",
    "source": "gemini"
   },
   "normal|clean|discharge|20-20": {
    "hash": "1807c4p",
-   "text": "The battery discharges 7 MWh because the price averages $43 per MWh and traffic index 0.57 is slowing. The busiest hour drops from 63.1 to 56.1 MW.",
+   "text": "At 8 PM, the model discharges 7 MWh of electricity because prices average $43 per MWh and traffic is slowing at an index of 0.57. This action drops the busiest hour from 63.1 to 56.1 MW.",
    "source": "gemini"
   },
   "normal|clean|discharge|22-22": {
    "hash": "1amg26e",
-   "text": "The battery discharges 10 MWh because the price averages $44 per MWh and traffic index 0.50 is free flowing. The busiest hour drops from 60.2 to 50.4 MW.",
+   "text": "At 10 PM, the model discharges 10 MWh of electricity because prices average $44 per MWh and traffic is free flowing at an index of 0.50. This action drops the busiest hour from 60.2 to 50.4 MW.",
    "source": "gemini"
   },
   "derate|aware|discharge|0-0": {
    "hash": "10w5w7e",
-   "text": "The battery discharges 9 MWh because the price averages $56 per MWh and traffic index 0.56 is slowing. The busiest hour drops from 60.8 to 52.1 MW.",
+   "text": "At 12 AM, the model discharges 9 MWh of electricity because prices average $56 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 60.8 to 52.1 MW.",
    "source": "gemini"
   },
   "derate|aware|charge|9-10": {
    "hash": "6hdf8o",
-   "text": "The battery charges 10 MWh because the price averages $36 per MWh and traffic index 0.60 is slowing. Grid draw peaks at 73.1 MW, 0.1 MW under the limit.",
+   "text": "From 9 AM to 11 AM, the model charges 10 MWh of electricity because prices average $36 per MWh and traffic is slowing at an index of 0.60. This results in a grid draw peak of 73.1 MW, which is 0.1 MW under the limit.",
    "source": "gemini"
   },
   "derate|aware|discharge|12-14": {
    "hash": "gtthhd",
-   "text": "The battery discharges 2 MWh because the price averages $33 per MWh and traffic index 0.56 is slowing. The busiest hour drops from 74.6 to 73.0 MW.",
+   "text": "From 12 PM to 3 PM, the model discharges 2 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 74.6 to 73.0 MW and clears 1.8 MWh of overload.",
    "source": "gemini"
   },
   "derate|aware|charge|15-16": {
    "hash": "aw463m",
-   "text": "The battery charges 3 MWh because the price averages $33 per MWh and traffic index 0.60 is slowing. Grid draw peaks at 73.1 MW, 0.1 MW under the limit.",
+   "text": "From 3 PM to 5 PM, the model charges 3 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.60. This results in a grid draw peak of 73.1 MW, which is 0.1 MW under the limit.",
    "source": "gemini"
   },
   "derate|priceOnly|discharge|0-0": {
    "hash": "1ala840",
-   "text": "The battery discharges 10 MWh because the price averages $56 per MWh and traffic index 0.56 is slowing. The busiest hour drops from 60.8 to 51.0 MW.",
+   "text": "At 12 AM, the model discharges 10 MWh of electricity because prices average $56 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 60.8 to 51.0 MW.",
    "source": "gemini"
   },
   "derate|priceOnly|discharge|5-5": {
    "hash": "tjt36m",
-   "text": "The battery discharges 5 MWh because the price averages $47 per MWh and traffic index 0.48 is free flowing. The busiest hour drops from 59.8 to 54.7 MW.",
+   "text": "At 5 AM, the model discharges 5 MWh of electricity because prices average $47 per MWh and traffic is free flowing at an index of 0.48. This action drops the busiest hour from 59.8 to 54.7 MW.",
    "source": "gemini"
   },
   "derate|priceOnly|charge|11-11": {
    "hash": "qw0bb1",
-   "text": "The battery charges 7 MWh because the price averages $33 per MWh and traffic index 0.57 is slowing. Grid draw reaches 79.7 MW, 6.5 MW over the limit.",
+   "text": "At 11 AM, the model charges 7 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.57. This causes grid draw to reach 79.7 MW, pushing it 6.5 MW over the limit.",
    "source": "gemini"
   },
   "derate|priceOnly|charge|13-15": {
    "hash": "11vbwt6",
-   "text": "The battery charges 30 MWh because the price averages $32 per MWh and traffic index 0.58 is slowing. Grid draw reaches 83.3 MW, 10.2 MW over the limit.",
+   "text": "From 1 PM to 4 PM, the model charges 30 MWh of electricity because prices average $32 per MWh and traffic is slowing at an index of 0.58. This causes grid draw to reach 83.3 MW, pushing it 10.2 MW over the limit.",
    "source": "gemini"
   },
   "derate|priceOnly|discharge|18-19": {
-   "hash": "ptfq9g",
-   "text": "The battery discharges 17 MWh because the price averages $45 per MWh and traffic index 0.57 is slowing. The busiest hour drops from 63.0 to 55.5 MW.",
+   "hash": "y31cij",
+   "text": "From 6 PM to 8 PM, the model discharges 17 MWh of electricity because prices average $45 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 62.9 to 55.5 MW.",
    "source": "gemini"
   },
   "derate|clean|discharge|2-2": {
    "hash": "vrmxdc",
-   "text": "The battery discharges 2 MWh because the price averages $47 per MWh and traffic index 0.54 is slowing. The busiest hour drops from 61.1 to 59.0 MW.",
+   "text": "At 2 AM, the model discharges 2 MWh of electricity because prices average $47 per MWh and traffic is slowing at an index of 0.54. This action drops the busiest hour from 61.1 to 59.0 MW.",
    "source": "gemini"
   },
   "derate|clean|discharge|7-7": {
    "hash": "1llcp6r",
-   "text": "The battery discharges 10 MWh because the price averages $46 per MWh and traffic index 0.49 is free flowing. The busiest hour drops from 59.0 to 49.2 MW.",
+   "text": "At 7 AM, the model discharges 10 MWh of electricity because prices average $46 per MWh and traffic is free flowing at an index of 0.49. This action drops the busiest hour from 59.0 to 49.2 MW.",
    "source": "gemini"
   },
   "derate|clean|charge|9-10": {
    "hash": "6hdf8o",
-   "text": "The battery charges 10 MWh because the price averages $36 per MWh and traffic index 0.60 is slowing. Grid draw peaks at 73.1 MW, 0.1 MW under the limit.",
+   "text": "From 9 AM to 11 AM, the model charges 10 MWh of electricity because prices average $36 per MWh and traffic is slowing at an index of 0.60. This results in a grid draw peak of 73.1 MW, which is 0.1 MW under the limit.",
    "source": "gemini"
   },
   "derate|clean|discharge|12-14": {
    "hash": "gtthhd",
-   "text": "The battery discharges 2 MWh because the price averages $33 per MWh and traffic index 0.56 is slowing. The busiest hour drops from 74.6 to 73.0 MW.",
+   "text": "From 12 PM to 3 PM, the model discharges 2 MWh of electricity because prices average $33 per MWh and traffic is slowing at an index of 0.56. This action drops the busiest hour from 74.6 to 73.0 MW and clears 1.8 MWh of overload.",
    "source": "gemini"
   },
   "derate|clean|charge|15-17": {
    "hash": "121k99o",
-   "text": "The battery charges 7 MWh because the price averages $37 per MWh and traffic index 0.61 is slowing. Grid draw peaks at 73.1 MW, 0.1 MW under the limit.",
+   "text": "From 3 PM to 6 PM, the model charges 7 MWh of electricity because prices average $37 per MWh and traffic is slowing at an index of 0.61. This results in a grid draw peak of 73.1 MW, which is 0.1 MW under the limit.",
    "source": "gemini"
   }
  }
