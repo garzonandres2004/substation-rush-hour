@@ -1,125 +1,125 @@
 {
  "generatedBy": "Written by an AI model from the engine facts, then checked by code. The model explains. It does not decide.",
- "reportDate": "2026-11-04",
+ "reportDate": "2026-11-05",
  "entries": {
-  "normal|priceOnly|discharge|0-0": {
-   "hash": "vdf9yl",
-   "text": "At 12 AM, the traffic index is 0.56 and slowing. The battery discharges 10 MWh because the price averages $53 per MWh. The busiest hour load drops from 60.4 to 50.5 MW.",
+  "normal|aware|discharge|0-0": {
+   "hash": "dcrb99",
+   "text": "During 12 AM, the battery discharges 10 MWh when the price is $46.4 per MWh and traffic index is 0.52. This lowers the busiest hour load from 60.2 to 50.4 MW while respecting the 79.2 MW limit.",
    "source": "gemini"
   },
-  "normal|priceOnly|discharge|7-7": {
-   "hash": "mumbm9",
-   "text": "At 7 AM, the traffic index is 0.62 and slowing. The battery discharges 5 MWh because the price averages $53 per MWh. The busiest hour load drops from 65.2 to 60.0 MW.",
+  "normal|aware|charge|2-4": {
+   "hash": "fxpcag",
+   "text": "From 2 AM to 5 AM, the battery charges 30 MWh because the price averages $34 per MWh with a traffic index of 0.42. Grid draw peaks at 70.3 MW, staying 8.9 MW under the 79.2 MW limit.",
+   "source": "gemini"
+  },
+  "normal|aware|discharge|17-17": {
+   "hash": "yg8o1k",
+   "text": "At 5 PM, the battery discharges 10 MWh as the price reaches $58.3 per MWh and traffic index hits 0.71 indicating a jam. The busiest hour load drops from 68.5 to 58.7 MW below the 79.2 MW limit.",
+   "source": "gemini"
+  },
+  "normal|aware|discharge|21-21": {
+   "hash": "5xv1cg",
+   "text": "During 9 PM, the battery discharges 7 MWh when the price is $58.5 per MWh and traffic index is 0.64. This reduces the load from 64.1 to 57.0 MW under the 79.2 MW limit.",
+   "source": "gemini"
+  },
+  "normal|priceOnly|discharge|0-0": {
+   "hash": "dcrb99",
+   "text": "At 12 AM, the battery discharges 10 MWh with a price of $46.4 per MWh and traffic index of 0.52. The busiest hour load drops from 60.2 to 50.4 MW, remaining well below the 79.2 MW limit.",
    "source": "gemini"
   },
   "normal|priceOnly|charge|10-10": {
-   "hash": "149d860",
-   "text": "At 10 AM, the traffic index is 0.64 and slowing. The battery charges 10 MWh because the price averages $40 per MWh. Grid draw reaches 85.5 MW, which is 6.0 MW over the 79.5 MW limit.",
+   "hash": "mn17d0",
+   "text": "During 10 AM, the battery charges 10 MWh because the price drops to $32.4 per MWh with a traffic index of 0.59. This raises grid draw to 84.8 MW, exceeding the 79.2 MW limit by 5.6 MW.",
    "source": "gemini"
   },
-  "normal|priceOnly|charge|13-14": {
-   "hash": "18a5exh",
-   "text": "From 1 PM to 3 PM, the traffic index reaches 0.68 and is slowing. The battery charges 20 MWh because the price averages $40 per MWh. Grid draw reaches 86.4 MW, which is 6.9 MW over the 79.5 MW limit.",
+  "normal|priceOnly|charge|12-14": {
+   "hash": "i81uu7",
+   "text": "From 12 PM to 3 PM, the battery charges 21 MWh as prices average $33 per MWh and traffic index is 0.57. Grid draw reaches 85.2 MW, which is 6.0 MW over the 79.2 MW limit.",
    "source": "gemini"
   },
-  "normal|priceOnly|discharge|20-20": {
-   "hash": "1upobit",
-   "text": "At 8 PM, the traffic index is 0.63 and slowing. The battery discharges 10 MWh because the price averages $52 per MWh. The busiest hour load drops from 63.9 to 54.0 MW.",
-   "source": "gemini"
-  },
-  "normal|priceOnly|discharge|22-22": {
-   "hash": "lx8siw",
-   "text": "At 10 PM, the traffic index is 0.60 and slowing. The battery discharges 1 MWh because the price averages $52 per MWh. The busiest hour load drops from 62.1 to 60.9 MW.",
+  "normal|priceOnly|discharge|18-19": {
+   "hash": "1maot96",
+   "text": "From 6 PM to 8 PM, the battery discharges 17 MWh when prices average $59 per MWh and traffic index is 0.60. The busiest hour load drops from 63.6 to 55.6 MW under the 79.2 MW limit.",
    "source": "gemini"
   },
   "normal|clean|discharge|0-1": {
-   "hash": "1g2xhue",
-   "text": "From 12 AM to 2 AM, the traffic index is 0.54 and slowing. The battery discharges 15 MWh because the price averages $48 per MWh. The busiest hour load drops from 61.1 to 56.0 MW.",
+   "hash": "rhkmmd",
+   "text": "From 12 AM to 2 AM, the battery discharges 15 MWh as prices average $42 per MWh and traffic index is 0.50. This action lowers the busiest hour load from 60.4 to 55.3 MW below the 79.2 MW limit.",
    "source": "gemini"
   },
-  "normal|clean|charge|9-17": {
-   "hash": "1bm61f0",
-   "text": "From 9 AM to 6 PM, the traffic index reaches 0.72 and there is a jam. The battery charges 36 MWh because the price averages $43 per MWh. Grid draw is held to the 79.5 MW limit.",
+  "normal|clean|charge|9-16": {
+   "hash": "xqoqku",
+   "text": "From 9 AM to 5 PM, the battery charges 36 MWh when prices average $35 per MWh and traffic index is 0.60. Grid draw is successfully held right at the 79.2 MW limit.",
    "source": "gemini"
   },
   "normal|clean|discharge|22-23": {
-   "hash": "osibxr",
-   "text": "From 10 PM to 12 AM, the traffic index is 0.64 and slowing. The battery discharges 17 MWh because the price averages $50 per MWh. The busiest hour load drops from 62.1 to 55.1 MW.",
+   "hash": "1gr1dmd",
+   "text": "From 10 PM to 12 AM, the battery discharges 17 MWh as prices average $58 per MWh and traffic index is 0.60. The busiest hour load drops from 62.1 to 55.1 MW under the 79.2 MW limit.",
    "source": "gemini"
   },
-  "derate|aware|charge|2-2": {
-   "hash": "shpq61",
-   "text": "At 2 AM, the traffic index is 0.47 and free flowing. The battery charges 10 MWh because the price averages $43 per MWh. Grid draw peaks at 69.7 MW, which is 1.8 MW under the 71.5 MW limit.",
+  "derate|aware|discharge|0-0": {
+   "hash": "dcrb99",
+   "text": "At 12 AM, the battery discharges 10 MWh when the price is $46.4 per MWh and traffic index is 0.52. The busiest hour load drops from 60.2 to 50.4 MW below the tighter 71.3 MW limit.",
    "source": "gemini"
   },
-  "derate|aware|charge|4-4": {
-   "hash": "kn3nxn",
-   "text": "At 4 AM, the traffic index is 0.47 and free flowing. The battery charges 9 MWh because the price averages $43 per MWh. Grid draw peaks at 70.7 MW, which is 0.9 MW under the 71.5 MW limit.",
+  "derate|aware|charge|2-5": {
+   "hash": "sdg3jf",
+   "text": "From 2 AM to 6 AM, the battery charges 30 MWh as prices average $34 per MWh with a traffic index of 0.44. Grid draw peaks at 70.3 MW, staying 1.0 MW under the 71.3 MW limit.",
    "source": "gemini"
   },
   "derate|aware|discharge|9-16": {
-   "hash": "rhqzil",
-   "text": "From 9 AM to 5 PM, the traffic index reaches 0.72 and there is a jam. The battery discharges 31 MWh because the price averages $42 per MWh. The busiest hour load drops from 76.8 to 71.4 MW, clearing 29.4 MWh of overload under the 71.5 MW limit.",
+   "hash": "cygzd2",
+   "text": "From 9 AM to 5 PM, the battery discharges 22 MWh when prices average $35 per MWh and traffic index is 0.60. The busiest hour drops from 75.3 to 71.3 MW, clearing 21.4 MWh of overload under the 71.3 MW limit.",
    "source": "gemini"
   },
-  "derate|aware|charge|18-18": {
-   "hash": "ekge3a",
-   "text": "At 6 PM, the traffic index is 0.60 and slowing. The battery charges 6 MWh because the price averages $52 per MWh. Grid draw peaks at 71.1 MW, which is 0.5 MW under the 71.5 MW limit.",
-   "source": "gemini"
-  },
-  "derate|aware|charge|23-23": {
-   "hash": "7srqbz",
-   "text": "At 11 PM, the traffic index is 0.64 and slowing. The battery charges 9 MWh because the price averages $49 per MWh. Grid draw peaks at 71.3 MW, which is 0.3 MW under the 71.5 MW limit.",
+  "derate|aware|charge|19-19": {
+   "hash": "thud84",
+   "text": "At 7 PM, the battery charges 6 MWh when the price is $58.6 per MWh and traffic index is 0.58. Grid draw peaks at 68.7 MW, leaving it 2.6 MW under the 71.3 MW limit.",
    "source": "gemini"
   },
   "derate|priceOnly|discharge|0-0": {
-   "hash": "vdf9yl",
-   "text": "At 12 AM, the traffic index is 0.56 and slowing. The battery discharges 10 MWh because the price averages $53 per MWh. The busiest hour load drops from 60.4 to 50.5 MW.",
-   "source": "gemini"
-  },
-  "derate|priceOnly|discharge|7-7": {
-   "hash": "mumbm9",
-   "text": "At 7 AM, the traffic index is 0.62 and slowing. The battery discharges 5 MWh because the price averages $53 per MWh. The busiest hour load drops from 65.2 to 60.0 MW.",
+   "hash": "dcrb99",
+   "text": "At 12 AM, the battery discharges 10 MWh as the price hits $46.4 per MWh with a traffic index of 0.52. The busiest hour load drops from 60.2 to 50.4 MW below the 71.3 MW limit.",
    "source": "gemini"
   },
   "derate|priceOnly|charge|10-10": {
-   "hash": "1inc4cn",
-   "text": "At 10 AM, the traffic index is 0.64 and slowing. The battery charges 10 MWh because the price averages $40 per MWh. Grid draw reaches 85.5 MW, which is 14.0 MW over the 71.5 MW limit.",
+   "hash": "cv0qa",
+   "text": "During 10 AM, the battery charges 10 MWh because the price is $32.4 per MWh and traffic index is 0.59. Grid draw reaches 84.8 MW, pushing 13.5 MW over the 71.3 MW limit.",
    "source": "gemini"
   },
-  "derate|priceOnly|charge|13-14": {
-   "hash": "bxzk2r",
-   "text": "From 1 PM to 3 PM, the traffic index reaches 0.68 and is slowing. The battery charges 20 MWh because the price averages $40 per MWh. Grid draw reaches 86.4 MW, which is 14.8 MW over the 71.5 MW limit.",
+  "derate|priceOnly|charge|12-14": {
+   "hash": "iiv6uu",
+   "text": "From 12 PM to 3 PM, the battery charges 21 MWh as prices average $33 per MWh with a traffic index of 0.57. Grid draw reaches 85.2 MW, ending up 13.9 MW over the 71.3 MW limit.",
    "source": "gemini"
   },
-  "derate|priceOnly|discharge|20-20": {
-   "hash": "1upobit",
-   "text": "At 8 PM, the traffic index is 0.63 and slowing. The battery discharges 10 MWh because the price averages $52 per MWh. The busiest hour load drops from 63.9 to 54.0 MW.",
+  "derate|priceOnly|discharge|18-19": {
+   "hash": "1maot96",
+   "text": "From 6 PM to 8 PM, the battery discharges 17 MWh when prices average $59 per MWh and traffic index is 0.60. The busiest hour drops from 63.6 to 55.6 MW below the 71.3 MW limit.",
    "source": "gemini"
   },
-  "derate|priceOnly|discharge|22-22": {
-   "hash": "lx8siw",
-   "text": "At 10 PM, the traffic index is 0.60 and slowing. The battery discharges 1 MWh because the price averages $52 per MWh. The busiest hour load drops from 62.1 to 60.9 MW.",
-   "source": "gemini"
-  },
-  "derate|clean|charge|5-6": {
-   "hash": "12v8ati",
-   "text": "From 5 AM to 7 AM, the traffic index is 0.61 and slowing. The battery charges 16 MWh because the price averages $53 per MWh. Grid draw peaks at 71.5 MW, which is 0.1 MW under the 71.5 MW limit.",
+  "derate|clean|charge|4-5": {
+   "hash": "m0fquq",
+   "text": "From 4 AM to 6 AM, the battery charges 15 MWh as prices average $34 per MWh and traffic index is 0.46. Grid draw peaks at 71.1 MW, staying 0.2 MW under the 71.3 MW limit.",
    "source": "gemini"
   },
   "derate|clean|charge|8-8": {
-   "hash": "1kzt8zm",
-   "text": "At 8 AM, the traffic index is 0.63 and slowing. The battery charges 3 MWh because the price averages $46 per MWh. Grid draw is held to the 71.5 MW limit.",
+   "hash": "h56z48",
+   "text": "At 8 AM, the battery charges 4 MWh when the price is $37.8 per MWh and traffic index is 0.60. Grid draw peaks at 71.2 MW, remaining 0.1 MW under the 71.3 MW limit.",
    "source": "gemini"
   },
   "derate|clean|discharge|9-16": {
-   "hash": "rhqzil",
-   "text": "From 9 AM to 5 PM, the traffic index reaches 0.72 and there is a jam. The battery discharges 31 MWh because the price averages $42 per MWh. The busiest hour load drops from 76.8 to 71.4 MW, clearing 29.4 MWh of overload under the 71.5 MW limit.",
+   "hash": "cygzd2",
+   "text": "From 9 AM to 5 PM, the battery discharges 22 MWh as prices average $35 per MWh and traffic index is 0.60. The busiest hour drops from 75.3 to 71.3 MW, clearing 21.4 MWh of overload for the 71.3 MW limit.",
    "source": "gemini"
   },
-  "derate|clean|charge|17-19": {
-   "hash": "pjnk9t",
-   "text": "From 5 PM to 8 PM, the traffic index reaches 0.71 and is slowing. The battery charges 16 MWh because the price averages $52 per MWh. Grid draw peaks at 71.4 MW, which is 0.1 MW under the 71.5 MW limit.",
+  "derate|clean|charge|17-17": {
+   "hash": "2fn9ik",
+   "text": "At 5 PM, the battery charges 3 MWh when the price is $58.3 per MWh and traffic index is 0.71 showing a jam. Grid draw peaks at 71.2 MW, staying 0.1 MW under the 71.3 MW limit.",
+   "source": "gemini"
+  },
+  "derate|clean|charge|20-20": {
+   "hash": "1w29wby",
+   "text": "At 8 PM, the battery charges 3 MWh as the price is $58.5 per MWh with a traffic index of 0.63. Grid draw peaks at 66.9 MW, staying 4.4 MW under the 71.3 MW limit.",
    "source": "gemini"
   }
  }
