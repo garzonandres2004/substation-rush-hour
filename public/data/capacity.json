@@ -12,14 +12,12 @@
      "powerMW": 5,
      "energyMWh": 20,
      "awareMW": 1.5,
-     "awareResidualMWh": 0,
-     "capacityModeMW": 1.75,
-     "capacityModeResidualMWh": 0.072,
-     "shaverMW": 1.75,
-     "shaverFullMW": 1.75,
-     "awareDaysOverAtShaverMW": [
-      "2026-11-02"
-     ]
+     "awareResidualMWh": 0.005,
+     "capacityModeMW": 1.5,
+     "capacityModeResidualMWh": 0,
+     "shaverMW": 1.5,
+     "shaverFullMW": 1.5,
+     "awareDaysOverAtShaverMW": []
     },
     {
      "label": "10 MW, 2 h",
@@ -39,24 +37,22 @@
      "energyMWh": 40,
      "awareMW": 3.75,
      "awareResidualMWh": 0,
-     "capacityModeMW": 6.75,
-     "capacityModeResidualMWh": 0.072,
-     "shaverMW": 4,
-     "shaverFullMW": 6.75,
-     "awareDaysOverAtShaverMW": [
-      "2026-11-02"
-     ]
+     "capacityModeMW": 6.5,
+     "capacityModeResidualMWh": 0,
+     "shaverMW": 3.75,
+     "shaverFullMW": 6.5,
+     "awareDaysOverAtShaverMW": []
     },
     {
      "label": "10 MW, 8 h",
      "powerMW": 10,
      "energyMWh": 80,
      "awareMW": 4.75,
-     "awareResidualMWh": 0.049,
-     "capacityModeMW": 6.75,
-     "capacityModeResidualMWh": 0.072,
+     "awareResidualMWh": 0.037,
+     "capacityModeMW": 6.5,
+     "capacityModeResidualMWh": 0,
      "shaverMW": 6.25,
-     "shaverFullMW": 6.75,
+     "shaverFullMW": 6.5,
      "awareDaysOverAtShaverMW": [
       "2026-10-30"
      ]
@@ -66,13 +62,14 @@
      "powerMW": 20,
      "energyMWh": 80,
      "awareMW": 4.75,
-     "awareResidualMWh": 0.049,
+     "awareResidualMWh": 0.037,
      "capacityModeMW": 10.5,
      "capacityModeResidualMWh": 0,
      "shaverMW": 6.25,
      "shaverFullMW": 10.5,
      "awareDaysOverAtShaverMW": [
-      "2026-10-30"
+      "2026-10-30",
+      "2026-11-06"
      ]
     }
    ]
@@ -97,7 +94,7 @@
      "powerMW": 10,
      "energyMWh": 20,
      "awareMW": 7,
-     "awareResidualMWh": 0,
+     "awareResidualMWh": 0.02,
      "capacityModeMW": 11,
      "capacityModeResidualMWh": 0,
      "shaverMW": 9,
@@ -123,7 +120,7 @@
      "powerMW": 10,
      "energyMWh": 80,
      "awareMW": 13.75,
-     "awareResidualMWh": 0.018,
+     "awareResidualMWh": 0.006,
      "capacityModeMW": 16,
      "capacityModeResidualMWh": 0,
      "shaverMW": 13.25,
@@ -135,7 +132,7 @@
      "powerMW": 20,
      "energyMWh": 80,
      "awareMW": 13.75,
-     "awareResidualMWh": 0.018,
+     "awareResidualMWh": 0.006,
      "capacityModeMW": 17.25,
      "capacityModeResidualMWh": 0,
      "shaverMW": 13.25,
