@@ -75,7 +75,7 @@
    ]
   },
   "fixed": {
-   "withoutStorageMW": 6,
+   "withoutStorageMW": 6.25,
    "stations": [
     {
      "label": "5 MW, 4 h",
@@ -121,10 +121,10 @@
      "energyMWh": 80,
      "awareMW": 13.75,
      "awareResidualMWh": 0.006,
-     "capacityModeMW": 16,
+     "capacityModeMW": 16.25,
      "capacityModeResidualMWh": 0,
      "shaverMW": 13.25,
-     "shaverFullMW": 16,
+     "shaverFullMW": 16.25,
      "awareDaysOverAtShaverMW": []
     },
     {
