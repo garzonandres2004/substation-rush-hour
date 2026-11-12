@@ -1,1 +1,24 @@
-{}
+{
+  "normal|aware|discharge|6-6": "At 6 AM, the battery discharges 7 MWh because the price averages $46 per MWh and traffic index is 0.55, slowing. The busiest hour drops from 63.0 to 55.9 MW.",
+  "normal|aware|charge|13-14": "From 1 PM to 3 PM, the battery charges 8 MWh because the price averages $30 per MWh and traffic index is 0.54, slowing. Grid draw peaks at 77.0 MW, 0.1 MW under the limit.",
+  "normal|priceOnly|discharge|1-1": "At 1 AM, the battery discharges 5 MWh because the price averages $45 per MWh and traffic index is 0.47, free flowing. The busiest hour drops from 60.6 to 55.4 MW.",
+  "normal|priceOnly|discharge|6-6": "At 6 AM, the battery discharges 10 MWh because the price averages $46 per MWh and traffic index is 0.55, slowing. The busiest hour drops from 63.0 to 53.1 MW.",
+  "normal|priceOnly|charge|13-15": "From 1 PM to 4 PM, the battery charges 30 MWh because the price averages $32 per MWh and traffic index is 0.58, slowing. Grid draw reaches 83.1 MW, 6.0 MW over the limit.",
+  "normal|priceOnly|discharge|18-19": "From 6 PM to 8 PM, the battery discharges 11 MWh because the price averages $45 per MWh and traffic index is 0.50, free flowing. The busiest hour drops from 61.6 to 60.3 MW.",
+  "normal|clean|discharge|0-1": "From 12 AM to 2 AM, the battery discharges 15 MWh because the price averages $45 per MWh and traffic index is 0.47, free flowing. The busiest hour drops from 60.6 to 55.4 MW.",
+  "normal|clean|charge|8-16": "From 8 AM to 5 PM, the battery charges 36 MWh because the price averages $36 per MWh and traffic index is 0.60, slowing. Grid draw is held to the 77.0 MW limit.",
+  "normal|clean|discharge|21-21": "At 9 PM, the battery discharges 7 MWh because the price averages $44 per MWh and traffic index is 0.54, slowing. The busiest hour drops from 63.0 to 56.0 MW.",
+  "normal|clean|discharge|23-23": "At 11 PM, the battery discharges 10 MWh because the price averages $42 per MWh and traffic index is 0.49, free flowing. The busiest hour drops from 60.8 to 51.0 MW.",
+  "derate|aware|charge|2-3": "From 2 AM to 4 AM, the battery charges 19 MWh because the price averages $40 per MWh and traffic index is 0.41, free flowing. Grid draw is held to the 69.3 MW limit.",
+  "derate|aware|discharge|9-15": "From 9 AM to 4 PM, the battery discharges 28 MWh because the price averages $35 per MWh and traffic index is 0.58, slowing. The busiest hour drops from 74.9 to 69.3 MW.",
+  "derate|aware|charge|22-23": "From 10 PM to 12 AM, the battery charges 13 MWh because the price averages $43 per MWh and traffic index is 0.49, free flowing. Grid draw peaks at 69.1 MW, 0.2 MW under the limit.",
+  "derate|priceOnly|discharge|1-1": "At 1 AM, the battery discharges 5 MWh because the price averages $45 per MWh and traffic index is 0.47, free flowing. The busiest hour drops from 60.6 to 55.4 MW.",
+  "derate|priceOnly|discharge|6-6": "At 6 AM, the battery discharges 10 MWh because the price averages $46 per MWh and traffic index is 0.55, slowing. The busiest hour drops from 63.0 to 53.1 MW.",
+  "derate|priceOnly|charge|13-15": "From 1 PM to 4 PM, the battery charges 30 MWh because the price averages $32 per MWh and traffic index is 0.58, slowing. Grid draw reaches 83.1 MW, 13.8 MW over the limit.",
+  "derate|priceOnly|discharge|18-19": "From 6 PM to 8 PM, the battery discharges 11 MWh because the price averages $45 per MWh and traffic index is 0.50, free flowing. The busiest hour drops from 61.6 to 60.3 MW.",
+  "derate|clean|charge|3-4": "From 3 AM to 5 AM, the battery charges 9 MWh because the price averages $42 per MWh and traffic index is 0.43, free flowing. Grid draw peaks at 69.3 MW, 0.1 MW under the limit.",
+  "derate|clean|charge|6-8": "From 6 AM to 9 AM, the battery charges 10 MWh because the price averages $44 per MWh and traffic index is 0.60, slowing. Grid draw peaks at 69.1 MW, 0.2 MW under the limit.",
+  "derate|clean|discharge|9-15": "From 9 AM to 4 PM, the battery discharges 28 MWh because the price averages $35 per MWh and traffic index is 0.58, slowing. The busiest hour drops from 74.9 to 69.3 MW.",
+  "derate|clean|charge|16-17": "From 4 PM to 6 PM, the battery charges 5 MWh because the price averages $42 per MWh and traffic index is 0.66, jam. Grid draw peaks at 69.2 MW, 0.1 MW under the limit.",
+  "derate|clean|charge|19-19": "At 7 PM, the battery charges 8 MWh because the price averages $45 per MWh and traffic index is 0.50, free flowing. Grid draw peaks at 69.2 MW, 0.2 MW under the limit."
+}
