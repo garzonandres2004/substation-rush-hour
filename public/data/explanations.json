@@ -1,5 +1,146 @@
 {
  "generatedBy": "Written by an AI model from the engine facts, then checked by code. The model explains. It does not decide.",
- "reportDate": "2026-11-17",
- "entries": {}
+ "reportDate": "2026-11-18",
+ "entries": {
+  "normal|aware|charge|1-2": {
+   "hash": "1hih55p",
+   "text": "The model charges the battery with 16 MWh of energy from 1 AM to 3 AM. Prices average $27 per MWh while traffic is free flowing with an index of 0.38. Grid draw peaks at 76.5 MW, staying 5.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "normal|aware|charge|9-9": {
+   "hash": "1k7043h",
+   "text": "The model charges the battery with 1 MWh at 9 AM. The price averages $20 per MWh and traffic is slowing with an index of 0.56. Grid draw is held to the 81.6 MW limit.",
+   "source": "gemini"
+  },
+  "normal|aware|charge|11-14": {
+   "hash": "bkl87v",
+   "text": "The model charges the battery with 3 MWh from 11 AM to 3 PM. Prices average $20 per MWh with free flowing traffic at an index of 0.49. Grid draw peaks at 81.5 MW, which is 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "normal|aware|discharge|20-20": {
+   "hash": "13eyzbv",
+   "text": "The model discharges the battery with 7 MWh at 8 PM. Prices average $36 per MWh and traffic is slowing with an index of 0.56. The busiest hour load drops from 69.8 to 62.8 MW.",
+   "source": "gemini"
+  },
+  "normal|aware|discharge|23-23": {
+   "hash": "n1in43",
+   "text": "The model discharges the battery with 10 MWh at 11 PM. The price averages $45 per MWh while traffic is free flowing with an index of 0.49. The busiest hour load drops from 66.6 to 56.7 MW.",
+   "source": "gemini"
+  },
+  "normal|priceOnly|discharge|7-7": {
+   "hash": "1lr37s2",
+   "text": "The model discharges the battery with 9 MWh at 7 AM. Prices average $29 per MWh and traffic is slowing with an index of 0.55. The busiest hour load drops from 72.5 to 63.4 MW.",
+   "source": "gemini"
+  },
+  "normal|priceOnly|charge|10-11": {
+   "hash": "1mmcmmd",
+   "text": "The model charges the battery with 20 MWh from 10 AM to 12 PM. Prices average $19 per MWh with free flowing traffic at an index of 0.49. Grid draw reaches 91.7 MW, ending 10.1 MW over the limit.",
+   "source": "gemini"
+  },
+  "normal|priceOnly|charge|13-13": {
+   "hash": "1vqn624",
+   "text": "The model charges the battery with 10 MWh at 1 PM. The price averages $20 per MWh and traffic is free flowing at an index of 0.52. Grid draw reaches 90.8 MW, ending 9.3 MW over the limit.",
+   "source": "gemini"
+  },
+  "normal|priceOnly|discharge|22-23": {
+   "hash": "ajbcw3",
+   "text": "The model discharges the battery with 17 MWh from 10 PM to 12 AM. Prices average $40 per MWh with free flowing traffic at an index of 0.50. The busiest hour load drops from 68.1 to 61.1 MW.",
+   "source": "gemini"
+  },
+  "normal|clean|charge|8-9": {
+   "hash": "1wg4rfb",
+   "text": "The model charges the battery with 6 MWh from 8 AM to 10 AM. Prices average $23 per MWh while traffic is slowing with an index of 0.57. Grid draw is held to the 81.6 MW limit.",
+   "source": "gemini"
+  },
+  "normal|clean|charge|11-16": {
+   "hash": "1qelgly",
+   "text": "The model charges the battery with 13 MWh from 11 AM to 5 PM. Prices average $23 per MWh and traffic is slowing with an index of 0.52. Grid draw peaks at 81.5 MW, staying 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "normal|clean|discharge|18-18": {
+   "hash": "v8lenk",
+   "text": "The model discharges the battery with 10 MWh at 6 PM. The price averages $29 per MWh with free flowing traffic at an index of 0.50. The busiest hour load drops from 69.2 to 59.4 MW.",
+   "source": "gemini"
+  },
+  "normal|clean|discharge|21-21": {
+   "hash": "1ql4dit",
+   "text": "The model discharges the battery with 7 MWh at 9 PM. Prices average $32 per MWh and traffic is slowing with an index of 0.53. The busiest hour load drops from 69.8 to 62.8 MW.",
+   "source": "gemini"
+  },
+  "derate|aware|charge|1-3": {
+   "hash": "1ixkkgo",
+   "text": "The model charges the battery with 19 MWh from 1 AM to 4 AM during a capacity cut. Prices average $27 per MWh while traffic is free flowing at an index of 0.38. Grid draw peaks at 73.3 MW, 0.2 MW under the limit.",
+   "source": "gemini"
+  },
+  "derate|aware|discharge|8-10": {
+   "hash": "tz0mob",
+   "text": "The model discharges the battery with 13 MWh from 8 AM to 11 AM. Prices average $21 per MWh and traffic is slowing with an index of 0.55. The busiest hour load drops from 81.9 to 78.1 MW, clearing 13.4 MWh of overload.",
+   "source": "gemini"
+  },
+  "derate|aware|discharge|13-15": {
+   "hash": "1vo6v5k",
+   "text": "The model discharges the battery with 19 MWh from 1 PM to 4 PM. Prices average $22 per MWh with traffic slowing at an index of 0.55. The busiest hour load drops from 81.0 to 73.6 MW, clearing 18.5 MWh of overload.",
+   "source": "gemini"
+  },
+  "derate|aware|charge|17-19": {
+   "hash": "3vrntl",
+   "text": "The model charges the battery with 11 MWh from 5 PM to 8 PM. Prices average $32 per MWh and traffic is slowing with an index of 0.53. Grid draw peaks at 73.3 MW, staying 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "derate|aware|charge|21-22": {
+   "hash": "1kkgcq9",
+   "text": "The model charges the battery with 6 MWh from 9 PM to 11 PM. Prices average $34 per MWh with free flowing traffic at an index of 0.52. Grid draw peaks at 73.3 MW, 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "derate|priceOnly|discharge|7-7": {
+   "hash": "1lr37s2",
+   "text": "The model discharges the battery with 9 MWh at 7 AM. Prices average $29 per MWh while traffic is slowing with an index of 0.55. The busiest hour load drops from 72.5 to 63.4 MW.",
+   "source": "gemini"
+  },
+  "derate|priceOnly|charge|10-11": {
+   "hash": "9mhxr",
+   "text": "The model charges the battery with 20 MWh from 10 AM to 12 PM. Prices average $19 per MWh with free flowing traffic at an index of 0.49. Grid draw reaches 91.7 MW, ending 18.3 MW over the limit.",
+   "source": "gemini"
+  },
+  "derate|priceOnly|charge|13-13": {
+   "hash": "1iyt1x8",
+   "text": "The model charges the battery with 10 MWh at 1 PM. The price averages $20 per MWh and traffic is free flowing at an index of 0.52. Grid draw reaches 90.8 MW, ending 17.4 MW over the limit.",
+   "source": "gemini"
+  },
+  "derate|priceOnly|discharge|22-23": {
+   "hash": "ajbcw3",
+   "text": "The model discharges the battery with 17 MWh from 10 PM to 12 AM. Prices average $40 per MWh with free flowing traffic at an index of 0.50. The busiest hour load drops from 68.1 to 61.1 MW.",
+   "source": "gemini"
+  },
+  "derate|clean|charge|3-7": {
+   "hash": "1ler04c",
+   "text": "The model charges the battery with 19 MWh from 3 AM to 8 AM. Prices average $28 per MWh with free flowing traffic at an index of 0.45. Grid draw peaks at 73.3 MW, staying 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "derate|clean|discharge|8-11": {
+   "hash": "9hfshu",
+   "text": "The model discharges the battery with 26 MWh from 8 AM to 12 PM. Prices average $21 per MWh while traffic is slowing with an index of 0.53. The busiest hour load drops from 81.9 to 73.6 MW, clearing 25.6 MWh of overload.",
+   "source": "gemini"
+  },
+  "derate|clean|discharge|14-15": {
+   "hash": "e0b6h0",
+   "text": "The model discharges the battery with 6 MWh from 2 PM to 4 PM. Prices average $24 per MWh and traffic is slowing with an index of 0.56. The busiest hour load drops from 79.9 to 78.2 MW, clearing 6.3 MWh of overload.",
+   "source": "gemini"
+  },
+  "derate|clean|charge|17-17": {
+   "hash": "1k0hvmc",
+   "text": "The model charges the battery with 3 MWh at 5 PM. The price averages $31 per MWh while traffic is slowing with an index of 0.56. Grid draw peaks at 73.3 MW, 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "derate|clean|charge|19-20": {
+   "hash": "1pbqcfr",
+   "text": "The model charges the battery with 8 MWh from 7 PM to 9 PM. Prices average $36 per MWh and traffic is slowing with an index of 0.54. Grid draw peaks at 73.3 MW, staying 0.1 MW under the limit.",
+   "source": "gemini"
+  },
+  "derate|clean|charge|23-23": {
+   "hash": "197a9xe",
+   "text": "The model charges the battery with 7 MWh at 11 PM. The price averages $45 per MWh with free flowing traffic at an index of 0.49. Grid draw peaks at 73.3 MW, 0.2 MW under the limit.",
+   "source": "gemini"
+  }
+ }
 }
