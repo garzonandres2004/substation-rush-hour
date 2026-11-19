@@ -1,8 +1,8 @@
 {
- "days": 30,
+ "days": 29,
  "toleranceMWh": 0.1,
  "stepMW": 0.25,
- "fixedLimitMW": 89.48320413436693,
+ "fixedLimitMW": 89.48320413436691,
  "limits": {
   "moving": {
    "withoutStorageMW": 0,
@@ -91,7 +91,7 @@
      "label": "10 MW, 2 h",
      "powerMW": 10,
      "energyMWh": 20,
-     "awareMW": 0,
+     "awareMW": 4.5,
      "awareResidualMWh": 0,
      "capacityModeMW": 7.5,
      "capacityModeResidualMWh": 0,
