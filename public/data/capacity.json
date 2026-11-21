@@ -1,8 +1,8 @@
 {
- "days": 30,
+ "days": 29,
  "toleranceMWh": 0.1,
  "stepMW": 0.25,
- "fixedLimitMW": 89.48320413436693,
+ "fixedLimitMW": 89.48320413436691,
  "limits": {
   "moving": {
    "withoutStorageMW": 0,
@@ -13,10 +13,10 @@
      "energyMWh": 20,
      "awareMW": 0,
      "awareResidualMWh": 0,
-     "capacityModeMW": 1,
+     "capacityModeMW": 0.5,
      "capacityModeResidualMWh": 0,
      "shaverMW": 0,
-     "shaverFullMW": 0.5,
+     "shaverFullMW": 0.25,
      "awareDaysOverAtShaverMW": []
     },
     {
@@ -25,10 +25,10 @@
      "energyMWh": 20,
      "awareMW": 0,
      "awareResidualMWh": 0,
-     "capacityModeMW": 1,
+     "capacityModeMW": 0.75,
      "capacityModeResidualMWh": 0,
      "shaverMW": 0,
-     "shaverFullMW": 0.5,
+     "shaverFullMW": 0.25,
      "awareDaysOverAtShaverMW": []
     },
     {
@@ -37,7 +37,7 @@
      "energyMWh": 40,
      "awareMW": 0,
      "awareResidualMWh": 0,
-     "capacityModeMW": 2.5,
+     "capacityModeMW": 2.75,
      "capacityModeResidualMWh": 0,
      "shaverMW": 0.25,
      "shaverFullMW": 2.25,
@@ -51,10 +51,10 @@
      "energyMWh": 80,
      "awareMW": 3.75,
      "awareResidualMWh": 0,
-     "capacityModeMW": 4.75,
+     "capacityModeMW": 4.5,
      "capacityModeResidualMWh": 0,
      "shaverMW": 2,
-     "shaverFullMW": 4.75,
+     "shaverFullMW": 4.25,
      "awareDaysOverAtShaverMW": []
     },
     {
@@ -63,10 +63,10 @@
      "energyMWh": 80,
      "awareMW": 3.75,
      "awareResidualMWh": 0,
-     "capacityModeMW": 4.75,
+     "capacityModeMW": 4.5,
      "capacityModeResidualMWh": 0,
      "shaverMW": 2,
-     "shaverFullMW": 4.75,
+     "shaverFullMW": 4.25,
      "awareDaysOverAtShaverMW": []
     }
    ]
@@ -95,7 +95,7 @@
      "capacityModeMW": 7.5,
      "capacityModeResidualMWh": 0,
      "shaverMW": 5,
-     "shaverFullMW": 7.5,
+     "shaverFullMW": 7.25,
      "awareDaysOverAtShaverMW": [
       "2026-11-17"
      ]
@@ -134,10 +134,10 @@
      "energyMWh": 80,
      "awareMW": 6.75,
      "awareResidualMWh": 0,
-     "capacityModeMW": 11.75,
+     "capacityModeMW": 11.5,
      "capacityModeResidualMWh": 0,
      "shaverMW": 9.25,
-     "shaverFullMW": 11.75,
+     "shaverFullMW": 11.25,
      "awareDaysOverAtShaverMW": [
       "2026-10-30"
      ]
