@@ -49,10 +49,10 @@
      "energyMWh": 80,
      "awareMW": 0.5,
      "awareResidualMWh": 0,
-     "capacityModeMW": 2,
-     "capacityModeResidualMWh": 0.088,
+     "capacityModeMW": 2.25,
+     "capacityModeResidualMWh": 0,
      "shaverMW": 0,
-     "shaverFullMW": 2,
+     "shaverFullMW": 2.25,
      "awareDaysOverAtShaverMW": []
     },
     {
@@ -78,10 +78,10 @@
      "energyMWh": 20,
      "awareMW": 0,
      "awareResidualMWh": 0,
-     "capacityModeMW": 2.5,
+     "capacityModeMW": 2.75,
      "capacityModeResidualMWh": 0,
-     "shaverMW": 0.75,
-     "shaverFullMW": 2.5,
+     "shaverMW": 1.25,
+     "shaverFullMW": 2.75,
      "awareDaysOverAtShaverMW": [
       "2026-11-20"
      ]
@@ -92,10 +92,10 @@
      "energyMWh": 20,
      "awareMW": 0,
      "awareResidualMWh": 0,
-     "capacityModeMW": 3,
+     "capacityModeMW": 2.75,
      "capacityModeResidualMWh": 0,
-     "shaverMW": 0.75,
-     "shaverFullMW": 3,
+     "shaverMW": 1.25,
+     "shaverFullMW": 2.75,
      "awareDaysOverAtShaverMW": [
       "2026-11-20"
      ]
@@ -104,10 +104,10 @@
      "label": "10 MW, 4 h",
      "powerMW": 10,
      "energyMWh": 40,
-     "awareMW": 1.25,
+     "awareMW": 1.5,
      "awareResidualMWh": 0,
      "capacityModeMW": 5,
-     "capacityModeResidualMWh": 0,
+     "capacityModeResidualMWh": 0.043,
      "shaverMW": 2.75,
      "shaverFullMW": 5,
      "awareDaysOverAtShaverMW": [
@@ -120,23 +120,25 @@
      "energyMWh": 80,
      "awareMW": 6,
      "awareResidualMWh": 0,
-     "capacityModeMW": 7.5,
+     "capacityModeMW": 7.75,
      "capacityModeResidualMWh": 0,
      "shaverMW": 4.75,
-     "shaverFullMW": 7.5,
+     "shaverFullMW": 7.75,
      "awareDaysOverAtShaverMW": []
     },
     {
      "label": "20 MW, 4 h",
      "powerMW": 20,
      "energyMWh": 80,
-     "awareMW": 5.75,
+     "awareMW": 3.75,
      "awareResidualMWh": 0,
-     "capacityModeMW": 8,
+     "capacityModeMW": 7.75,
      "capacityModeResidualMWh": 0,
      "shaverMW": 4.75,
-     "shaverFullMW": 8,
-     "awareDaysOverAtShaverMW": []
+     "shaverFullMW": 7.75,
+     "awareDaysOverAtShaverMW": [
+      "2026-11-23"
+     ]
     }
    ]
   }
